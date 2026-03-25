@@ -10,6 +10,14 @@ CREATE TABLE usuario(
     data_cadastro DATE NOT NULL,
     PRIMARY KEY(id_usuario));
     
+CREATE TABLE meta(
+	id INTEGER AUTO_INCREMENT NOT NULL,
+    titulo VARCHAR(50),
+    formato VARCHAR(50),
+    id_usuario INTEGER NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));
+
 CREATE TABLE veiculo(
 	id_veiculo INTEGER AUTO_INCREMENT NOT NULL,
     modelo VARCHAR(20) NOT NULL,
@@ -21,15 +29,13 @@ CREATE TABLE veiculo(
     km_atual INTEGER NOT NULL,
     id_usuario INTEGER NOT NULL,
     PRIMARY KEY(id_veiculo),
-    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
-);
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));
 
 CREATE TABLE corrida(
 	id_corrida INTEGER AUTO_INCREMENT NOT NULL,
     data_hora_inicio DATETIME NOT NULL,
     data_hora_fim DATETIME NOT NULL,
-    km_inicial INTEGER NOT NULL,
-    km_final INTEGER NOT NULL,
+    km_total INTEGER NOT NULL,
     valor_ganho DECIMAL(10,2) NOT NULL,
     id_usuario INTEGER NOT NULL,
     id_veiculo INTEGER NOT NULL,
@@ -41,7 +47,8 @@ CREATE TABLE custo(
 	id_custo INTEGER AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
-    data_custo DATE NOT NULL,
+    data_vencimento DATE NOT NULL,
+    data_pagamento DATE NOT NULL,
     descricao VARCHAR(100) NOT NULL,
     id_veiculo INTEGER NOT NULL,
     PRIMARY KEY(id_custo),
@@ -51,6 +58,7 @@ CREATE TABLE manutencao(
 	id_manutencao INTEGER AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(100) NOT NULL,
     data_manutencao DATE NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
     id_veiculo INTEGER NOT NULL,
     PRIMARY KEY(id_manutencao),
     FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo));
