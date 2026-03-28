@@ -3,62 +3,75 @@ CREATE DATABASE bd_projeto;
 USE bd_projeto;
 
 CREATE TABLE usuario(
-	id_usuario INTEGER AUTO_INCREMENT NOT NULL,
-    nome VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    senha VARCHAR(50) NOT NULL,
+	id_usuario BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
     data_cadastro DATE NOT NULL,
+    telefone VARCHAR(30) NOT NULL,
     PRIMARY KEY(id_usuario));
     
 CREATE TABLE meta(
-	id INTEGER AUTO_INCREMENT NOT NULL,
-    titulo VARCHAR(50),
-    formato VARCHAR(50),
-    id_usuario INTEGER NOT NULL,
+	id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    titulo VARCHAR(200) NOT NULL,
+    formato VARCHAR(200) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    id_usuario BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 CREATE TABLE veiculo(
-	id_veiculo INTEGER AUTO_INCREMENT NOT NULL,
-    modelo VARCHAR(20) NOT NULL,
-    marca VARCHAR(15) NOT NULL,
-    ano INTEGER NOT NULL,
+	id_veiculo BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    modelo VARCHAR(100) NOT NULL,
+    marca VARCHAR(100) NOT NULL,
+    ano YEAR NOT NULL,
     placa VARCHAR(7) NOT NULL UNIQUE,
-    cor VARCHAR(15) NOT NULL,
-    tipo VARCHAR(15) NOT NULL,
+    cor VARCHAR(80) NOT NULL,
+    tipo VARCHAR(80) NOT NULL,
     km_atual INTEGER NOT NULL,
-    id_usuario INTEGER NOT NULL,
+    data_ultima_atualizacao_km DATE NOT NULL,
+    id_usuario BIGINT UNSIGNED UNIQUE NOT NULL,
     PRIMARY KEY(id_veiculo),
-    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
-CREATE TABLE corrida(
-	id_corrida INTEGER AUTO_INCREMENT NOT NULL,
-    data_hora_inicio DATETIME NOT NULL,
-    data_hora_fim DATETIME NOT NULL,
-    km_total INTEGER NOT NULL,
-    valor_ganho DECIMAL(10,2) NOT NULL,
-    id_usuario INTEGER NOT NULL,
-    id_veiculo INTEGER NOT NULL,
-    PRIMARY KEY(id_corrida),
-    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo));
+CREATE TABLE receita_diaria(
+	id_receita BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    data_receita DATE NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    id_usuario BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY(id_receita),
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
     
 CREATE TABLE custo(	
-	id_custo INTEGER AUTO_INCREMENT NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
+	id_custo BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    tipo VARCHAR(150) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
-    data_vencimento DATE NOT NULL,
-    data_pagamento DATE NOT NULL,
-    descricao VARCHAR(100) NOT NULL,
-    id_veiculo INTEGER NOT NULL,
+    data_vencimento DATE,
+    data_pagamento DATE,
+    descricao VARCHAR(350) NOT NULL,
+    id_veiculo BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(id_custo),
-    FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo));
+    FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
     
-CREATE TABLE manutencao(
-	id_manutencao INTEGER AUTO_INCREMENT NOT NULL,
-    tipo VARCHAR(100) NOT NULL,
+CREATE TABLE manutencao_custo(
+	id_manutencao BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    tipo VARCHAR(200) NOT NULL,
     data_manutencao DATE NOT NULL,
-    valor DECIMAL(10,2) NOT NULL,
-    id_veiculo INTEGER NOT NULL,
+    descricao VARCHAR(350),
+    id_veiculo BIGINT UNSIGNED NOT NULL,
+    id_custo BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(id_manutencao),
-    FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo));
+    FOREIGN KEY(id_veiculo) REFERENCES veiculo(id_veiculo) 
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY(id_custo) REFERENCES custo(id_custo)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
