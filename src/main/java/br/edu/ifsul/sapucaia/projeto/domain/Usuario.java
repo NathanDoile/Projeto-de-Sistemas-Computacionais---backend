@@ -1,9 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,7 +16,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long idUsuario;
 
     private String nome;
 
@@ -29,13 +26,13 @@ public class Usuario {
 
     private LocalDate dataCadastro;
 
-    private Long telefone;
+    private String telefone;
 
     @OneToMany(mappedBy = "usuario")
     private List<Meta> metas;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Veiculo> veiculos;
+    @OneToOne(mappedBy = "usuario")
+    private Veiculo veiculo;
 
     @OneToMany(mappedBy = "usuario")
     private List<ReceitaDiaria> receitasDiarias;

@@ -1,4 +1,6 @@
-CREATE DATABASE bd_projeto;
+DROP DATABASE IF EXISTS bd_projeto;
+
+CREATE DATABASE IF NOT EXISTS bd_projeto;
 
 USE bd_projeto;
 
