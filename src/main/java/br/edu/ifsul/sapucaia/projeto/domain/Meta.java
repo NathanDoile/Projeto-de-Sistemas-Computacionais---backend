@@ -12,7 +12,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Meta {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long idMeta;
 
     private String titulo;
 
