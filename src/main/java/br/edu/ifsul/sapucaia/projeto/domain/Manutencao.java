@@ -25,7 +25,8 @@ public class Manutencao {
     @JoinColumn(name = "id_veiculo")
     private Veiculo veiculo;
 
-    @OneToOne(mappedBy = "manutencao")
+    @OneToOne
+    @JoinColumn(name = "id_custo")
     private Custo custo;
     
 }
