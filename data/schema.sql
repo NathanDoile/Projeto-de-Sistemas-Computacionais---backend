@@ -63,7 +63,7 @@ CREATE TABLE custo(
     ON DELETE CASCADE
     ON UPDATE CASCADE);
     
-CREATE TABLE manutencao_custo(
+CREATE TABLE manutencao(
 	id_manutencao BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(200) NOT NULL,
     data_manutencao DATE NOT NULL,
