@@ -29,14 +29,12 @@ public class Veiculo {
 
     private String cor;
 
-    private double kmAtual;
+    private int kmAtual;
 
-    @ManyToOne
-    @JoinColumn(name = "id_manutencao")
+    @ManyToOne(mappedBy = "veiculo")
     private Manutencao manutencao;
 
-    @ManyToOne
-    @JoinColumn(name = "id_custo")
+    @ManyToOne(mappedBy = "veiculo")
     private Custo custo;
 
     @OneToOne
