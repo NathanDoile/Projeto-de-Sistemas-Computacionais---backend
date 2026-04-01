@@ -17,9 +17,9 @@ CREATE TABLE meta(
 	id_meta BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     titulo VARCHAR(200) NOT NULL,
     formato VARCHAR(200) NOT NULL,
-    valor DECIMAL(10,2) NOT NULL,
+    valor DOUBLE NOT NULL,
     id_usuario BIGINT UNSIGNED NOT NULL,
-    PRIMARY KEY(id),
+    PRIMARY KEY(id_meta),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
@@ -28,7 +28,7 @@ CREATE TABLE veiculo(
 	id_veiculo BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     modelo VARCHAR(100) NOT NULL,
     marca VARCHAR(100) NOT NULL,
-    ano YEAR NOT NULL,
+    ano INTEGER NOT NULL,
     placa VARCHAR(7) NOT NULL UNIQUE,
     cor VARCHAR(80) NOT NULL,
     tipo VARCHAR(80) NOT NULL,
@@ -37,13 +37,13 @@ CREATE TABLE veiculo(
     id_usuario BIGINT UNSIGNED UNIQUE NOT NULL,
     PRIMARY KEY(id_veiculo),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
-    ON DELETE CASCADE
+    ON DELETE CASCADE	
     ON UPDATE CASCADE);
 
 CREATE TABLE receita_diaria(
 	id_receita BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     data_receita DATE NOT NULL,
-    valor DECIMAL(10,2) NOT NULL,
+    valor DOUBLE NOT NULL,
     id_usuario BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(id_receita),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
@@ -53,7 +53,7 @@ CREATE TABLE receita_diaria(
 CREATE TABLE custo(	
 	id_custo BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(150) NOT NULL,
-    valor DECIMAL(10,2) NOT NULL,
+    valor DOUBLE NOT NULL,
     data_vencimento DATE,
     data_pagamento DATE,
     descricao VARCHAR(350) NOT NULL,

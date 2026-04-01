@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,13 +32,14 @@ public class Veiculo {
 
     private int kmAtual;
 
-    @ManyToOne(mappedBy = "veiculo")
-    private Manutencao manutencao;
+    @OneToMany(mappedBy = "veiculo")
+    private List<Manutencao> manutencoes;
 
-    @ManyToOne(mappedBy = "veiculo")
-    private Custo custo;
+    @OneToMany(mappedBy = "veiculo")
+    private List<Custo> custos;
 
     @OneToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-    
+
+}
