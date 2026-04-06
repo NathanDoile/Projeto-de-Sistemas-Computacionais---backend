@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 

@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 
 public class AdministradorMapper {
 
+    private AdministradorMapper(){}
+
     public static ReceitaDiaria toEntity(CadastrarReceitaDiariaRequest cadastrarReceitaDiariaRequest) {
 
         return ReceitaDiaria
