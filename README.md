@@ -15,3 +15,17 @@
                   "idUsuario": 1
             }
         ```
+
+### Rota: `/meta`
+- Cria uma meta;
+- Precisa estar logado para utilizar esse path;
+    - `POST /`
+
+        ```json
+            {
+                "titulo":"Ingressos para show fim de semana",
+                "formato":"Semanal",
+                "valor":300,
+                "idUsuario":1
+            }
+        ```    
