@@ -1,21 +1,37 @@
 {
-	"info": {
-		"_postman_id": "96d818e0-53d0-4278-91eb-b2d5e8eb33c9",
-		"name": "POSTMAN PROJETO",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29566159"
-	},
-	"item": [
-		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "96d818e0-53d0-4278-91eb-b2d5e8eb33c9",
+    "name": "POSTMAN PROJETO",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29566159"
+  },
+  "item": [
+    {
+      "name": "Cadastrar Receita Diaria",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"dataReceita\":\"2026-04-03\",\r\n    \"valor\":200,\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/receita-diaria",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "receita-diaria"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

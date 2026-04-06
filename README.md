@@ -1,24 +1,17 @@
-# *EXEMPLO DE LISTAGEM DE FUNCIONAIDADES:*
+# *LISTAGEM DE FUNCIONAIDADES:*
 # Projeto de Desenvolvimento de Sistemas
 
 ## Funcionalidades
 
-### Rota: `POST /usuarios`
-- Cria um usuário;
-- Não precisa estar logado para utilizar esse path;
-    - `POST /usuarios`
+### Rota: `/receita-diaria`
+- Cria uma receita diária;
+- Precisa estar logado para utilizar esse path;
+    - `POST /`
     
         ```json
             {
-                  "nome": "Nome Sobrenome",
-                  "email": "seuemail@dominio.com",
-                  "telefone": "11932564738",
-                  "senha": "umasenha",
-                  "foto": "url",
-                  "professor": "false ou true" 
+                  "dataReceita": "Nome Sobrenome",
+                  "valor": 200,
+                  "idUsuario": 1
             }
         ```
-
-### Rota: `GET /usuarios/{email}`
-- Retorna o usuário que possui aquele e-mail;
-- Qualquer categoria de usuário pode utilizar esse path;
