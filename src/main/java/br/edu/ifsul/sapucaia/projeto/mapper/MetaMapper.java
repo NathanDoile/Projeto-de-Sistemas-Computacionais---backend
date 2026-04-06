@@ -5,6 +5,8 @@ import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 
 public class MetaMapper {
 
+    private MetaMapper(){}
+
     public static Meta toEntity(CadastrarMetaRequest cadastrarMetaRequest) {
 
         return Meta
