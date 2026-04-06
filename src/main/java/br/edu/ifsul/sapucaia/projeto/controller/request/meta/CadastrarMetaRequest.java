@@ -13,7 +13,7 @@ public class CadastrarMetaRequest {
     private String formato;
 
     @NotNull
-    private Double valorMeta;
+    private Double valor;
 
     @NotNull
     private Long idUsuario;

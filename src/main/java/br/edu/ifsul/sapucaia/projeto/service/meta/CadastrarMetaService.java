@@ -33,7 +33,7 @@ public class CadastrarMetaService {
     public void cadastrar(CadastrarMetaRequest cadastrarMetaRequest) {
 
         validaUsuarioService.porId(cadastrarMetaRequest.getIdUsuario());
-        validaValorMetaValidator.isPositivo(cadastrarMetaRequest.getValorMeta());
+        validaValorMetaValidator.isPositivo(cadastrarMetaRequest.getValor());
 
         Meta meta = toEntity(cadastrarMetaRequest);
 
