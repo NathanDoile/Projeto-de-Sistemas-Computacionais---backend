@@ -1,15 +1,16 @@
 package br.edu.ifsul.sapucaia.projeto.controller.request.meta;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class CadastrarMetaRequest {
 
-    @NotNull
+    @NotBlank
     private String titulo;
 
-    @NotNull
+    @NotBlank
     private String formato;
 
     @NotNull

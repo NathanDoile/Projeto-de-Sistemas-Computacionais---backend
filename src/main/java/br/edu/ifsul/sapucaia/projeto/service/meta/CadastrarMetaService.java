@@ -10,6 +10,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper.toEntity;
@@ -28,12 +29,16 @@ public class CadastrarMetaService {
 
     @Autowired
     private ValidaValorMetaValidator validaValorMetaValidator;
+
+    @Autowired
+    private ValidaFormatoMetaValidator validaFormatoMetaValidator;
     
     @Transactional
     public void cadastrar(CadastrarMetaRequest cadastrarMetaRequest) {
 
         validaUsuarioService.porId(cadastrarMetaRequest.getIdUsuario());
         validaValorMetaValidator.isPositivo(cadastrarMetaRequest.getValor());
+        validaFormatoMetaValidator.formatoValido(cadastrarMetaRequest.getFormato());
 
         Meta meta = toEntity(cadastrarMetaRequest);
 
