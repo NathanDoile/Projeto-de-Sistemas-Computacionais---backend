@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "a0e127e2-490b-48f3-99f8-8de249f4da84",
+    "_postman_id": "f9a8b25e-219b-44b1-bd57-16596ce47037",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-a0e127e2-490b-48f3-99f8-8de249f4da84?source=collection_link"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://felipehomem152-1572444.postman.co/workspace/Felipe-Martins's-Workspace~810495d8-17db-4f4e-8c26-134f31f06974/collection/53222404-f9a8b25e-219b-44b1-bd57-16596ce47037?action=share&source=collection_link&creator=53222404"
   },
   "item": [
     {
@@ -56,6 +56,34 @@
           "port": "8080",
           "path": [
             "meta"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando00@gmail.com\",\n    \"senha\": \"testando123\",\n    \"dataCadastro\": \"2026-04-03\",\n    \"telefone\": \"51999999999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario"
           ]
         }
       },
