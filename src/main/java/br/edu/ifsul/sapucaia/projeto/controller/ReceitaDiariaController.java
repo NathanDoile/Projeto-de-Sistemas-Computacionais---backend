@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.Cadastrar
 import br.edu.ifsul.sapucaia.projeto.service.receita_diaria.CadastrarReceitaDiariaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
