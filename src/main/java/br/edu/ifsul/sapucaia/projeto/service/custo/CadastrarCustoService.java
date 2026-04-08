@@ -1,4 +1,4 @@
-package br.edu.ifsul.sapucaia.projeto.service.custo;
+/*package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
@@ -43,3 +43,4 @@ public class CadastrarCustoService {
         custoRepository.save(custo);
     }
 }
+*/
