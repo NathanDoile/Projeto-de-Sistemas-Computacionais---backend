@@ -5,19 +5,19 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaEmailUsuarioValidator;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper.toEntity;
 
 @Service
+@RequiredArgsConstructor
 public class CadastrarUsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ValidaEmailUsuarioValidator validaEmailUsuarioValidator;
+    private final ValidaEmailUsuarioValidator validaEmailUsuarioValidator;
 
     @Transactional
     public void cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
