@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS bd_projeto;
 
 CREATE DATABASE IF NOT EXISTS bd_projeto;
 
+USE bd_projeto;
+
 CREATE TABLE usuario(
 	id_usuario BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     nome VARCHAR(100) NOT NULL,

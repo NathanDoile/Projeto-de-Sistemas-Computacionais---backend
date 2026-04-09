@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "f9a8b25e-219b-44b1-bd57-16596ce47037",
+    "_postman_id": "f21b954f-2554-4731-aba6-2d7f3a9ac905",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53222404",
-    "_collection_link": "https://felipehomem152-1572444.postman.co/workspace/Felipe-Martins's-Workspace~810495d8-17db-4f4e-8c26-134f31f06974/collection/53222404-f9a8b25e-219b-44b1-bd57-16596ce47037?action=share&source=collection_link&creator=53222404"
+    "_exporter_id": "53870151",
+    "_collection_link": "https://go.postman.co/collection/53870151-f21b954f-2554-4731-aba6-2d7f3a9ac905?source=collection_link"
   },
   "item": [
     {
@@ -84,6 +84,33 @@
           "port": "8080",
           "path": [
             "usuario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idVeiculo\":1,\r\n    \"tipo\":\"gasolina\",\r\n    \"valor\":500,\r\n    \"dataVencimento\":\"2026-06-21\",\r\n    \"dataPagamento\":\"2026-06-18\",\r\n    \"descricao\":\"Custo de gasolina\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/custo",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "custo"
           ]
         }
       },

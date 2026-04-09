@@ -29,3 +29,19 @@
                 "idUsuario":1
             }
         ```    
+
+### Rota: `/custo`
+- Cria um custo;
+  - Precisa estar logado para utilizar esse path;
+      - `POST /`
+
+          ```json
+              {
+                      "idVeiculo":1,
+                      "tipo":"gasolina",
+                      "valor":500,
+                      "dataVencimento":"2026-06-21",
+                      "dataPagamento":"2026-06-18",
+                      "descricao":"Custo de gasolina"
+              }
+          ```   
