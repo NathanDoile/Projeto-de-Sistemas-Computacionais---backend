@@ -1,6 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/custo")
+@RequiredArgsConstructor
 public class CustoController {
 
-    @Autowired
-    private CadastrarCustoService cadastrarCustoService;
+    private final CadastrarCustoService cadastrarCustoService;
 
     @PostMapping
     @ResponseStatus(CREATED)
