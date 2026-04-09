@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarCustoRequest;
-import br.edu.ifsul.sapucaia.projeto.service.meta.CadastrarCustoService;
+import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
+import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
 import jakarta.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -22,8 +22,8 @@ public class CustoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void cadastrar(@Valid @RequestBody CadastrarCustoRequest cadastrarCustoRequest) {
-        cadastrarCustoService.cadastrar(cadastrarCustoRequest);
+    public void cadastrar(@Valid @RequestBody CadastrarCustoRequest cadastrarCustoRequest){
+        cadastrarCustoService.cadastrar(    cadastrarCustoRequest);
     }
-    
+
 }
