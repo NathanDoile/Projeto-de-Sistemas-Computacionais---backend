@@ -3,17 +3,17 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.CadastrarUsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/usuario")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private CadastrarUsuarioService cadastrarUsuarioService;
+    private final CadastrarUsuarioService cadastrarUsuarioService;
 
     @PostMapping
     @ResponseStatus(CREATED)

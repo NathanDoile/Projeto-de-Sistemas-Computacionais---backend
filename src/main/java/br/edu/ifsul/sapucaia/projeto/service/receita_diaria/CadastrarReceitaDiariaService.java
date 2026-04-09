@@ -9,28 +9,24 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.AdministradorMapper.toEntity;
 
 @Service
+@RequiredArgsConstructor
 public class CadastrarReceitaDiariaService {
 
-    @Autowired
-    private ValidaUsuarioService validaUsuarioService;
+    private final ValidaUsuarioService validaUsuarioService;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ReceitaDiariaRepository receitaDiariaRepository;
+    private final ReceitaDiariaRepository receitaDiariaRepository;
 
-    @Autowired
-    private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
+    private final ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
 
-    @Autowired
-    private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
+    private final ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
 
     @Transactional
     public void cadastrar(CadastrarReceitaDiariaRequest cadastrarReceitaDiariaRequest) {

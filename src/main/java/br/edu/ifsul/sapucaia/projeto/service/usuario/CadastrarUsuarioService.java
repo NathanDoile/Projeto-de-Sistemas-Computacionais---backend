@@ -3,25 +3,24 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaEmailUsuarioValidator;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper.toEntity;
 
 @Service
+@RequiredArgsConstructor
 public class CadastrarUsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ValidaEmailUsuarioValidator validaEmailUsuarioValidator;
+    private final ValidaEmailUsuarioService validaEmailUsuarioService;
 
     @Transactional
     public void cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
-        validaEmailUsuarioValidator.validaEmailUnico(cadastrarUsuarioRequest.getEmail());
+        validaEmailUsuarioService.validaEmailUnico(cadastrarUsuarioRequest.getEmail());
 
         Usuario usuario = toEntity(cadastrarUsuarioRequest);
 
