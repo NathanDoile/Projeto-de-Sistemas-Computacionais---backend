@@ -45,3 +45,21 @@
                       "descricao":"Custo de gasolina"
               }
           ```   
+
+### Rota: `/veiculo`
+- Cria um veiculo;
+    - Precisa estar logado para utilizar esse path;
+        - `POST /`
+
+            ```json
+              {
+                      "marca":"VW",
+                      "modelo":"ONIX",
+                      "placa":"ABC1A23",
+                      "tipo":"carro",
+                      "ano":2023,
+                      "cor":"azul",
+                      "kmAtual":23589,
+                      "idUsuario":1
+              }
+            ```   
