@@ -1,12 +1,9 @@
 package br.edu.ifsul.sapucaia.projeto.controller.request.veiculo;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @Getter
 public class CadastrarVeiculoRequest {

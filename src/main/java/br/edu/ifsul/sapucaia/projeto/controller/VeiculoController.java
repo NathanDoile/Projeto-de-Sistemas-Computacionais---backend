@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculo
 import br.edu.ifsul.sapucaia.projeto.service.veiculo.CadastrarVeiculoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
