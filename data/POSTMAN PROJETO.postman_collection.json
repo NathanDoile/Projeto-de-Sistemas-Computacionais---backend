@@ -1,10 +1,9 @@
 {
   "info": {
-    "_postman_id": "f21b954f-2554-4731-aba6-2d7f3a9ac905",
+    "_postman_id": "816e4914-5e9d-45cc-a49f-5ec68ffd8976",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53870151",
-    "_collection_link": "https://go.postman.co/collection/53870151-f21b954f-2554-4731-aba6-2d7f3a9ac905?source=collection_link"
+    "_exporter_id": "29566159"
   },
   "item": [
     {
@@ -90,7 +89,7 @@
       "response": []
     },
     {
-      "name": "New Request",
+      "name": "Cadastrar Custo",
       "request": {
         "method": "POST",
         "header": [],
@@ -111,6 +110,60 @@
           "port": "8080",
           "path": [
             "custo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Veiculo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"marca\":\"VW\",\r\n    \"modelo\":\"ONIX\",\r\n    \"placa\":\"ABC1A23\",\r\n    \"tipo\":\"carro\",\r\n    \"ano\":2023,\r\n    \"cor\":\"azul\",\r\n    \"kmAtual\":23589,\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/veiculo",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Manutenção",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"tipo\":\"preventiva\",\r\n    \"dataManutencao\": \"2026-04-02\",\r\n    \"descricao\":\"fiz uma manutencao\",\r\n    \"idVeiculo\":1,\r\n    \"idCusto\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/manutencao",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "manutencao"
           ]
         }
       },

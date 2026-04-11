@@ -1,4 +1,4 @@
-# *LISTAGEM DE FUNCIONAIDADES:*
+# *LISTAGEM DE FUNCIONALIDADES:*
 # Projeto de Desenvolvimento de Sistemas
 
 ## Funcionalidades
@@ -63,3 +63,18 @@
                       "idUsuario":1
               }
             ```   
+
+### Rota: `/manutencao`
+- Cria um manutencao;
+    - Precisa estar logado para utilizar esse path;
+        - `POST /`
+
+            ```json
+              {
+                      "tipo":"preventiva",
+                      "dataManutencao": "2026-04-02",
+                      "descricao":"fiz uma manutencao",
+                      "idVeiculo":1,
+                      "idCusto":1
+              }
+            ``` 
