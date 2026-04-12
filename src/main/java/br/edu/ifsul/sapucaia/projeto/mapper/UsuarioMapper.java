@@ -12,7 +12,6 @@ public class UsuarioMapper {
                 .nome(cadastrarUsuarioRequest.getNome())
                 .email(cadastrarUsuarioRequest.getEmail())
                 .senha(cadastrarUsuarioRequest.getSenha())
-                .dataCadastro(cadastrarUsuarioRequest.getDataCadastro())
                 .telefone(cadastrarUsuarioRequest.getTelefone())
                 .build();
     }

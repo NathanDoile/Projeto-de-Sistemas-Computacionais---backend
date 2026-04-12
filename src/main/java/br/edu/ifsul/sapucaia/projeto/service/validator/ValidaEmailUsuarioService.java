@@ -16,6 +16,6 @@ public class ValidaEmailUsuarioService {
 
     public void validaEmailUnico(String email){
         if(usuarioRepository.existsByEmail(email))
-            throw new ResponseStatusException(BAD_REQUEST, "Esse email já cadastrado.");
+            throw new ResponseStatusException(BAD_REQUEST, "Esse email já foi cadastrado.");
     }
 }

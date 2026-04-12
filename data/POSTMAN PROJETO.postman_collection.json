@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "816e4914-5e9d-45cc-a49f-5ec68ffd8976",
+    "_postman_id": "d1ead6d9-1a65-4876-9543-a63443ac48fc",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "29566159"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://go.postman.co/collection/53222404-d1ead6d9-1a65-4876-9543-a63443ac48fc?source=collection_link"
   },
   "item": [
     {
@@ -67,7 +68,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando00@gmail.com\",\n    \"senha\": \"testando123\",\n    \"dataCadastro\": \"2026-04-03\",\n    \"telefone\": \"51999999999\"\n}",
+          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando0@gmail.com\",\n    \"senha\": \"testando123\",\n    \"telefone\": \"51999999999\"\n}",
           "options": {
             "raw": {
               "language": "json"

@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Usuario {
 
     private String senha;
 
+    @CreationTimestamp
     private LocalDate dataCadastro;
 
     private String telefone;

@@ -3,6 +3,19 @@
 
 ## Funcionalidades
 
+### Rota: `/usuario`
+- Cria um usuário;
+    - `POST /`
+
+        ```json
+            {
+                "nome": "Primeiro Usuário",
+                "email": "testando0@gmail.com",
+                "senha": "testando123",
+                "telefone": "51999999999"
+            }
+        ```
+
 ### Rota: `/receita-diaria`
 - Cria uma receita diária;
 - Precisa estar logado para utilizar esse path;
@@ -65,7 +78,7 @@
             ```   
 
 ### Rota: `/manutencao`
-- Cria um manutencao;
+- Cria uma manutencao;
     - Precisa estar logado para utilizar esse path;
         - `POST /`
 
