@@ -17,4 +17,5 @@ public class ValidaSenhaAtualUsuarioService {
             throw new ResponseStatusException(BAD_REQUEST, "Senha atual incorreta.");
         }
     }
+
 }

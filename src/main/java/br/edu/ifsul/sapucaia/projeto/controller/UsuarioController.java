@@ -3,9 +3,11 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarSenhaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.AlterarSenhaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.CadastrarUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.EditarPerfilUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.service.usuario.LoginUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ public class UsuarioController {
     private final CadastrarUsuarioService cadastrarUsuarioService;
     private final AlterarSenhaUsuarioService alterarSenhaUsuarioService;
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
+    private final LoginUsuarioService loginUsuarioService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -39,5 +42,9 @@ public class UsuarioController {
     public void editarPerfilUsuario(@PathVariable Long id, @Valid @RequestBody EditarPerfilUsuarioRequest editarPerfilUsuarioRequest){
         editarPerfilUsuarioService.editarPerfilUsuario(id, editarPerfilUsuarioRequest);
     }
-    
+    @PutMapping("/{id}/login-usuario")
+    @ResponseStatus(OK)
+    public void loginUsuario(@PathVariable Long id, @Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
+        loginUsuarioService.loginUsuario(id, loginUsuarioRequest);
+    }
 }
