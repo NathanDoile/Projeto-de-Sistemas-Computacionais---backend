@@ -20,6 +20,8 @@ public class ReceitaDiaria {
 
     private Double valor;
 
+    private boolean isAtivo;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;

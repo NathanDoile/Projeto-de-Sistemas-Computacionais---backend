@@ -55,6 +55,7 @@ public class CadastrarManutencaoService {
 
         manutencao.setVeiculo(veiculo);
         manutencao.setCusto(custo);
+        manutencao.setAtivo(true);
 
         manutencaoRepository.save(manutencao);
 

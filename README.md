@@ -16,6 +16,19 @@
             }
         ```
 
+### Rota: `/usuario`
+- Altera a senha de um usuário;
+    - Precisa estar logado para utilizar esse path;
+    - Parâmetros de URL: id, é o identificador do usuário
+        - `PUT /{id}/alterar-senha`
+
+            ```json
+                {
+                    "senhaAtual": "testando123",
+                    "novaSenha": "atualizandoSenha123"
+                }
+            ```
+
 ### Rota: `/receita-diaria`
 - Cria uma receita diária;
 - Precisa estar logado para utilizar esse path;
@@ -90,4 +103,4 @@
                       "idVeiculo":1,
                       "idCusto":1
               }
-            ``` 
+            ```

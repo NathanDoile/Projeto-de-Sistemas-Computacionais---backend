@@ -41,6 +41,8 @@ public class CadastrarReceitaDiariaService {
 
         receitaDiaria.setUsuario(usuario);
 
+        receitaDiaria.setAtivo(true);
+
         receitaDiariaRepository.save(receitaDiaria);
     }
 }

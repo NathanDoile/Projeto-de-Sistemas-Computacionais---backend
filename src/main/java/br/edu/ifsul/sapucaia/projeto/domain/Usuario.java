@@ -30,6 +30,8 @@ public class Usuario {
 
     private String telefone;
 
+    private boolean isAtivo;
+
     @OneToMany(mappedBy = "usuario")
     private List<Meta> metas;
 

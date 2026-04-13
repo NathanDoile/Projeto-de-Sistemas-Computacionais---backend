@@ -32,6 +32,8 @@ public class Veiculo {
 
     private int kmAtual;
 
+    private boolean isAtivo;
+
     @OneToMany(mappedBy = "veiculo")
     private List<Manutencao> manutencoes;
 

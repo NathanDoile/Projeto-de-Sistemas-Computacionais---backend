@@ -20,6 +20,8 @@ public class Meta {
 
     private double valor;
 
+    private boolean isAtivo;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;

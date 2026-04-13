@@ -41,6 +41,8 @@ public class CadastrarMetaService {
 
         meta.setUsuario(usuario);
 
+        meta.setAtivo(true);
+
         metaRepository.save(meta);
     }
 }

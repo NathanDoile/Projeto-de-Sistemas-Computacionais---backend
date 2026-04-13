@@ -27,6 +27,8 @@ public class Custo {
 
     private String descricao;
 
+    private boolean isAtivo;
+
     @ManyToOne
     @JoinColumn(name = "id_veiculo")
     private Veiculo veiculo;

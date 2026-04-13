@@ -68,7 +68,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando0@gmail.com\",\n    \"senha\": \"testando123\",\n    \"telefone\": \"51999999999\"\n}",
+          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando03@gmail.com\",\n    \"senha\": \"testando123\",\n    \"telefone\": \"51999999999\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -165,6 +165,42 @@
           "port": "8080",
           "path": [
             "manutencao"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Alterar Senha Usuario",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"senhaAtual\": \"testando123\",\n    \"novaSenha\": \"atualizandoSenha123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/:{id}/alterar-senha",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            ":{id}",
+            "alterar-senha"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
           ]
         }
       },

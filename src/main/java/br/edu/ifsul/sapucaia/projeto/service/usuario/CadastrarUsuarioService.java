@@ -24,6 +24,8 @@ public class CadastrarUsuarioService {
 
         Usuario usuario = toEntity(cadastrarUsuarioRequest);
 
+        usuario.setAtivo(true);
+
         usuarioRepository.save(usuario);
     }
 
