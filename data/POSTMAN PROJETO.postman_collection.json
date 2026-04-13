@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "d1ead6d9-1a65-4876-9543-a63443ac48fc",
+    "_postman_id": "400aa68d-5455-4b2a-ad84-0a5d561174b3",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53222404",
-    "_collection_link": "https://go.postman.co/collection/53222404-d1ead6d9-1a65-4876-9543-a63443ac48fc?source=collection_link"
+    "_exporter_id": "53773873",
+    "_collection_link": "https://go.postman.co/collection/53773873-400aa68d-5455-4b2a-ad84-0a5d561174b3?source=collection_link"
   },
   "item": [
     {
@@ -201,6 +201,36 @@
               "key": "{id}",
               "value": "1"
             }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar Perfil do Usuário",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Novo Nome\",\r\n  \"email\": \"novo@email.com\",\r\n  \"telefone\": \"99999-9999\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/{id}/editar-perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            "{id}",
+            "editar-perfil"
           ]
         }
       },

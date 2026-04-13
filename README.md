@@ -29,6 +29,32 @@
                 }
             ```
 
+### Rota: `/usuario`
+- Edita o perfil de um usuário;
+    - Precisa estar logado para utilizar esse path;
+    - Parâmetros de URL: id, é o identificador do usuário
+        - `PUT /{id}/editar-perfil`
+
+            ```json
+                {
+                    "nome": "Nome Atualizado",
+                    "email": "novo@email.com",
+                    "telefone": "51999999999"
+                }
+            ```
+
+            ```json
+                {
+                    "email": "novo@email.com"
+                }
+            ```
+
+            ```json
+                {
+                    "telefone": "51999999999"
+                }
+            ```
+
 ### Rota: `/receita-diaria`
 - Cria uma receita diária;
 - Precisa estar logado para utilizar esse path;

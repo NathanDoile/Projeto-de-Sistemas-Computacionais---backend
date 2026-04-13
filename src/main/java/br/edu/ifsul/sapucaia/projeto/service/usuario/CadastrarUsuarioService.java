@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuario
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,12 @@ public class CadastrarUsuarioService {
 
     private final ValidaEmailUsuarioService validaEmailUsuarioService;
 
+    private final ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
+
     @Transactional
     public void cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
         validaEmailUsuarioService.validaEmailUnico(cadastrarUsuarioRequest.getEmail());
+        validaTelefoneUsuarioService.validaTelefoneUnico(cadastrarUsuarioRequest.getTelefone());
 
         Usuario usuario = toEntity(cadastrarUsuarioRequest);
 
