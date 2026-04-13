@@ -57,37 +57,37 @@
 
 ### Rota: `/receita-diaria`
 - Cria uma receita diária;
-- Precisa estar logado para utilizar esse path;
-    - `POST /`
-    
-        ```json
-            {
-                  "dataReceita": "Nome Sobrenome",
-                  "valor": 200,
-                  "idUsuario": 1
-            }
-        ```
+    - Precisa estar logado para utilizar esse path;
+        - `POST /`
+        
+            ```json
+                {
+                    "dataReceita": "Nome Sobrenome",
+                    "valor": 200,
+                    "idUsuario": 1
+                }
+            ```
 
 ### Rota: `/meta`
 - Cria uma meta;
-- Precisa estar logado para utilizar esse path;
-    - `POST /`
+    - Precisa estar logado para utilizar esse path;
+        - `POST /`
 
-        ```json
-            {
-                "titulo":"Ingressos para show fim de semana",
-                "formato":"Semanal",
-                "valor":300,
-                "idUsuario":1
-            }
-        ```    
+            ```json
+                {
+                    "titulo":"Ingressos para show fim de semana",
+                    "formato":"Semanal",
+                    "valor":300,
+                    "idUsuario":1
+                }
+            ```    
 
 ### Rota: `/custo`
 - Cria um custo;
   - Precisa estar logado para utilizar esse path;
       - `POST /`
 
-          ```json
+            ```json
               {
                       "idVeiculo":1,
                       "tipo":"gasolina",
@@ -96,7 +96,7 @@
                       "dataPagamento":"2026-06-18",
                       "descricao":"Custo de gasolina"
               }
-          ```   
+            ```   
 
 ### Rota: `/veiculo`
 - Cria um veiculo;
