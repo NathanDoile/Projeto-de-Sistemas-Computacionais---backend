@@ -19,10 +19,10 @@ public class LoginUsuarioService {
     private final ValidaSenhaAtualUsuarioService validaSenhaAtualUsuarioService;
 
     @Transactional(readOnly = true)
-    public Usuario loginUsuario(Long idUsuario, LoginUsuarioRequest loginUsuarioRequest){
+    public void loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
 
         // Valida o e-mail informado
-        validaEmailUsuarioService.validarEmailUsuario(loginUsuarioRequest.getEmail());
+        validaEmailUsuarioService.validarEmailUsuario(loginUsuarioRequest.getEmail()); //redundante
 
         // Busca o usuário pelo e-mail
         Usuario usuario = usuarioRepository.findByEmail(loginUsuarioRequest.getEmail())
@@ -33,7 +33,5 @@ public class LoginUsuarioService {
                 loginUsuarioRequest.getSenha(),
                 usuario.getSenha()
         );
-
-        return usuario;
     }
 }
