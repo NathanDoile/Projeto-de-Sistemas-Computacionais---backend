@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioService;
@@ -38,10 +37,22 @@ public class EditarPerfilUsuarioService {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
 
-        UsuarioMapper.updateEntity(usuario, editarPerfilUsuarioRequest);
+        atualizaUsuario(usuario, editarPerfilUsuarioRequest);
 
         usuarioRepository.save(usuario);
 
+    }
+
+    private void atualizaUsuario(Usuario usuario, EditarPerfilUsuarioRequest editarPerfilUsuarioRequest) {
+        if (editarPerfilUsuarioRequest.getNome() != null) {
+            usuario.setNome(editarPerfilUsuarioRequest.getNome());
+        }
+        if (editarPerfilUsuarioRequest.getEmail() != null) {
+            usuario.setEmail(editarPerfilUsuarioRequest.getEmail());
+        }
+        if (editarPerfilUsuarioRequest.getTelefone() != null) {
+            usuario.setTelefone(editarPerfilUsuarioRequest.getTelefone());
+        }
     }
     
 }

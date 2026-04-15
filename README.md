@@ -16,6 +16,15 @@
       "telefone": "51999999999"
     }
     ```
+    - **Login do usuário**
+  - `POST /`
+
+    ```json
+    {
+      "email": "adriano@gmail.com",
+      "senha":"a4Gj@j21"
+    }
+    ```
 
 - **Altera a senha de um usuário**
   - Precisa estar logado para utilizar esse path

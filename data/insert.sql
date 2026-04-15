@@ -1,14 +1,14 @@
 USE bd_projeto;
 
-INSERT INTO usuario(nome, email, senha, telefone, is_ativo)
-VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE),
-       ('Beto', 'beto@gmail.com', 'dWu!87y8', '00 00000-0001', TRUE),
-       ('Carla', 'carla@gmail.com', 'ac@g78Er', '00 00000-0002', TRUE);
+INSERT INTO usuario(nome, email, senha, telefone, is_ativo, data_cadastro)
+VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE, NOW()),
+       ('Beto', 'beto@gmail.com', 'dWu!87y8', '00 00000-0001', TRUE, NOW()),
+       ('Carla', 'carla@gmail.com', 'ac@g78Er', '00 00000-0002', TRUE, NOW());
 
-INSERT INTO veiculo(modelo, marca, ano, placa, cor, tipo, km_atual, id_usuario, is_ativo)
-VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'Carro', 45200, 1, TRUE),
-       ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'Carro', 78300, 2, TRUE),
-       ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'Carro', 112000, 3, TRUE);
+INSERT INTO veiculo(modelo, marca, ano, placa, cor, tipo, km_atual, id_usuario, is_ativo, data_ultima_atualizacao_km)
+VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'Carro', 45200, 1, TRUE, NOW()),
+       ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'Carro', 78300, 2, TRUE, NOW()),
+       ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'Carro', 112000, 3, TRUE, NOW());
 
 INSERT INTO meta(titulo, formato, valor, id_usuario, is_ativo)
 VALUES ('Presente para a filha', 'Semanal', 300.0, 1, TRUE),
