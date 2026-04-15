@@ -21,9 +21,6 @@ public class LoginUsuarioService {
     @Transactional(readOnly = true)
     public Usuario loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
 
-        // Valida o e-mail informado
-        //validaEmailUsuarioService.validarEmailUsuario(loginUsuarioRequest.getEmail());
-
         // Busca o usuário pelo e-mail
         Usuario usuario = usuarioRepository.findByEmail(loginUsuarioRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado para o e-mail informado."));
