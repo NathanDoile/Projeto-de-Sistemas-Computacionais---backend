@@ -42,9 +42,11 @@ public class UsuarioController {
     public void editarPerfilUsuario(@PathVariable Long id, @Valid @RequestBody EditarPerfilUsuarioRequest editarPerfilUsuarioRequest){
         editarPerfilUsuarioService.editarPerfilUsuario(id, editarPerfilUsuarioRequest);
     }
+
     @PostMapping("/login-usuario")
     @ResponseStatus(OK)
     public void loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
         loginUsuarioService.loginUsuario(loginUsuarioRequest);
     }
+
 }
