@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "400aa68d-5455-4b2a-ad84-0a5d561174b3",
+    "_postman_id": "b88fe892-1efb-4865-8383-54ec9fb6bea0",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-400aa68d-5455-4b2a-ad84-0a5d561174b3?source=collection_link"
+    "_exporter_id": "53870151",
+    "_collection_link": "https://go.postman.co/collection/53870151-b88fe892-1efb-4865-8383-54ec9fb6bea0?source=collection_link"
   },
   "item": [
     {
@@ -231,6 +231,29 @@
             "usuario",
             "{id}",
             "editar-perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
+        },
+        "url": {
+          "raw": "localhost:8080/usuario/login-usuario",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            "login-usuario"
           ]
         }
       },
