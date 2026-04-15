@@ -19,7 +19,7 @@ public class LoginUsuarioService {
     private final ValidaSenhaAtualUsuarioService validaSenhaAtualUsuarioService;
 
     @Transactional(readOnly = true)
-    public Usuario loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
+    public void loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
 
         // Valida o e-mail informado
         //validaEmailUsuarioService.validarEmailUsuario(loginUsuarioRequest.getEmail());
