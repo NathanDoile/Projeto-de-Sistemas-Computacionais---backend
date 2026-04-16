@@ -8,6 +8,9 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioSe
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +23,12 @@ public class AlterarSenhaUsuarioService {
 
     @Transactional
     public void     alterarSenhaUsuario(Long id, AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(alterarSenhaUsuarioRequest.getSenhaAtual(), usuario.getSenha());
+        validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(alterarSenhaUsuarioRequest.getSenhaAtual(), id);
 
-        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario.getSenha(), alterarSenhaUsuarioRequest.getNovaSenha());
+        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(id, alterarSenhaUsuarioRequest.getNovaSenha());
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
 
         usuario.setSenha(alterarSenhaUsuarioRequest.getNovaSenha());
 

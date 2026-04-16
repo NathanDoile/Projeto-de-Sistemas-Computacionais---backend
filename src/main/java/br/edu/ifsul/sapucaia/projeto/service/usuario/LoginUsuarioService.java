@@ -31,7 +31,7 @@ public class LoginUsuarioService {
         // Valida se a senha está correta
         validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(
                 loginUsuarioRequest.getSenha(),
-                usuario.getSenha()
+                usuario.getIdUsuario()
         );
     }
 }

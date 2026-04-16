@@ -107,7 +107,22 @@
       "dataPagamento": "2026-06-18",
       "descricao": "Custo de gasolina"
     }
-    ```   
+    ```  
+
+- **Edita o custo de um usuário**
+    - Precisa estar logado para utilizar esse path
+    - `PUT /editar`
+
+      ```json
+      {
+        "idCusto": 1,
+        "tipo": "manutencao",
+        "valor": 295.00,
+        "dataVencimento": "2026-04-23",
+        "dataPagamento": "2026-04-15",
+        "descricao": "manutencao do carro"
+      }
+      ``` 
 
 ### Rota: `/veiculo`
 - Cria um veiculo;

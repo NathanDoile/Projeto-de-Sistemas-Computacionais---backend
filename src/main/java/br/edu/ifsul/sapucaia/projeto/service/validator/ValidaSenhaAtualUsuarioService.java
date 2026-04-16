@@ -10,10 +10,12 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 @RequiredArgsConstructor
 public class ValidaSenhaAtualUsuarioService {
+
     private final UsuarioRepository usuarioRepository;
 
-    public void validaSenhaAtualUsuario(String senhaAtual, String senha){
-        if(!senhaAtual.equals(senha)){
+    public void validaSenhaAtualUsuario(String senhaAtual, Long id){
+
+        if(!usuarioRepository.existsByIdUsuarioAndSenha(id, senhaAtual)){
             throw new ResponseStatusException(BAD_REQUEST, "Senha atual incorreta.");
         }
     }

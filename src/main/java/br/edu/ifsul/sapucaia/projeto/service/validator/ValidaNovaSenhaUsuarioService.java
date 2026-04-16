@@ -13,8 +13,8 @@ public class ValidaNovaSenhaUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public void validaIgualdadeEntreSenhas(String senhaAtual, String novaSenha){
-        if(senhaAtual.equals(novaSenha)){
+    public void validaIgualdadeEntreSenhas(Long id, String novaSenha){
+        if(usuarioRepository.existsByIdUsuarioAndSenha(id, novaSenha)){
             throw new ResponseStatusException(BAD_REQUEST, "A nova senha precisa ser diferente da atual.");
         }
     }
