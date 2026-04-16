@@ -23,14 +23,4 @@ public class ValidaEmailUsuarioService {
         if(usuarioRepository.existsByEmailAndIdUsuarioNot(email, idUsuario))
             throw new ResponseStatusException(BAD_REQUEST, "Esse email já foi cadastrado.");
     }
-
-    public void validarEmailUsuario(String email) {
-        if (email == null || email.isBlank()) {
-            throw new RuntimeException("Campo E-mail é obrigatório.");
-        }
-
-        if (!email.contains("@")) {
-            throw new RuntimeException("E-mail inválido.");
-        }
-    }
 }
