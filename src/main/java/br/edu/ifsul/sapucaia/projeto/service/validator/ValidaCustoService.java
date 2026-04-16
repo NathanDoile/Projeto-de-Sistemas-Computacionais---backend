@@ -1,7 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.service.validator;
 
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
