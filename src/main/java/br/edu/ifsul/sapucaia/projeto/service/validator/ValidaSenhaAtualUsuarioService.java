@@ -15,8 +15,8 @@ public class ValidaSenhaAtualUsuarioService {
 
     public void validaSenhaAtualUsuario(String senhaAtual, Long id){
 
-        if(!usuarioRepository.existsByIdUsuarioAndSenha(id, senhaAtual)){
-            throw new ResponseStatusException(BAD_REQUEST, "Senha atual incorreta.");
+        if(!usuarioRepository.existsByIdUsuarioAndSenhaAndIsAtivo(id, senhaAtual, true)){
+            throw new ResponseStatusException(BAD_REQUEST, "E-mail ou senha inválido");
         }
     }
 

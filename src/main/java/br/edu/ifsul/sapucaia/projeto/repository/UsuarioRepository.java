@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Optional<Usuario> findById(Long id);
+    Optional<Usuario> findByIdUsuarioAndIsAtivo(Long idUsuario, boolean isAtivo);
 
     boolean existsByEmail(String email);
 
@@ -19,5 +19,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
 
-    boolean existsByIdUsuarioAndSenha(Long id, String senhaAtual);
+    boolean existsByIdUsuarioAndSenhaAndIsAtivo(Long id, String senhaAtual, boolean isAtivo);
 }

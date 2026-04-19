@@ -28,7 +28,7 @@ public class AlterarSenhaUsuarioService {
 
         validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(id, alterarSenhaUsuarioRequest.getNovaSenha());
 
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(id, true).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
 
         usuario.setSenha(alterarSenhaUsuarioRequest.getNovaSenha());
 

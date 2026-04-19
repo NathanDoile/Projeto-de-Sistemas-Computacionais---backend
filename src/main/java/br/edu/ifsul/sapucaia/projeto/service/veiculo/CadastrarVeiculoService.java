@@ -65,6 +65,7 @@ public class CadastrarVeiculoService {
         veiculoRepository.save(veiculo);
 
         usuario.setVeiculo(veiculo);
+        usuario.setPossuiVeiculo(true);
 
         usuarioRepository.save(usuario);
 

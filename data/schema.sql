@@ -12,13 +12,15 @@ CREATE TABLE usuario(
     data_cadastro DATE NOT NULL,
     telefone VARCHAR(30) NOT NULL,
     is_ativo BOOLEAN NOT NULL,
+    possui_veiculo BOOLEAN NOT NULL,
     PRIMARY KEY(id_usuario));
 
 CREATE TABLE meta(
     id_meta BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     titulo VARCHAR(200) NOT NULL,
     formato VARCHAR(200) NOT NULL,
-    valor DOUBLE NOT NULL,
+    valor_atual DOUBLE NOT NULL,
+    valor_desejado DOUBLE NOT NULL,
     id_usuario BIGINT UNSIGNED NOT NULL,
     is_ativo BOOLEAN NOT NULL,
     PRIMARY KEY(id_meta),

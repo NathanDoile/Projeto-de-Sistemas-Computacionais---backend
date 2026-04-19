@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +10,9 @@ import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 @RequiredArgsConstructor
@@ -18,17 +22,21 @@ public class LoginUsuarioService {
     private final ValidaEmailUsuarioService validaEmailUsuarioService;
     private final ValidaSenhaAtualUsuarioService validaSenhaAtualUsuarioService;
 
-    @Transactional(readOnly = true)
     public void loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
 
         // Busca o usuário pelo e-mail
         Usuario usuario = usuarioRepository.findByEmail(loginUsuarioRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para o e-mail informado."));
+                .orElseThrow(() -> new RuntimeException("E-mail ou senha inválido"));
 
-        // Valida se a senha está correta
-        validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(
-                loginUsuarioRequest.getSenha(),
-                usuario.getIdUsuario()
-        );
+        if(!usuario.isPossuiVeiculo()){
+            usuarioRepository.delete(usuario);
+            throw new ResponseStatusException(UNAUTHORIZED, "E-mail ou senha inválido");
+        }
+        else{
+            validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(
+                    loginUsuarioRequest.getSenha(),
+                    usuario.getIdUsuario()
+            );
+        }
     }
 }

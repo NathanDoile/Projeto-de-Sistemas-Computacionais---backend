@@ -35,7 +35,7 @@ public class EditarPerfilUsuarioService {
             validaTelefoneUsuarioService.validaTelefoneUnicoParaEdicao(editarPerfilUsuarioRequest.getTelefone(), idUsuario);
         }
 
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
         atualizaUsuario(usuario, editarPerfilUsuarioRequest);
 

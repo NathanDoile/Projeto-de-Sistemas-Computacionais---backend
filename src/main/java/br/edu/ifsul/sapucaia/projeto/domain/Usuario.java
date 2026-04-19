@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -32,12 +33,14 @@ public class Usuario {
 
     private boolean isAtivo;
 
-    @OneToMany(mappedBy = "usuario")
+    private boolean possuiVeiculo;
+
+    @OneToMany(mappedBy = "usuario", cascade = REMOVE, orphanRemoval = true)
     private List<Meta> metas;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = REMOVE, orphanRemoval = true)
     private Veiculo veiculo;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = REMOVE, orphanRemoval = true)
     private List<ReceitaDiaria> receitasDiarias;
 }

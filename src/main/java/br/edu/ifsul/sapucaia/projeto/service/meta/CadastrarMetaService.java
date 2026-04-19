@@ -43,6 +43,8 @@ public class CadastrarMetaService {
 
         meta.setAtivo(true);
 
+        meta.setValorAtual(0);
+
         metaRepository.save(meta);
     }
 }

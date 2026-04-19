@@ -23,7 +23,7 @@ public class ValidaVeiculoService {
 
     public void jaExistePlaca(String placa) {
 
-        if(veiculoRepository.existsByPlaca(placa)){
+        if(veiculoRepository.existsByPlacaAndIsAtivo(placa, true)){
             throw new ResponseStatusException(CONFLICT, "Placa já cadastrada.");
         }
     }

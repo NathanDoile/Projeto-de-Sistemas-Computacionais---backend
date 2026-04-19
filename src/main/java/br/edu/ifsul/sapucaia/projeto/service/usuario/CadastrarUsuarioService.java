@@ -32,6 +32,7 @@ public class CadastrarUsuarioService {
         Usuario usuario = toEntity(cadastrarUsuarioRequest);
 
         usuario.setAtivo(true);
+        usuario.setPossuiVeiculo(false);
 
         usuarioRepository.save(usuario);
 

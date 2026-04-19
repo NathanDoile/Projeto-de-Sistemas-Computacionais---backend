@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import static java.util.Objects.isNull;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class ValidaCustoPossuiManutencaoService {
         Custo custo = custoRepository.findById(idCusto).get();
 
         if(!isNull(custo.getManutencao())){
-            throw new ResponseStatusException(BAD_REQUEST, "Custo já possui uma manutenção.");
+            throw new ResponseStatusException(CONFLICT, "Custo já possui uma manutenção.");
         }
     }
 }

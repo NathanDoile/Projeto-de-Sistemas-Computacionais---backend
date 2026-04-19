@@ -18,7 +18,9 @@ public class Meta {
 
     private String formato;
 
-    private double valor;
+    private double valorDesejado;
+
+    private double valorAtual;
 
     private boolean isAtivo;
 
