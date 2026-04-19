@@ -1,7 +1,9 @@
 package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioService;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper.toEntity;
+import static br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper.toResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class CadastrarUsuarioService {
     private final ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
 
     @Transactional
-    public void cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
+    public CadastrarUsuarioResponse cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
         validaEmailUsuarioService.validaEmailUnico(cadastrarUsuarioRequest.getEmail());
         validaTelefoneUsuarioService.validaTelefoneUnico(cadastrarUsuarioRequest.getTelefone());
 
@@ -31,6 +34,8 @@ public class CadastrarUsuarioService {
         usuario.setAtivo(true);
 
         usuarioRepository.save(usuario);
+
+        return toResponse(usuario);
     }
 
 }

@@ -1,6 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.EditarCustoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.service.custo.EditarCustoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

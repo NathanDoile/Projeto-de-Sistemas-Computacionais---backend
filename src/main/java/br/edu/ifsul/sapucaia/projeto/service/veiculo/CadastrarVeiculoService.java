@@ -1,11 +1,13 @@
 package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaAnoVeiculoValidator;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toEntity;
+import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toResponse;
 import static java.time.LocalDate.now;
 
 @Service
@@ -37,7 +40,9 @@ public class CadastrarVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
-    public void cadastrar(CadastrarVeiculoRequest cadastrarVeiculoRequest) {
+    private final ValidaUsuarioComVeiculoService validaUsuarioComVeiculoService;
+
+    public CadastrarVeiculoResponse cadastrar(CadastrarVeiculoRequest cadastrarVeiculoRequest) {
 
 
         validaVeiculoService.jaExistePlaca(cadastrarVeiculoRequest.getPlaca());
@@ -46,10 +51,12 @@ public class CadastrarVeiculoService {
         validaAnoVeiculoValidator.anoMenorQueAtual(cadastrarVeiculoRequest.getAno());
         validaUsuarioService.porId(cadastrarVeiculoRequest.getIdUsuario());
 
+        Usuario usuario = usuarioRepository.findById(cadastrarVeiculoRequest.getIdUsuario()).get();
+
+        validaUsuarioComVeiculoService.porUsuario(usuario);
+
         Veiculo veiculo = toEntity(cadastrarVeiculoRequest);
         veiculo.setDataUltimaAtualizacaoKm(now());
-
-        Usuario usuario = usuarioRepository.findById(cadastrarVeiculoRequest.getIdUsuario()).get();
 
         veiculo.setUsuario(usuario);
 
@@ -60,5 +67,7 @@ public class CadastrarVeiculoService {
         usuario.setVeiculo(veiculo);
 
         usuarioRepository.save(usuario);
+
+        return toResponse(veiculo);
     }
 }

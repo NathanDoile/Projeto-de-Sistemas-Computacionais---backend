@@ -1,4 +1,4 @@
-package br.edu.ifsul.sapucaia.projeto.controller.request;
+package br.edu.ifsul.sapucaia.projeto.controller.request.custo;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,9 +1,9 @@
 package br.edu.ifsul.sapucaia.projeto.validator;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class ValidaValorCustoValidator {

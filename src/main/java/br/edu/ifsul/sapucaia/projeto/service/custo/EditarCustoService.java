@@ -1,12 +1,11 @@
 package br.edu.ifsul.sapucaia.projeto.service.custo;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.EditarCustoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

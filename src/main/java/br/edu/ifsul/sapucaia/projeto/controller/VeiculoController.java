@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.service.veiculo.CadastrarVeiculoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class VeiculoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void cadastrar(@Valid @RequestBody CadastrarVeiculoRequest cadastrarVeiculoRequest){
-         cadastrarVeiculoService.cadastrar(cadastrarVeiculoRequest);
+    public CadastrarVeiculoResponse cadastrar(@Valid @RequestBody CadastrarVeiculoRequest cadastrarVeiculoRequest){
+         return cadastrarVeiculoService.cadastrar(cadastrarVeiculoRequest);
     }
 }

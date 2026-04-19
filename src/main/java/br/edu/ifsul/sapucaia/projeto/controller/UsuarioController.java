@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarSenhaUsua
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.AlterarSenhaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.CadastrarUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.EditarPerfilUsuarioService;
@@ -27,8 +28,8 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void cadastrarUsuario(@Valid @RequestBody CadastrarUsuarioRequest cadastrarUsuarioRequest){
-        cadastrarUsuarioService.cadastrarUsuario(cadastrarUsuarioRequest);
+    public CadastrarUsuarioResponse cadastrarUsuario(@Valid @RequestBody CadastrarUsuarioRequest cadastrarUsuarioRequest){
+        return cadastrarUsuarioService.cadastrarUsuario(cadastrarUsuarioRequest);
     }
 
     @PutMapping("/{id}/alterar-senha")
