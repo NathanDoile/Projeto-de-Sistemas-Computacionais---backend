@@ -15,7 +15,7 @@ public class ValidaUsuarioService {
 
     public void porId(Long idUsuario) {
 
-        if(!usuarioRepository.existsById(idUsuario)){
+        if(!usuarioRepository.existsByIdUsuarioAndIsAtivo(idUsuario, true)){
             throw new ResponseStatusException(NOT_FOUND, "ID do usuário não existe.");
         }
     }

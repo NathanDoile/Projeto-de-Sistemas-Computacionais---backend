@@ -1,9 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.mapper;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
-import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 
 public class CustoMapper {
 
@@ -19,4 +18,16 @@ public class CustoMapper {
                 .descricao(cadastrarCustoRequest.getDescricao())
                 .build();
         }
+
+    public static BuscarCustosEmAbertoResponse toResponse(Custo custo) {
+
+            return BuscarCustosEmAbertoResponse
+                    .builder()
+                    .idCusto(custo.getIdCusto())
+                    .descricao(custo.getDescricao())
+                    .dataVencimento(custo.getDataVencimento())
+                    .valor(custo.getValor())
+                    .tipo(custo.getTipo())
+                    .build();
+    }
 }

@@ -16,8 +16,8 @@
       "telefone": "51999999999"
     }
     ```
-    - **Login do usuário**
-  - `POST /`
+- **Login do usuário**
+  - `POST /login-usuario`
 
     ```json
     {
@@ -123,6 +123,12 @@
         "descricao": "manutencao do carro"
       }
       ``` 
+
+
+- **Buscar custos em aberto/não pagos**
+    - Precisa estar logado para utilizar esse path;
+    - Parâmetros de URL: `id`, é o identificador do veículo
+    - `GET /{id}/em-aberto`
 
 ### Rota: `/veiculo`
 - Cria um veiculo;
