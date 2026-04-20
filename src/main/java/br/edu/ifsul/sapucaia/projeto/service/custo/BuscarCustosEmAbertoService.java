@@ -30,8 +30,9 @@ public class BuscarCustosEmAbertoService {
 
         List<Custo> custos = custoRepository.findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true);
 
-        List<BuscarCustosEmAbertoResponse> response = custos.stream().map(CustoMapper::toResponse).toList();
-
-        return response;
+        return custos
+                .stream()
+                .map(CustoMapper::toResponse)
+                .toList();
     }
 }
