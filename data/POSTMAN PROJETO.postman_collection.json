@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "1bfa843c-be7e-4dba-9a93-7cdd383e23ed",
+    "_postman_id": "f9e845c0-4634-4e04-9d34-41119084e500",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-1bfa843c-be7e-4dba-9a93-7cdd383e23ed?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/53773873-f9e845c0-4634-4e04-9d34-41119084e500?source=collection_link"
   },
   "item": [
     {
@@ -354,9 +354,22 @@
           }
         },
         "url": {
-          "raw": "Excluir Conta",
+          "raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
+          "protocol": "http",
           "host": [
-            "Excluir Conta"
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            ":{id}",
+            "excluir-conta"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
           ]
         }
       },
