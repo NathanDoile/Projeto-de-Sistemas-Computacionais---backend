@@ -1,9 +1,9 @@
 package br.edu.ifsul.sapucaia.projeto.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-
+import static jakarta.persistence.EnumType.STRING;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +17,8 @@ public class Custo {
     @GeneratedValue(strategy = IDENTITY)
     private Long idCusto;
 
-    private String tipo;
+    @Enumerated(STRING)
+    private TipoCusto tipo;
 
     private double valor;
 

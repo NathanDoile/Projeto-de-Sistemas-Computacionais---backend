@@ -3,11 +3,13 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarSenhaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.AlterarSenhaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.CadastrarUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.EditarPerfilUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.service.usuario.ExcluirContaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.LoginUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UsuarioController {
     private final AlterarSenhaUsuarioService alterarSenhaUsuarioService;
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
     private final LoginUsuarioService loginUsuarioService;
+    private final ExcluirContaUsuarioService excluirContaUsuarioService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -48,6 +51,12 @@ public class UsuarioController {
     @ResponseStatus(OK)
     public void loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
         loginUsuarioService.loginUsuario(loginUsuarioRequest);
+    }
+
+    @DeleteMapping("/{id}/excluir-conta")
+    @ResponseStatus(OK)
+    public void excluirConta(@PathVariable Long id, @Valid @RequestBody ExcluirContaUsuarioRequest excluirContaUsuarioRequest){
+        excluirContaUsuarioService.excluirConta(id, excluirContaUsuarioRequest);
     }
 
 }

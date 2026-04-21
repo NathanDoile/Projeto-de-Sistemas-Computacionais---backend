@@ -1,13 +1,13 @@
 package br.edu.ifsul.sapucaia.projeto.validator;
 
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
-public class ValidaTipoManutencaoValidator {
+public class ValidaTipoCustoValidator {
 
     public void tipoValido(String tipo) {
         if (tipo == null || tipo.trim().isEmpty()) {
@@ -15,9 +15,9 @@ public class ValidaTipoManutencaoValidator {
         }
 
         try {
-            TipoManutencao.deTexto(tipo);
+            TipoCusto.deTexto(tipo);
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(BAD_REQUEST, "Tipo de manutenção inválido. Tipos aceitos: Preventiva, Corretiva, Preditiva.");
+            throw new ResponseStatusException(BAD_REQUEST, "Tipo de custo inválido. Tipos aceitos: Manutenção, Combustível, Seguro, Impostos, Outros.");
         }
     }
 }
