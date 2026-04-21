@@ -20,5 +20,4 @@ public class ReceitaDiariaController {
     public void cadastrar(@Valid @RequestBody CadastrarReceitaDiariaRequest cadastrarReceitaDiariaRequest){
         cadastrarReceitaDiariaService.cadastrar(cadastrarReceitaDiariaRequest);
     }
-
 }

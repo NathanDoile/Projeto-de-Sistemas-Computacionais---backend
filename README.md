@@ -162,3 +162,9 @@
                       "idCusto":1
               }
             ```
+          
+### Rota: `/relatorios`
+- **Informações de Semana**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /informacoes-semana/{id}`

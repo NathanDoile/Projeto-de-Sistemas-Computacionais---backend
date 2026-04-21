@@ -12,4 +12,6 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
     boolean existsByIdCustoAndIsAtivo(@NotNull Long idCusto, boolean isAtivo);
 
     List<Custo> findByVeiculoAndDataPagamentoIsNullAndIsAtivo(Veiculo veiculo, boolean b);
+
+    List<Custo> findAllByVeiculoUsuarioIdUsuarioAndIsAtivoTrue(Long idUsuario);
 }

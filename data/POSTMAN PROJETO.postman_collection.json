@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "4974ce8e-0bd0-4b60-ba5f-c076ff6a056d",
+    "_postman_id": "d9ca1af1-f28a-47ce-8b2d-fd53316374c0",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "29566159"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://go.postman.co/collection/53222404-d9ca1af1-f28a-47ce-8b2d-fd53316374c0?source=collection_link"
   },
   "item": [
     {
@@ -301,6 +302,32 @@
             "custo",
             ":{id}",
             "em-aberto"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Informações da Semana",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/informacoes-semana/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "informacoes-semana",
+            ":{id}"
           ],
           "variable": [
             {

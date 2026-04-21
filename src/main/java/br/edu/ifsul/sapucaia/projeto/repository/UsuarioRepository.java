@@ -21,5 +21,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     boolean existsByIdUsuarioAndSenhaAndIsAtivo(Long id, String senhaAtual, boolean isAtivo);
 
-    boolean existsByIdUsuarioAndIsAtivo(Long idUsuario, boolean b);
+    boolean existsByIdUsuarioAndIsAtivo(Long idUsuario, boolean isAtivo);
 }
