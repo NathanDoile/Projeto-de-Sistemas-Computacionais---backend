@@ -6,6 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +26,14 @@ public class CadastrarCustoService {
 
     private final ValidaValorCustoValidator validaValorCustoValidator;
 
+    private final ValidaTipoCustoValidator validaTipoCustoValidator;
+
     @Transactional
     public void cadastrar(CadastrarCustoRequest request) {
 
         validaVeiculoService.porId(request.getIdVeiculo());
         validaValorCustoValidator.isPositivo(request.getValor());
+        validaTipoCustoValidator.tipoValido(request.getTipo());
 
         Custo custo = toEntity(request);
       

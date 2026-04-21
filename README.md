@@ -63,6 +63,17 @@
     }
     ```
 
+- **Exclui a conta de um usuário**
+  - Precisa estar logado para utilizar esse path
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `DELETE /{id}/excluir-conta`
+
+    ```json
+    {
+      "senha": "senha123"
+    }
+    ```
+
 ### Rota: `/receita-diaria`
 
 - **Cria uma receita diária**

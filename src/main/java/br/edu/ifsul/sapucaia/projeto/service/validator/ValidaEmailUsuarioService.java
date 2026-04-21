@@ -19,7 +19,11 @@ public class ValidaEmailUsuarioService {
     }
 
     public void validaEmailUnicoParaEdicao(String email, Long idUsuario){
+<<<<<<< HEAD
         if(usuarioRepository.existsByEmailAndIdUsuarioNotAndIsAtivo(email, idUsuario, true))
+=======
+        if(usuarioRepository.existsByEmailAndIdUsuarioNot(email, idUsuario, true))
+>>>>>>> 8faf5c815cd7ea2a3908de758fc46d291a6d528c
             throw new ResponseStatusException(CONFLICT, "Esse email já foi cadastrado.");
     }
 }
