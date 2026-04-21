@@ -35,6 +35,10 @@ public class Usuario {
 
     private boolean possuiVeiculo;
 
+    private boolean notificacaoVencimento;
+
+    private boolean notificacaoManutencao;
+
     @OneToMany(mappedBy = "usuario", cascade = REMOVE, orphanRemoval = true)
     private List<Meta> metas;
 

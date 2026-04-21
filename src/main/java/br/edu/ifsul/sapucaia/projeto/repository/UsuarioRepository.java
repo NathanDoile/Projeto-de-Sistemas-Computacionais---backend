@@ -9,17 +9,17 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByIdUsuarioAndIsAtivo(Long idUsuario, boolean isAtivo);
 
-    boolean existsByEmail(String email);
+    boolean existsByEmailAndIsAtivo(String email, boolean isAtivo);
 
     boolean existsByTelefone(String telefone);
 
     boolean existsByEmailAndIdUsuarioNot(String email, Long idUsuario);
 
-    boolean existsByTelefoneAndIdUsuarioNot(String telefone, Long idUsuario);
-
-    Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> findByEmailAndIsAtivo(String email, boolean isAtivo);
 
     boolean existsByIdUsuarioAndSenhaAndIsAtivo(Long id, String senhaAtual, boolean isAtivo);
 
     boolean existsByIdUsuarioAndIsAtivo(Long idUsuario, boolean isAtivo);
+
+    boolean existsByEmailAndIdUsuarioNotAndIsAtivo(String email, Long idUsuario, boolean isAtivo);
 }

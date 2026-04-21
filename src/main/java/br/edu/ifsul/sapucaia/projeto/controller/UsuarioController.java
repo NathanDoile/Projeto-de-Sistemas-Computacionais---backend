@@ -1,14 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarSenhaUsuarioRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
-import br.edu.ifsul.sapucaia.projeto.service.usuario.AlterarSenhaUsuarioService;
-import br.edu.ifsul.sapucaia.projeto.service.usuario.CadastrarUsuarioService;
-import br.edu.ifsul.sapucaia.projeto.service.usuario.EditarPerfilUsuarioService;
-import br.edu.ifsul.sapucaia.projeto.service.usuario.LoginUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.service.usuario.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +19,8 @@ public class UsuarioController {
     private final AlterarSenhaUsuarioService alterarSenhaUsuarioService;
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
     private final LoginUsuarioService loginUsuarioService;
+    private final AlterarNotificacaoManutencaoService alterarNotificacaoManutencaoService;
+    private final AlterarNotificacaoVencimentoService alterarNotificacaoVencimentoService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -50,4 +46,15 @@ public class UsuarioController {
         loginUsuarioService.loginUsuario(loginUsuarioRequest);
     }
 
+    @PatchMapping("/notificacao-manutencao/{id}")
+    @ResponseStatus(OK)
+    public void alterarNotificacaoManutencao(@PathVariable Long id,@Valid @RequestBody AlterarNotificacaoManutencaoRequest alterarNotificacaoManutencaoRequest){
+        alterarNotificacaoManutencaoService.alterarNotificacaoManutencao(id, alterarNotificacaoManutencaoRequest);
+    }
+
+    @PatchMapping("/notificacao-vencimento/{id}")
+    @ResponseStatus(OK)
+    public void alterarNotificacaoVencimento(@PathVariable Long id, @Valid @RequestBody AlterarNotificacaoVencimentoRequest request){
+        alterarNotificacaoVencimentoService.alterarNotificacaoVencimento(id, request);
+    }
 }

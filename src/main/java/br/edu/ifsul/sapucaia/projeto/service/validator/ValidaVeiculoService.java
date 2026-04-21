@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -14,10 +14,10 @@ public class ValidaVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
-    public void porId( Long idVeiculo) {
+    public void porId(Long idVeiculo) {
 
         if(!veiculoRepository.existsById(idVeiculo)){
-            throw new ResponseStatusException(BAD_REQUEST, "Esse veículo não existe.");
+            throw new ResponseStatusException(NOT_FOUND, "Veículo não encontrado.");
         }
     }
 

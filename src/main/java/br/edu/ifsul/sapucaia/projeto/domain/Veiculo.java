@@ -3,8 +3,11 @@ package br.edu.ifsul.sapucaia.projeto.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo;
 import jakarta.persistence.*;
 import lombok.*;
+
+import static jakarta.persistence.EnumType.STRING;
 
 @Entity
 @Getter @Setter
@@ -24,7 +27,8 @@ public class Veiculo {
 
     private String placa;
 
-    private String tipo;
+    @Enumerated(STRING)
+    private TipoVeiculo tipo;
 
     private int ano;
 

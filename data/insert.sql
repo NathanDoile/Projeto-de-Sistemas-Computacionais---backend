@@ -1,19 +1,19 @@
 USE bd_projeto;
 
-INSERT INTO usuario(nome, email, senha, telefone, is_ativo, data_cadastro, possui_veiculo)
-VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE, NOW(), true),
-       ('Beto', 'beto@gmail.com', 'dWu!87y8', '00 00000-0001', TRUE, NOW(), true),
-       ('Carla', 'carla@gmail.com', 'ac@g78Er', '00 00000-0002', TRUE, NOW(), true);
+INSERT INTO usuario(nome, email, senha, telefone, is_ativo, notificacaoVencimento, notificacaoManutencao, data_cadastro)
+VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE, TRUE, TRUE, NOW()),
+       ('Beto', 'beto@gmail.com', 'dWu!87y8', '00 00000-0001', TRUE, TRUE, TRUE, NOW()),
+       ('Carla', 'carla@gmail.com', 'ac@g78Er', '00 00000-0002', TRUE, TRUE, TRUE, NOW());
 
 INSERT INTO veiculo(modelo, marca, ano, placa, cor, tipo, km_atual, id_usuario, is_ativo, data_ultima_atualizacao_km)
 VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'Carro', 45200, 1, TRUE, NOW()),
        ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'Carro', 78300, 2, TRUE, NOW()),
        ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'Carro', 112000, 3, TRUE, NOW());
 
-INSERT INTO meta(titulo, formato, valor_atual, valor_desejado, id_usuario, is_ativo)
-VALUES ('Presente para a filha', 'SEMANAL', 0, 300.00, 1, TRUE),
-	   ('Trocar bateria do celular', 'SEMANAL', 0, 200.00, 2, TRUE),
-       ('Jantar em restaurante japonês', 'SEMANAL', 0, 100.00, 3, TRUE);
+INSERT INTO meta(titulo, formato, valor, id_usuario, is_ativo)
+VALUES ('Presente para a filha', 'Semanal', 300.0, 1, TRUE),
+	   ('Trocar bateria do celular', 'Semanal', 200.0, 2, TRUE),
+       ('Jantar em restaurante japonês', 'Semanal', 300.0, 3, TRUE);
 
 INSERT INTO custo(tipo, valor, data_vencimento, data_pagamento, descricao, id_veiculo, is_ativo)
 VALUES ('Combustível', 100.00, null, '2026-04-02', 'Abastecimento completo', 1, TRUE),

@@ -22,7 +22,7 @@ public class AlterarSenhaUsuarioService {
     private final ValidaNovaSenhaUsuarioService validaNovaSenhaUsuarioService;
 
     @Transactional
-    public void     alterarSenhaUsuario(Long id, AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
+    public void alterarSenhaUsuario(Long id, AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
 
         validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(alterarSenhaUsuarioRequest.getSenhaAtual(), id);
 
