@@ -10,7 +10,7 @@ public class CadastrarMetaRequest {
     @NotBlank
     private String titulo;
 
-    @NotBlank
+    @NotNull
     private String formato;
 
     @NotNull
@@ -18,5 +18,4 @@ public class CadastrarMetaRequest {
 
     @NotNull
     private Long idUsuario;
-    
 }

@@ -1,8 +1,10 @@
 package br.edu.ifsul.sapucaia.projeto.domain;
 
+import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -16,7 +18,8 @@ public class Meta {
 
     private String titulo;
 
-    private String formato;
+    @Enumerated(STRING)
+    private FormatoMeta formato;
 
     private double valorDesejado;
 

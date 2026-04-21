@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.mapper;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 
 public class MetaMapper {
 
@@ -12,7 +13,7 @@ public class MetaMapper {
         return Meta
                 .builder()
                 .titulo(cadastrarMetaRequest.getTitulo())
-                .formato(cadastrarMetaRequest.getFormato())
+                .formato(FormatoMeta.valueOf(cadastrarMetaRequest.getFormato().toUpperCase()))
                 .valorDesejado(cadastrarMetaRequest.getValor())
                 .build();
     }

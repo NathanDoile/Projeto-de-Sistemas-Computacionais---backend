@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +16,11 @@ public class ValidaEmailUsuarioService {
 
     public void validaEmailUnico(String email){
         if(usuarioRepository.existsByEmail(email))
-            throw new ResponseStatusException(BAD_REQUEST, "Esse email já foi cadastrado.");
+            throw new ResponseStatusException(CONFLICT, "Esse email já foi cadastrado.");
     }
 
     public void validaEmailUnicoParaEdicao(String email, Long idUsuario){
         if(usuarioRepository.existsByEmailAndIdUsuarioNot(email, idUsuario))
-            throw new ResponseStatusException(BAD_REQUEST, "Esse email já foi cadastrado.");
+            throw new ResponseStatusException(CONFLICT, "Esse email já foi cadastrado.");
     }
 }
