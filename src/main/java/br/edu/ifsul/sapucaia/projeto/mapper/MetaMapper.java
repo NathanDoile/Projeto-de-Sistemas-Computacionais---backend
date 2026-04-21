@@ -13,7 +13,7 @@ public class MetaMapper {
         return Meta
                 .builder()
                 .titulo(cadastrarMetaRequest.getTitulo())
-                .formato(FormatoMeta.valueOf(cadastrarMetaRequest.getFormato().toUpperCase()))
+                .formato(FormatoMeta.deTexto(cadastrarMetaRequest.getFormato()))
                 .valorDesejado(cadastrarMetaRequest.getValor())
                 .build();
     }

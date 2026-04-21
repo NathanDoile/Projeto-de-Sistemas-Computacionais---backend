@@ -10,6 +10,7 @@ public class ValidaFormatoMetaValidator {
 
     public void formatoValido(String formatoEscolhido) {
         if(!formatoEscolhido.equalsIgnoreCase("Diária") &&
+                !formatoEscolhido.equalsIgnoreCase("Diaria") &&
                 !formatoEscolhido.equalsIgnoreCase("Semanal") &&
                 !formatoEscolhido.equalsIgnoreCase("Mensal")) {
 
