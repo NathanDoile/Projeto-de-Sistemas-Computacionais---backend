@@ -3,7 +3,6 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.InformacoesDaSemanaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,9 +13,9 @@ public class RelatoriosController {
     private final InformacoesDaSemanaService informacoesDaSemanaService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
-    public ResponseEntity<InformacoesDaSemanaResponse>  getInformacoesSemana(@PathVariable Long idUsuario){
+    public InformacoesDaSemanaResponse  getInformacoesSemana(@PathVariable Long idUsuario){
         InformacoesDaSemanaResponse informacoes = informacoesDaSemanaService.buscarInformacoesDaSemana(idUsuario);
 
-        return ResponseEntity.ok(informacoes);
+        return informacoes;
     }
 }

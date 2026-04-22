@@ -33,9 +33,7 @@ public class InformacoesDaSemanaService {
     public InformacoesDaSemanaResponse buscarInformacoesDaSemana(Long idUsuario){
         validaUsuarioService.porId(idUsuario);
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado"));
-
-        validaVeiculoService.porId(usuario.getVeiculo().getIdVeiculo());
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
         LocalDate hoje = LocalDate.now();
         LocalDate inicioSemana = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
