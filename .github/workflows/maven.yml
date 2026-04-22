@@ -24,7 +24,7 @@ jobs:
           cache: maven
 
       - name: Compilar e Rodar Testes com Maven
-        run: mvn -B package --file pom.xml -DskipTests
+        run: mvn -B clean verify -f pom.xml
 
       - name: Analisar com SonarCloud
         env:
@@ -32,11 +32,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         # Adicionei aspas nos parâmetros para evitar erros no PowerShell do Windows
         run: >
-          mvn -B verify sonar:sonar
+          mvn -B sonar:sonar
           "-Dsonar.projectKey=NathanDoile_Projeto-de-Sistemas-Computacionais---backend"
           "-Dsonar.organization=nathandoile"
           "-Dsonar.host.url=https://sonarcloud.io"
-          "-f" "pom.xml" -DskipTests
+          "-Dsonar.coverage.jacoco.xmlReportPaths=check_if/target/site/jacoco/jacoco.xml" 
+          "-f" "pom.xml"
 
       - name: Armazenar o artefato (JAR)
         uses: actions/upload-artifact@v4
