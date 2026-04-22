@@ -16,12 +16,12 @@ VALUES ('Presente para a filha', 'SEMANAL', 0, 300.0, 1, TRUE),
        ('Jantar em restaurante japonês', 'SEMANAL', 0, 300.0, 3, TRUE);
 
 INSERT INTO custo(tipo, valor, data_vencimento, data_pagamento, descricao, id_veiculo, is_ativo)
-VALUES ('Combustível', 100.00, null, '2026-04-02', 'Abastecimento completo', 1, TRUE),
-       ('Manutenção', 200.0, null, '2026-03-20', 'Troca das pastilhas de freio dianteiras', 2, TRUE),
-       ('Manutenção', 150.0, null, '2026-03-25', 'Alinhamento e balanceamento', 3, TRUE);
+VALUES ('COMBUSTIVEL', 100.00, null, '2026-04-22', 'Abastecimento completo', 1, TRUE),
+       ('MANUTENCAO', 200.0, null, '2026-03-20', 'Troca das pastilhas de freio dianteiras', 2, TRUE),
+       ('MANUTENCAO', 150.0, null, '2026-03-25', 'Alinhamento e balanceamento', 3, TRUE);
 
 INSERT INTO receita_diaria(data_receita, valor, id_usuario, is_ativo)
-VALUES ('2026-04-02', 350.00, 1, TRUE),
+VALUES ('2026-04-21', 350.00, 1, TRUE),
        ('2026-04-02', 290.75, 2, TRUE),
        ('2026-04-02', 480.10, 3, TRUE);
 
