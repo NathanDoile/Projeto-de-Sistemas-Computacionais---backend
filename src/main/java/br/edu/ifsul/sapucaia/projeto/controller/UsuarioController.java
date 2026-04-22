@@ -19,6 +19,7 @@ public class UsuarioController {
     private final AlterarSenhaUsuarioService alterarSenhaUsuarioService;
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
     private final LoginUsuarioService loginUsuarioService;
+    private final ExcluirContaUsuarioService excluirContaUsuarioService;
     private final AlterarNotificacaoManutencaoService alterarNotificacaoManutencaoService;
     private final AlterarNotificacaoVencimentoService alterarNotificacaoVencimentoService;
 
@@ -44,6 +45,12 @@ public class UsuarioController {
     @ResponseStatus(OK)
     public void loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
         loginUsuarioService.loginUsuario(loginUsuarioRequest);
+    }
+
+    @DeleteMapping("/{id}/excluir-conta")
+    @ResponseStatus(OK)
+    public void excluirConta(@PathVariable Long id, @Valid @RequestBody ExcluirContaUsuarioRequest excluirContaUsuarioRequest){
+        excluirContaUsuarioService.excluirConta(id, excluirContaUsuarioRequest);
     }
 
     @PatchMapping("/notificacao-manutencao/{id}")
