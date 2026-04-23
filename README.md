@@ -73,6 +73,28 @@
       "senha": "senha123"
     }
     ```
+- **Ativa/Desativa notificação de manutenção**
+  - Precisa estar logado para utilizar esse path
+  - Altera a configuração de notificação de manutenção do usuário
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `PATCH /notificacao-manutencao/{id}`
+
+    ```json
+    {
+       "notificacao_manutencao": true
+    }
+    
+- **Ativa/Desativa notificação de vencimento**
+  - Precisa estar logado para utilizar esse path
+  - Altera a configuração de notificação de vencimento do usuário
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `PATCH /notificacao-vencimento/{id}`
+
+    ```json
+    {
+      "notificacao_vencimento": true
+    }
+    ```
 
 ### Rota: `/receita-diaria`
 
