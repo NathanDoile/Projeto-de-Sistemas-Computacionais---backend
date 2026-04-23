@@ -37,7 +37,7 @@ public class CadastrarMetaService {
 
         Meta meta = toEntity(cadastrarMetaRequest);
 
-        Usuario usuario = usuarioRepository.findById(cadastrarMetaRequest.getIdUsuario()).get();
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(cadastrarMetaRequest.getIdUsuario(), true).get();
 
         meta.setUsuario(usuario);
 
