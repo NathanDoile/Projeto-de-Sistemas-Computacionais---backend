@@ -9,14 +9,5 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.SEMANAL;
 
 public interface MetaRepository extends JpaRepository<Meta, Long> {
 
-    static CadastrarMetaRequest cadastrarMetaRequest() {
 
-        return CadastrarMetaRequest
-                .builder()
-                .titulo("Meta Teste")
-                .valor(200.00)
-                .formato(SEMANAL.toString())
-                .idUsuario(1L)
-                .build();
-    }
 }

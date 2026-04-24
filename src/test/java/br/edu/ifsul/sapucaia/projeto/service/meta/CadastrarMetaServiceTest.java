@@ -18,8 +18,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.cadastrarMetaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static br.edu.ifsul.sapucaia.projeto.repository.MetaRepository.cadastrarMetaRequest;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -46,7 +46,7 @@ class CadastrarMetaServiceTest {
     private ValidaFormatoMetaValidator validaFormatoMetaValidator;
 
     @Captor
-        private ArgumentCaptor<Meta> metaCaptor;
+    private ArgumentCaptor<Meta> metaCaptor;
 
     @Test
     @DisplayName("Deve cadastrar meta")
@@ -88,6 +88,40 @@ class CadastrarMetaServiceTest {
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(validaValorMetaValidator,never()).isPositivo(any(Double.class));
         verify(validaFormatoMetaValidator,never()).formatoValido(any(String.class));
+        verify(usuarioRepository,never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
+        verify(metaRepository,never()).save(any(Meta.class));
+    }
+
+    @Test
+    @DisplayName("Nao deve cadastrar meta com valor da Meta menor ou igual a zero")
+    void naoCadastraMetaComValorMenorIgualZero(){
+        CadastrarMetaRequest request = cadastrarMetaRequest();
+        request.setValor(0.00);
+
+        doThrow(ResponseStatusException.class).when(validaValorMetaValidator).isPositivo(request.getValor());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verify(validaFormatoMetaValidator,never()).formatoValido(any(String.class));
+        verify(usuarioRepository,never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
+        verify(metaRepository,never()).save(any(Meta.class));
+    }
+
+    @Test
+    @DisplayName("Nao deve cadastrar meta com formato invalido")
+    void naoCadastraMetaComFormatoInvalido(){
+        CadastrarMetaRequest request = cadastrarMetaRequest();
+        request.setFormato("semestral");
+
+        doThrow(ResponseStatusException.class).when(validaFormatoMetaValidator).formatoValido(request.getFormato());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
         verify(usuarioRepository,never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
         verify(metaRepository,never()).save(any(Meta.class));
     }
