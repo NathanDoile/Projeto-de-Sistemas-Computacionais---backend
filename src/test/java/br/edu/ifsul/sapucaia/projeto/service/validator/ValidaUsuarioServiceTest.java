@@ -9,8 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -32,7 +31,7 @@ class ValidaUsuarioServiceTest {
 
         when(usuarioRepository.existsByIdUsuarioAndIsAtivo(id, isAtivo)).thenReturn(true);
 
-        tested.porId(id);
+        assertDoesNotThrow(() -> tested.porId(id));
     }
 
     @Test
