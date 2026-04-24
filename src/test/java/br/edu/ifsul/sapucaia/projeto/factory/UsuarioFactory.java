@@ -1,9 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-
-import java.time.LocalDate;
 
 import static java.time.LocalDate.of;
 
@@ -32,6 +31,14 @@ public class UsuarioFactory {
                 .nome("Novo nome Teste")
                 .email("novoemailteste@gmail.com")
                 .telefone("51999999999")
+                .build();
+    }
+
+    public static ExcluirContaUsuarioRequest excluirContaUsuarioRequest() {
+
+        return ExcluirContaUsuarioRequest
+                .builder()
+                .senha("senhadeteste")
                 .build();
     }
 }

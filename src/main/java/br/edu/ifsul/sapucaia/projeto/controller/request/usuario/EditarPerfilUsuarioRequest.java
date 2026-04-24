@@ -1,15 +1,12 @@
 package br.edu.ifsul.sapucaia.projeto.controller.request.usuario;
 
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 public class EditarPerfilUsuarioRequest {
 
     private String nome;
