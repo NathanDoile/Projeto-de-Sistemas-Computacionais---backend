@@ -39,8 +39,6 @@ class CadastrarUsuarioServiceTest {
     void CadastraUsuarioComValoresCorretos(){
         CadastrarUsuarioRequest request = cadastrarUsuarioRequest();
 
-        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
-
         tested.cadastrarUsuario(request);
 
         verify(validaEmailUsuarioService).validaEmailUnico(request.getEmail());
@@ -72,7 +70,7 @@ class CadastrarUsuarioServiceTest {
 
         verify(validaEmailUsuarioService).validaEmailUnico(request.getEmail());
         verify(validaTelefoneUsuarioService, never()).validaTelefoneUnico(request.getTelefone());
-        verify(usuarioRepository, never()).save(usuarioCaptor.capture());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
     @Test
@@ -88,6 +86,6 @@ class CadastrarUsuarioServiceTest {
 
         verify(validaEmailUsuarioService).validaEmailUnico(request.getEmail());
         verify(validaTelefoneUsuarioService).validaTelefoneUnico(request.getTelefone());
-        verify(usuarioRepository, never()).save(usuarioCaptor.capture());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }
