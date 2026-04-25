@@ -2,9 +2,12 @@ package br.edu.ifsul.sapucaia.projeto.controller.request.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Builder
+@Getter @Setter
 public class CadastrarUsuarioRequest {
 
     @NotBlank(message = "Campo nome é obrigatório")

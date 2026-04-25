@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
@@ -21,6 +22,16 @@ public class UsuarioFactory {
                 .possuiVeiculo(true)
                 .notificacaoManutencao(true)
                 .notificacaoVencimento(true)
+                .build();
+    }
+
+    public static CadastrarUsuarioRequest cadastrarUsuarioRequest(){
+        return CadastrarUsuarioRequest
+                .builder()
+                .nome("Nome cadastro Teste")
+                .email("emailcadastroteste@gmail.com")
+                .senha("senhadeteste")
+                .telefone("51888888888")
                 .build();
     }
 
