@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaEmailUsuarioServiceTest {
+class ValidaEmailUsuarioServiceTest {
     @InjectMocks
     private ValidaEmailUsuarioService tested;
 
