@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CustoRepository extends JpaRepository<Custo, Long> {
@@ -13,5 +14,5 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
 
     List<Custo> findByVeiculoAndDataPagamentoIsNullAndIsAtivo(Veiculo veiculo, boolean b);
 
-    List<Custo> findAllByVeiculoUsuarioIdUsuarioAndIsAtivoTrue(Long idUsuario);
+    List<Custo> findByVeiculoIdVeiculoAndDataPagamentoBetween(Long idVeiculo, LocalDate inicioSemana, LocalDate hoje);
 }
