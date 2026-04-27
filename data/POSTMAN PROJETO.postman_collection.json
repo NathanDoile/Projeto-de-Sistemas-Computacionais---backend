@@ -1,10 +1,9 @@
 {
   "info": {
-    "_postman_id": "f9e845c0-4634-4e04-9d34-41119084e500",
+    "_postman_id": "b88ba040-68c2-4424-b76d-366321aaa780",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-f9e845c0-4634-4e04-9d34-41119084e500?source=collection_link"
+    "_exporter_id": "29566159"
   },
   "item": [
     {
@@ -370,6 +369,36 @@
               "key": "{id}",
               "value": "1"
             }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar metas",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/meta",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "meta"
           ]
         }
       },

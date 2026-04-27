@@ -125,6 +125,15 @@
     }
     ```
 
+- **Buscar metas**
+    - Precisa estar logado para utilizar esse path
+    - `GET /`
+    ```json
+    {
+      "idUsuario": 1
+    }
+    ```
+
 ### Rota: `/custo`
 
 - **Cria um custo**
