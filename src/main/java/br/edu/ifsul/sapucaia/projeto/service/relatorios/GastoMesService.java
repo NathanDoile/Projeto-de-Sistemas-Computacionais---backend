@@ -28,14 +28,14 @@ public class GastoMesService {
         LocalDate fimMes = LocalDate.now()
                 .with(TemporalAdjusters.lastDayOfMonth());
 
-        double despesaTotal = custoRepository
+        double despesasTotal = custoRepository
                 .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
                 .stream()
                 .mapToDouble(Custo::getValor)
                 .sum();
 
         return GastoMesResponse.builder()
-                .despesaTotal(despesaTotal)
+                .despesaTotal(despesasTotal)
                 .build();
     }
 }
