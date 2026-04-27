@@ -38,13 +38,13 @@ import java.time.temporal.TemporalAdjusters;
                     .mapToDouble(ReceitaDiaria::getValor)
                     .sum();
 
-            double despesaTotal = custoRepository
+            double despesasTotal = custoRepository
                     .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
                     .stream()
                     .mapToDouble(Custo::getValor)
                     .sum();
 
-            double lucroLiquido = ganhoBruto - despesaTotal;
+            double lucroLiquido = ganhoBruto - despesasTotal;
 
             return GanhoLiquidoMesResponse.builder()
                     .lucroLiquido(lucroLiquido)
