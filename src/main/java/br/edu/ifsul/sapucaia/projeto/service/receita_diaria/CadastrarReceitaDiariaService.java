@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class CadastrarReceitaDiariaService {
             LocalDate hoje = now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
 
-            Map<FormatoMeta, Boolean> condicaoParaInsercao = new HashMap<>();
+            EnumMap<FormatoMeta, Boolean> condicaoParaInsercao = new EnumMap<>(FormatoMeta.class);
 
             condicaoParaInsercao.put(DIARIA, dataDaReceita.equals(hoje));
             condicaoParaInsercao.put(SEMANAL, dataDaReceita.isAfter(inicioSemana) || dataDaReceita.equals(inicioSemana));
