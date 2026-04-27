@@ -29,7 +29,7 @@ public class GanhoBrutoMesService {
                 .with(TemporalAdjusters.lastDayOfMonth());
 
         double ganhoBruto = receitaDiariaRepository
-                .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
+                .findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicioMes, fimMes)
                 .stream()
                 .mapToDouble(ReceitaDiaria::getValor)
                 .sum();

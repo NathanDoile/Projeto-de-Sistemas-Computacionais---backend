@@ -29,7 +29,7 @@ public class GastoMesService {
                 .with(TemporalAdjusters.lastDayOfMonth());
 
         double despesaTotal = custoRepository
-                .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
+                .findByVeiculoIdVeiculoBetween(usuario.getIdUsuario(), inicioMes, fimMes)
                 .stream()
                 .mapToDouble(Custo::getValor)
                 .sum();

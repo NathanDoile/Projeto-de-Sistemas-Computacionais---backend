@@ -1,8 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
-import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
@@ -25,6 +25,7 @@ import java.time.temporal.TemporalAdjusters;
         public GanhoLiquidoMesResponse calcularGanhoLiquidoMes(Long idUsuario) {
 
             Usuario usuario = validaUsuarioService.buscarUsuarioPorId(idUsuario);
+            Veiculo veiculo = usuario.getVeiculo();
 
             LocalDate inicioMes = LocalDate.now()
                     .with(TemporalAdjusters.firstDayOfMonth());
@@ -33,16 +34,13 @@ import java.time.temporal.TemporalAdjusters;
                     .with(TemporalAdjusters.lastDayOfMonth());
 
             double ganhoBruto = receitaDiariaRepository
-                    .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
+                    .findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicioMes, fimMes)
                     .stream()
                     .mapToDouble(ReceitaDiaria::getValor)
                     .sum();
 
             double despesasTotal = custoRepository
-                    .findByUsuarioAndDataBetween(usuario, inicioMes, fimMes)
-                    .stream()
-                    .mapToDouble(Custo::getValor)
-                    .sum();
+                    .findByVeiculoIdVeiculoBetween(veiculo.getIdVeiculo(), inicioMes, fimMes).size();
 
             double lucroLiquido = ganhoBruto - despesasTotal;
 

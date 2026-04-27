@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface CustoRepository extends JpaRepository<Custo, Long> {
@@ -17,5 +18,9 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
 
     List<Custo> findByVeiculoIdVeiculoAndDataPagamentoBetween(Long idVeiculo, LocalDate inicioSemana, LocalDate hoje);
 
-    List<Custo> findByUsuarioAndDataBetween(Usuario usuario, LocalDate inicioMes, LocalDate fimMes);
+    Collection<Custo> findByVeiculoIdVeiculoBetween(
+            Long idUsuario,
+            LocalDate inicioMes,
+            LocalDate fimMes
+    );
 }

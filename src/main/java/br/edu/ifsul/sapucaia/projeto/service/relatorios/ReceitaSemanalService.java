@@ -31,7 +31,11 @@ public class ReceitaSemanalService {
                 .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository
-                .findByUsuarioAndDataBetween(usuario, inicioSemana, fimSemana);
+                .findByUsuarioIdUsuarioAndDataReceitaBetween(
+                        usuario.getIdUsuario(),
+                        inicioSemana,
+                        fimSemana
+                );
 
         double ganhoBruto = 0;
 
