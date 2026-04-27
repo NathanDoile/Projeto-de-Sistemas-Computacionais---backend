@@ -24,7 +24,7 @@ public class RelatoriosController {
         return informacoesDaSemanaService.buscarInformacoesDaSemana(idUsuario);
     }
 
-    @GetMapping("/semana/{idUsuario}")
+    @GetMapping("/receita-semana/{idUsuario}")
     public InformacoesDaSemanaResponse buscarReceitaDaSemana(@PathVariable Long idUsuario){
         return receitaSemanaService.buscarReceitaDaSemana(idUsuario);
     }

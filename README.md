@@ -210,3 +210,23 @@
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador do usuário
   - `GET /informacoes-semana/{id}`
+
+- **Receita da Semana**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /receita-semana/{idUsuario}`
+    
+- **Lucro do Mês**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /lucro-mes/{idUsuario}`
+
+- **Ganho bruto do mês**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /ganho-bruto-mes/{idUsuario}`
+
+- **Gasto do mês**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /gasto-mes/{idUsuario}`

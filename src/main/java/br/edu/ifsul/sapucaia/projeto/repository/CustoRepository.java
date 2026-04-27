@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.repository;
 
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;

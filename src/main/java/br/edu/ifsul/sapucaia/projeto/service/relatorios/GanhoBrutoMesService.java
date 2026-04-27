@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GanhoBrutoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,8 @@ import java.time.temporal.TemporalAdjusters;
 public class GanhoBrutoMesService {
 
     private final ReceitaDiariaRepository receitaDiariaRepository;
-    private final ValidaUsuarioService validaUsuarioService;
 
     public GanhoBrutoMesResponse calcularGanhoBrutoMes(Long idUsuario) {
-
-        Usuario usuario = validaUsuarioService.buscarUsuarioPorId(idUsuario);
 
         LocalDate inicioMes = LocalDate.now()
                 .with(TemporalAdjusters.firstDayOfMonth());
