@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.service.validator;
 
+import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,11 @@ public class ValidaUsuarioService {
         if(!usuarioRepository.existsByIdUsuarioAndIsAtivo(idUsuario, true)){
             throw new ResponseStatusException(NOT_FOUND, "ID do usuário não existe.");
         }
+    }
+    public Usuario buscarUsuarioPorId(Long idUsuario) {
+        return usuarioRepository
+                .findByIdUsuarioAndIsAtivo(idUsuario, true)
+                .orElseThrow(() ->
+                        new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
     }
 }

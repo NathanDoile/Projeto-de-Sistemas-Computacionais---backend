@@ -25,4 +25,5 @@ public class ReceitaDiaria {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
 }
