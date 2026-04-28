@@ -3,9 +3,14 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GanhoBrutoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GanhoLiquidoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastoMesResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +23,8 @@ public class RelatoriosController {
     private final GanhoLiquidoMesService ganhoLiquidoMesService;
     private final GanhoBrutoMesService ganhoBrutoMesService;
     private final GastoMesService gastoMesService;
+    private final GastosPorCategoriaDoMesService gastosPorCategoriaDoMesService;
+    private final UltimasTransacoesService ultimasTransacoesService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
     public InformacoesDaSemanaResponse  getInformacoesSemana(@PathVariable Long idUsuario){
@@ -42,6 +49,16 @@ public class RelatoriosController {
     @GetMapping("/gasto-mes/{idUsuario}")
     public GastoMesResponse getGastoMes(@PathVariable Long idUsuario){
         return gastoMesService.calcularGastoMes(idUsuario);
+    }
+
+    @GetMapping("/gastos-categoria-mes/{idUsuario}")
+    public GastosPorCategoriaDoMesResponse getGastosCategoriaMes(@PathVariable Long idUsuario){
+        return gastosPorCategoriaDoMesService.calcularGastosPorCategoriaDoMes(idUsuario);
+    }
+
+    @GetMapping("/ultimas-transacoes/{idUsuario}")
+    public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
+        return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
     }
 
 }

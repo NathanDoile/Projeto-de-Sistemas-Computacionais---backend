@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "2356810a-1bb5-4781-9f65-150f719dbb3d",
+    "_postman_id": "de7117c3-1bbb-43a7-b656-eb3f0ea3e796",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53870151",
-    "_collection_link": "https://go.postman.co/collection/53870151-2356810a-1bb5-4781-9f65-150f719dbb3d?source=collection_link"
+    "_exporter_id": "53773873",
+    "_collection_link": "https://go.postman.co/collection/53773873-de7117c3-1bbb-43a7-b656-eb3f0ea3e796?source=collection_link"
   },
   "item": [
     {
@@ -340,42 +340,6 @@
       "response": []
     },
     {
-      "name": "Excluir Conta",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"senha\": \"senha123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "usuario",
-            ":{id}",
-            "excluir-conta"
-          ],
-          "variable": [
-            {
-              "key": "{id}",
-              "value": "1"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "Buscar metas",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
@@ -509,6 +473,58 @@
           "variable": [
             {
               "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gastos do Mês Por Categoria",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Últimas Transações",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir Conta",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"senha\": \"senha123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            ":{id}",
+            "excluir-conta"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
               "value": "1"
             }
           ]

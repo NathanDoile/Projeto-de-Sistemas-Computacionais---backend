@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ReceitaDiariaRepository extends JpaRepository<ReceitaDiaria, Long> {
 
+    List<ReceitaDiaria> findByUsuarioIdUsuarioAndIsAtivo(Long idUsuario, boolean isAtivo);
+
     List<ReceitaDiaria> findByUsuarioIdUsuarioAndDataReceitaBetween(Long idUsuario, LocalDate inicioSemana, LocalDate hoje);
 
 }
