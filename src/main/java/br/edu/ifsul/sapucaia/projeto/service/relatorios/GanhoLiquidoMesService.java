@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
+import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
@@ -40,7 +41,10 @@ import java.time.temporal.TemporalAdjusters;
                     .sum();
 
             double despesasTotal = custoRepository
-                    .findByVeiculoIdVeiculoBetween(veiculo.getIdVeiculo(), inicioMes, fimMes).size();
+                    .findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), inicioMes, fimMes)
+                    .stream()
+                    .mapToDouble(Custo::getValor)
+                    .sum();
 
             double lucroLiquido = ganhoBruto - despesasTotal;
 

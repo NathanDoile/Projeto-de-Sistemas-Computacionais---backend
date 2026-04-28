@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "b88ba040-68c2-4424-b76d-366321aaa780",
+    "_postman_id": "2356810a-1bb5-4781-9f65-150f719dbb3d",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "29566159"
+    "_exporter_id": "53870151",
+    "_collection_link": "https://go.postman.co/collection/53870151-2356810a-1bb5-4781-9f65-150f719dbb3d?source=collection_link"
   },
   "item": [
     {
@@ -91,7 +92,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"dataReceita\":\"2026-04-03\",\r\n    \"valor\":200,\r\n    \"idUsuario\":1\r\n}",
+          "raw": "{\r\n    \"dataReceita\":\"2026-04-27\",\r\n    \"valor\":200,\r\n    \"idUsuario\":1\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -399,6 +400,117 @@
           "port": "8080",
           "path": [
             "meta"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Receita Semanal",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
+        },
+        "url": {
+          "raw": "localhost:8080/relatorios/receita-semana/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "receita-semana",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gasto do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/gasto-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "gasto-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ganho Líquido do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/lucro-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "lucro-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ganho Bruto do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/ganho-bruto-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "ganho-bruto-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
           ]
         }
       },

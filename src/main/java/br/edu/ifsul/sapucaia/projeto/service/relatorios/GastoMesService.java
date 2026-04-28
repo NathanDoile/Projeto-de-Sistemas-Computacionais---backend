@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class GastoMesService {
     public GastoMesResponse calcularGastoMes(Long idUsuario) {
 
         Usuario usuario = validaUsuarioService.buscarUsuarioPorId(idUsuario);
+        Veiculo veiculo = usuario.getVeiculo();
 
         LocalDate inicioMes = LocalDate.now()
                 .with(TemporalAdjusters.firstDayOfMonth());
@@ -29,7 +31,7 @@ public class GastoMesService {
                 .with(TemporalAdjusters.lastDayOfMonth());
 
         double despesaTotal = custoRepository
-                .findByVeiculoIdVeiculoBetween(usuario.getIdUsuario(), inicioMes, fimMes)
+                .findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), inicioMes, fimMes)
                 .stream()
                 .mapToDouble(Custo::getValor)
                 .sum();
