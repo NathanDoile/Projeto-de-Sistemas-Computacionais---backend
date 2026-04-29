@@ -484,7 +484,25 @@
       "name": "Gastos do Mês Por Categoria",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/gastos-categoria-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "gastos-categoria-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
       },
       "response": []
     },
@@ -492,7 +510,25 @@
       "name": "Últimas Transações",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/ultimas-transacoes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "ultimas-transacoes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
       },
       "response": []
     },
