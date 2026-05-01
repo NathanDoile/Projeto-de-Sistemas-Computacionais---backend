@@ -232,11 +232,11 @@
   - `GET /gasto-mes/{idUsuario}`
 
 - **Gasto do mês por categoria**
-- Precisa estar logado para utilizar esse path;
-- Parâmetros de URL: `id`, é o identificador do usuário
-- `GET /gastos-categoria-mes/{idUsuario}`
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /gastos-categoria-mes/{idUsuario}`
 
 - **Últimas transações**
-- Precisa estar logado para utilizar esse path;
-- Parâmetros de URL: `id`, é o identificador do usuário
-- `GET /ultimas-transacoes/{idUsuario}`
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - `GET /ultimas-transacoes/{idUsuario}`
