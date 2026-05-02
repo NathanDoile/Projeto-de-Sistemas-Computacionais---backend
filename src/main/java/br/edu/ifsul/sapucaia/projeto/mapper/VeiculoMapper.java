@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.mapper;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.RetornaDadosVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo;
 
@@ -41,4 +42,21 @@ public class VeiculoMapper {
                 .kmAtual(veiculo.getKmAtual())
                 .build();
     }
+
+    public static RetornaDadosVeiculoResponse toDadosVeiculoResponse(Veiculo veiculo) {
+
+        return RetornaDadosVeiculoResponse
+                .builder()
+                .idVeiculo(veiculo.getIdVeiculo())
+                .modelo(veiculo.getModelo())
+                .dataUltimaAtualizacaoKm(veiculo.getDataUltimaAtualizacaoKm())
+                .marca(veiculo.getMarca())
+                .placa(veiculo.getPlaca())
+                .tipo(String.valueOf(veiculo.getTipo()))
+                .ano(veiculo.getAno())
+                .cor(veiculo.getCor())
+                .kmAtual(veiculo.getKmAtual())
+                .build();
+    }
+
 }

@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "de7117c3-1bbb-43a7-b656-eb3f0ea3e796",
+    "_postman_id": "8d4df33e-1802-4c49-b027-9b07abfe91a2",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-de7117c3-1bbb-43a7-b656-eb3f0ea3e796?source=collection_link"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://go.postman.co/collection/53222404-8d4df33e-1802-4c49-b027-9b07abfe91a2?source=collection_link"
   },
   "item": [
     {
@@ -302,6 +302,31 @@
             "custo",
             ":{id}",
             "em-aberto"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Retorna Dados Veiculo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/veiculo/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo",
+            ":{id}"
           ],
           "variable": [
             {

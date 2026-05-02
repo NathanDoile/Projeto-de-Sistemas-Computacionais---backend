@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +24,12 @@ public class ValidaVeiculoService {
 
         if(veiculoRepository.existsByPlacaAndIsAtivo(placa, true)){
             throw new ResponseStatusException(CONFLICT, "Placa já cadastrada.");
+        }
+    }
+
+    public void estaAtivo(Long idVeiculo){
+        if(!veiculoRepository.existsByIdVeiculoAndIsAtivo(idVeiculo, true)){
+            throw new ResponseStatusException(CONFLICT, "Veículo não está ativo.");
         }
     }
 }

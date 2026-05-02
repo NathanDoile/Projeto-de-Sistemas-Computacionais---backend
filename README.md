@@ -190,6 +190,11 @@
               }
             ```   
 
+- **Retornar dados do veículo**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do veículo
+  - `GET /{id}`
+
 ### Rota: `/manutencao`
 - Cria uma manutencao;
     - Precisa estar logado para utilizar esse path;
