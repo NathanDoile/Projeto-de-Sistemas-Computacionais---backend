@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginUsuarioServiceTest {
+class LoginUsuarioServiceTest {
 
     @InjectMocks
     private LoginUsuarioService tested;

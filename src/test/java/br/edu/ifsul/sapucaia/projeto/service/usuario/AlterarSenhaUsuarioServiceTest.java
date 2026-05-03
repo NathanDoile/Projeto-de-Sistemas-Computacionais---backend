@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarSenhaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaNovaSenhaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioService;
