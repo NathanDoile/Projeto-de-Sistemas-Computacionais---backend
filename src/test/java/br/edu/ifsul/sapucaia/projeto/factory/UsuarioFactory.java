@@ -1,8 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.EditarPerfilUsuarioRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
 import static java.time.LocalDate.of;
@@ -49,6 +47,24 @@ public class UsuarioFactory {
 
         return ExcluirContaUsuarioRequest
                 .builder()
+                .senha("senhadeteste")
+                .build();
+    }
+
+    public static AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest() {
+
+        return AlterarSenhaUsuarioRequest
+                .builder()
+                .senhaAtual("senhadeteste")
+                .novaSenha("novasenhadeteste")
+                .build();
+    }
+
+    public static LoginUsuarioRequest LoginUsuarioRequest() {
+
+        return LoginUsuarioRequest
+                .builder()
+                .email("emailteste@gmail.com")
                 .senha("senhadeteste")
                 .build();
     }

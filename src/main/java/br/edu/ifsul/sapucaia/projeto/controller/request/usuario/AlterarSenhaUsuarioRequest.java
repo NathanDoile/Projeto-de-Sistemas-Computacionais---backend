@@ -1,9 +1,11 @@
 package br.edu.ifsul.sapucaia.projeto.controller.request.usuario;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Builder
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class AlterarSenhaUsuarioRequest {
 
     @NotBlank(message = "Campo senha antiga é obrigatório")
