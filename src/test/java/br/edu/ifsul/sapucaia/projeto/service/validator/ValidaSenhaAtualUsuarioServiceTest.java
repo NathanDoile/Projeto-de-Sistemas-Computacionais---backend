@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaSenhaAtualUsuarioServiceTest {
+class ValidaSenhaAtualUsuarioServiceTest {
 
     @InjectMocks
     private ValidaSenhaAtualUsuarioService tested;

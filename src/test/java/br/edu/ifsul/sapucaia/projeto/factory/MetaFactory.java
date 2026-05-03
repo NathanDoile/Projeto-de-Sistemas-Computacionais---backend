@@ -3,7 +3,6 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.BuscarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.SEMANAL;
