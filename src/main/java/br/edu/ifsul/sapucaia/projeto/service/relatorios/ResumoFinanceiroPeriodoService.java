@@ -24,7 +24,6 @@ public class ResumoFinanceiroPeriodoService {
     private final CustoRepository custoRepository;
     private final ValidaUsuarioService validaUsuarioService;
 
-    // 🔥 MÉTODO BASE
     public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(
             Long idUsuario,
             LocalDate inicio,
@@ -56,12 +55,10 @@ public class ResumoFinanceiroPeriodoService {
                 .build();
     }
 
-    // 📅 DIA
     public ResumoFinanceiroPeriodoResponse calcularPorDia(Long idUsuario, LocalDate dia) {
         return calcularPorPeriodo(idUsuario, dia, dia);
     }
-
-    // 📅 SEMANA
+    gir
     public ResumoFinanceiroPeriodoResponse calcularPorSemana(Long idUsuario, LocalDate dataBase) {
         LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
         LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
@@ -69,7 +66,6 @@ public class ResumoFinanceiroPeriodoService {
         return calcularPorPeriodo(idUsuario, inicioSemana, fimSemana);
     }
 
-    // 📅 MÊS
     public ResumoFinanceiroPeriodoResponse calcularPorMes(Long idUsuario, LocalDate dataBase) {
         LocalDate inicioMes = dataBase.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate fimMes = dataBase.with(TemporalAdjusters.lastDayOfMonth());
