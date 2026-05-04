@@ -58,7 +58,7 @@ public class ResumoFinanceiroPeriodoService {
     public ResumoFinanceiroPeriodoResponse calcularPorDia(Long idUsuario, LocalDate dia) {
         return calcularPorPeriodo(idUsuario, dia, dia);
     }
-    gir
+
     public ResumoFinanceiroPeriodoResponse calcularPorSemana(Long idUsuario, LocalDate dataBase) {
         LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
         LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
