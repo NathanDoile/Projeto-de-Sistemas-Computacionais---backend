@@ -220,25 +220,29 @@
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador do usuário
   - `GET /receita-semana/{idUsuario}`
+
+- **Resumo Financeiro**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - Parâmetros de query: tipo (dia | semana | mes) e data (opcional, formato YYYY-MM-DD)
+  - `GET /resumo-financeiro/{idUsuario}`  
+
+- **Gasto por categoria(dia)**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - Parâmetros de query: data (formato YYYY-MM-DD)
+  - `GET /gastos-categoria-dia/{idUsuario}`
+   
+- **Gasto por categoria(semana)**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de URL: `id`, é o identificador do usuário
+  - Parâmetros de query: data (opcional, formato YYYY-MM-DD)
+  - `GET /gastos-categoria-semana/{idUsuario}`
     
-- **Lucro do Mês**
+- **Gasto por categoria(mês)**
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /lucro-mes/{idUsuario}`
-
-- **Ganho bruto do mês**
-  - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /ganho-bruto-mes/{idUsuario}`
-
-- **Gasto do mês**
-  - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /gasto-mes/{idUsuario}`
-
-- **Gasto do mês por categoria**
-  - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
+  - Parâmetros de query: data (opcional, formato YYYY-MM-DD)
   - `GET /gastos-categoria-mes/{idUsuario}`
 
 - **Últimas transações**

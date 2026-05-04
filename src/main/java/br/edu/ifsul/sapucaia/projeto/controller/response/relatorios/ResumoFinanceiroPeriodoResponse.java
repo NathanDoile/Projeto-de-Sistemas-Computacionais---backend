@@ -1,11 +1,13 @@
 package br.edu.ifsul.sapucaia.projeto.controller.response.relatorios;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @Builder
-public class GanhoLiquidoMesResponse {
+public class ResumoFinanceiroPeriodoResponse {
 
+    private double ganhoBruto;
+    private double gastoTotal;
     private double lucroLiquido;
 }

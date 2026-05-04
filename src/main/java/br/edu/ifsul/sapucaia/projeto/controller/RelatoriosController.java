@@ -1,14 +1,13 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GanhoBrutoMesResponse;
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GanhoLiquidoMesResponse;
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastoMesResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse; // ✅ ADICIONA ISSO
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,12 @@ public class RelatoriosController {
 
     private final InformacoesDaSemanaService informacoesDaSemanaService;
     private final ReceitaSemanalService receitaSemanaService;
-    private final GanhoLiquidoMesService ganhoLiquidoMesService;
-    private final GanhoBrutoMesService ganhoBrutoMesService;
-    private final GastoMesService gastoMesService;
-    private final GastosPorCategoriaDoMesService gastosPorCategoriaDoMesService;
+    private final ResumoFinanceiroPeriodoService resumoFinanceiroService;
+    private final GastosPorCategoriaDoPeriodoService gastosPorCategoriaService;
     private final UltimasTransacoesService ultimasTransacoesService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
-    public InformacoesDaSemanaResponse  getInformacoesSemana(@PathVariable Long idUsuario){
+    public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario){
         return informacoesDaSemanaService.buscarInformacoesDaSemana(idUsuario);
     }
 
@@ -36,29 +33,70 @@ public class RelatoriosController {
         return receitaSemanaService.buscarReceitaDaSemana(idUsuario);
     }
 
-    @GetMapping("/lucro-mes/{idUsuario}")
-    public GanhoLiquidoMesResponse getLucroMes(@PathVariable Long idUsuario){
-        return ganhoLiquidoMesService.calcularGanhoLiquidoMes(idUsuario);
+    @GetMapping("/resumo-financeiro/{idUsuario}")
+    public ResumoFinanceiroPeriodoResponse getResumoFinanceiro(
+            @PathVariable Long idUsuario,
+            @RequestParam String tipo,
+            @RequestParam(required = false) String data
+    ) {
+
+        LocalDate dataBase = (data != null)
+                ? LocalDate.parse(data)
+                : LocalDate.now();
+
+        switch (tipo.toLowerCase()) {
+            case "dia":
+                return resumoFinanceiroService.calcularPorDia(idUsuario, dataBase);
+
+            case "semana":
+                return resumoFinanceiroService.calcularPorSemana(idUsuario, dataBase);
+
+            case "mes":
+                return resumoFinanceiroService.calcularPorMes(idUsuario, dataBase);
+
+            default:
+                throw new IllegalArgumentException("Tipo inválido");
+        }
     }
 
-    @GetMapping("/ganho-bruto-mes/{idUsuario}")
-    public GanhoBrutoMesResponse getGanhoBrutoMes(@PathVariable Long idUsuario){
-        return ganhoBrutoMesService.calcularGanhoBrutoMes(idUsuario);
+    //DIA
+    @GetMapping("/gastos-categoria-dia/{idUsuario}")
+    public GastosPorCategoriaDoMesResponse getPorDia(
+            @PathVariable Long idUsuario,
+            @RequestParam String data
+    ) {
+        LocalDate dia = LocalDate.parse(data);
+        return gastosPorCategoriaService.calcularPorDia(idUsuario, dia);
     }
 
-    @GetMapping("/gasto-mes/{idUsuario}")
-    public GastoMesResponse getGastoMes(@PathVariable Long idUsuario){
-        return gastoMesService.calcularGastoMes(idUsuario);
+    //SEMANA
+    @GetMapping("/gastos-categoria-semana/{idUsuario}")
+    public GastosPorCategoriaDoMesResponse getPorSemana(
+            @PathVariable Long idUsuario,
+            @RequestParam(required = false) String data
+    ) {
+        LocalDate dataBase = (data != null)
+                ? LocalDate.parse(data)
+                : LocalDate.now();
+
+        return gastosPorCategoriaService.calcularPorSemana(idUsuario, dataBase);
     }
 
+    //MÊS
     @GetMapping("/gastos-categoria-mes/{idUsuario}")
-    public GastosPorCategoriaDoMesResponse getGastosCategoriaMes(@PathVariable Long idUsuario){
-        return gastosPorCategoriaDoMesService.calcularGastosPorCategoriaDoMes(idUsuario);
+    public GastosPorCategoriaDoMesResponse getPorMes(
+            @PathVariable Long idUsuario,
+            @RequestParam(required = false) String data
+    ) {
+        LocalDate dataBase = (data != null)
+                ? LocalDate.parse(data)
+                : LocalDate.now();
+
+        return gastosPorCategoriaService.calcularPorMes(idUsuario, dataBase);
     }
 
     @GetMapping("/ultimas-transacoes/{idUsuario}")
     public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
         return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
     }
-
 }
