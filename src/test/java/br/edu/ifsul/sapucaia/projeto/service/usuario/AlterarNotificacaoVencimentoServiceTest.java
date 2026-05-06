@@ -15,8 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.alterarNotificacaoVencimentoRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -29,9 +31,6 @@ class AlterarNotificacaoVencimentoServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
-    @Mock
-    private AlterarNotificacaoVencimentoRequest request;
-
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
@@ -39,11 +38,11 @@ class AlterarNotificacaoVencimentoServiceTest {
     @DisplayName("Deve alterar a notificação de vencimento corretamente")
     void deveAlterarNotificacaoVencimentoCorretamente() {
 
+        AlterarNotificacaoVencimentoRequest request = alterarNotificacaoVencimentoRequest();
         Usuario usuario = usuario();
         Long id = usuario.getIdUsuario();
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
-        when(request.getNotificacaoVencimento()).thenReturn(false);
 
         tested.alterarNotificacaoVencimento(id, request);
 
@@ -61,6 +60,7 @@ class AlterarNotificacaoVencimentoServiceTest {
     @DisplayName("Não deve alterar notificação se usuário não existir")
     void naoDeveAlterarNotificacaoSeUsuarioNaoExistir() {
 
+        AlterarNotificacaoVencimentoRequest request = alterarNotificacaoVencimentoRequest();
         Long id = 1L;
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.empty());

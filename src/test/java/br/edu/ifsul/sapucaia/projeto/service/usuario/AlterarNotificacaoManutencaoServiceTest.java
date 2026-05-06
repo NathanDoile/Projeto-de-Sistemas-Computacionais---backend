@@ -15,8 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.alterarNotificacaoManutencaoRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -29,9 +31,6 @@ class AlterarNotificacaoManutencaoServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
-    @Mock
-    private AlterarNotificacaoManutencaoRequest request;
-
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
@@ -39,11 +38,11 @@ class AlterarNotificacaoManutencaoServiceTest {
     @DisplayName("Deve alterar a notificação de manutenção corretamente")
     void deveAlterarNotificacaoManutencaoCorretamente() {
 
+        AlterarNotificacaoManutencaoRequest request = alterarNotificacaoManutencaoRequest();
         Usuario usuario = usuario();
         Long id = usuario.getIdUsuario();
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
-        when(request.getNotificacaoManutencao()).thenReturn(false);
 
         tested.alterarNotificacaoManutencao(id, request);
 
@@ -61,6 +60,7 @@ class AlterarNotificacaoManutencaoServiceTest {
     @DisplayName("Não deve alterar notificação se usuário não existir")
     void naoDeveAlterarNotificacaoSeUsuarioNaoExistir() {
 
+        AlterarNotificacaoManutencaoRequest request = alterarNotificacaoManutencaoRequest();
         Long id = 1L;
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.empty());

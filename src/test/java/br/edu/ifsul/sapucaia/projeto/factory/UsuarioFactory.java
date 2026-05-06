@@ -68,4 +68,21 @@ public class UsuarioFactory {
                 .senha("senhadeteste")
                 .build();
     }
+
+    public static AlterarNotificacaoManutencaoRequest alterarNotificacaoManutencaoRequest() {
+
+        return AlterarNotificacaoManutencaoRequest
+                .builder()
+                .notificacaoManutencao(false)
+                .build();
+    }
+
+    public static AlterarNotificacaoVencimentoRequest alterarNotificacaoVencimentoRequest() {
+
+        return AlterarNotificacaoVencimentoRequest
+                .builder()
+                .notificacaoVencimento(false)
+                .build();
+    }
+
 }
