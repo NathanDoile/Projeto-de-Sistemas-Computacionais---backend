@@ -2,9 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import static java.time.LocalDate.of;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo.CARRO;

@@ -1,7 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
-import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CadastrarVeiculoServiceTest {
+class CadastrarVeiculoServiceTest {
 
     @InjectMocks
     private CadastrarVeiculoService tested;
