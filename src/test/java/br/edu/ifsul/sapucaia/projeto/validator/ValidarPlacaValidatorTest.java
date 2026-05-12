@@ -33,7 +33,7 @@ class ValidarPlacaValidatorTest {
 
         String placaII = "ABCED23";
 
-        String placaIII = "ABCED23";
+        String placaIII = "ABC1#23";
 
         String placaIV = "ABC1D2E";
 

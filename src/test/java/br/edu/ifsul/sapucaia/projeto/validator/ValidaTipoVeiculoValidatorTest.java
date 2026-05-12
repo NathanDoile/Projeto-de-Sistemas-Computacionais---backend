@@ -20,9 +20,13 @@ class ValidaTipoVeiculoValidatorTest {
     @DisplayName("Não deve dar erro se tipo de veiculo for valido")
     void naoDeveDarErroSeTipoVeiculoValido(){
 
-        String veiculo = "carro";
+        String veiculoI = "carro";
 
-        assertDoesNotThrow(() -> tested.tipoAceito(veiculo));
+        assertDoesNotThrow(() -> tested.tipoAceito(veiculoI));
+
+        String veiculoII = "motocicleta";
+
+        assertDoesNotThrow(() -> tested.tipoAceito(veiculoII));
     }
 
     @Test
