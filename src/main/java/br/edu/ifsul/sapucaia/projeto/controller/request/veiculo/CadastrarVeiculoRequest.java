@@ -3,9 +3,11 @@ package br.edu.ifsul.sapucaia.projeto.controller.request.veiculo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Builder
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class CadastrarVeiculoRequest {
 
     @NotBlank

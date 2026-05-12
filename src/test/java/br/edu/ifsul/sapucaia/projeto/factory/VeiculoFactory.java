@@ -1,6 +1,10 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
+import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import static java.time.LocalDate.of;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo.CARRO;
@@ -18,6 +22,21 @@ public class VeiculoFactory {
                 .ano(2021)
                 .cor("Branco")
                 .kmAtual(78300)
+                .build();
+    }
+
+    public static CadastrarVeiculoRequest cadastrarVeiculoRequest() {
+
+        return CadastrarVeiculoRequest
+                .builder()
+                .modelo("modelo")
+                .marca("marca")
+                .placa("ABC1D23")
+                .tipo("carro")
+                .ano(2024)
+                .cor("azul")
+                .kmAtual(130548)
+                .idUsuario(1L)
                 .build();
     }
 }
