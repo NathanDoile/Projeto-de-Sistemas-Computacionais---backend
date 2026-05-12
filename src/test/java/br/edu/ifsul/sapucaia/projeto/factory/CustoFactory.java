@@ -1,9 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
-
-import java.time.LocalDate;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.COMBUSTIVEL;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;

@@ -66,17 +66,8 @@ public class ReceitaSemanalService {
             }
         }
 
-        double despesaTotal = 0;
-
-        double lucroLiquido = ganhoBruto - despesaTotal;
-
-        double kmAtual = 0;
         return InformacoesDaSemanaResponse.builder()
                 .ganhoBruto(ganhoBruto)
-                .despesaTotal(despesaTotal)
-                .lucroLiquido(lucroLiquido)
-                .kmAtual(kmAtual)
-
                 .segunda(segunda)
                 .terca(terca)
                 .quarta(quarta)
@@ -84,7 +75,6 @@ public class ReceitaSemanalService {
                 .sexta(sexta)
                 .sabado(sabado)
                 .domingo(domingo)
-
                 .build();
     }
 }
