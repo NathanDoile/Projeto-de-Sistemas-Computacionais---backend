@@ -1,0 +1,159 @@
+package br.edu.ifsul.sapucaia.projeto.service.receita_diaria;
+
+import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.CadastrarReceitaDiariaRequest;
+import br.edu.ifsul.sapucaia.projeto.domain.Meta;
+import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
+import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory;
+import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static java.time.LocalDate.now;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class CadastrarReceitaDiariaServiceTest {
+
+    @InjectMocks
+    private CadastrarReceitaDiariaService tested;
+
+    @Mock
+    private ValidaUsuarioService validaUsuarioService;
+
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private ReceitaDiariaRepository receitaDiariaRepository;
+
+    @Mock
+    private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
+
+    @Mock
+    private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
+
+    @Mock
+    private MetaRepository metaRepository;
+
+    @Captor
+    private ArgumentCaptor<ReceitaDiaria> receitaDiariaCaptor;
+
+    @Captor
+    private ArgumentCaptor<Meta> metaCaptor;
+
+    @Test
+    @DisplayName("Deve cadastrar receita diaria corretamente")
+    void deveCadastrarReceitaDiariaCorretamente(){
+
+        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+
+        Usuario usuario = usuario();
+
+        when(usuarioRepository.findById(request.getIdUsuario())).thenReturn(Optional.of(usuario));
+
+        tested.cadastrar(request);
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
+        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(usuarioRepository).findById(request.getIdUsuario());
+        verify(metaRepository, times(1)).save(metaCaptor.capture());
+        verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        ReceitaDiaria receitaDiariaResponse = receitaDiariaCaptor.getValue();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            double valorEsperadoMeta = usuario().getMetas().get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(request.getIdUsuario(), receitaDiariaResponse.getUsuario().getIdUsuario());
+        assertEquals(request.getDataReceita(), receitaDiariaResponse.getDataReceita());
+        assertEquals(request.getValor(), receitaDiariaResponse.getValor());
+        assertEquals(usuario, receitaDiariaResponse.getUsuario());
+        assertTrue(receitaDiariaResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar a receita diaria se id do usuario incorreto")
+    void naoDeveCadastrarReceitaDiariaSeIdUsuarioIncorreto(){
+
+        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+
+        request.setIdUsuario(5L);
+
+        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(request.getIdUsuario());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorReceitaDiariaValidator, never()).isPositivo(any(Double.class));
+        verify(validaDataReceitaDiariaValidator, never()).naoMaiorQueHoje(any(LocalDate.class));
+        verify(usuarioRepository, never()).findById(any(Long.class));
+        verify(metaRepository, never()).save(any(Meta.class));
+        verify(receitaDiariaRepository, never()).save(any(ReceitaDiaria.class));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar a receita diaria se valor da receita nao positivo")
+    void naoDeveCadastrarReceitaDiariaSeValorNaoPositivo(){
+
+        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+
+        request.setValor(-22.00);
+
+        doThrow(ResponseStatusException.class).when(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
+        verify(validaDataReceitaDiariaValidator, never()).naoMaiorQueHoje(any(LocalDate.class));
+        verify(usuarioRepository, never()).findById(any(Long.class));
+        verify(metaRepository, never()).save(any(Meta.class));
+        verify(receitaDiariaRepository, never()).save(any(ReceitaDiaria.class));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar a receita diaria se data maior que hoje")
+    void naoDeveCadastrarReceitaDiariaSeDataMaiorQueHoje(){
+
+        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+
+        request.setDataReceita(now().plusDays(1));
+
+        doThrow(ResponseStatusException.class).when(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
+        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(usuarioRepository, never()).findById(any(Long.class));
+        verify(metaRepository, never()).save(any(Meta.class));
+        verify(receitaDiariaRepository, never()).save(any(ReceitaDiaria.class));
+    }
+}

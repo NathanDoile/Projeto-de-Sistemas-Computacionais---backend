@@ -36,15 +36,15 @@ public class InformacoesDaSemanaService {
         List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicioSemana, hoje);
         List<Custo> custos = custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(usuario.getVeiculo().getIdVeiculo(), inicioSemana, hoje);
 
-        Double ganhoBruto = receitas.stream()
+        double ganhoBruto = receitas.stream()
                 .mapToDouble(ReceitaDiaria::getValor)
                 .sum();
 
-        Double despesas = custos.stream()
+        double despesas = custos.stream()
                 .mapToDouble(Custo::getValor)
                 .sum();
 
-        Double lucroLiquido = ganhoBruto - despesas;
+        double lucroLiquido = ganhoBruto - despesas;
 
         double kmAtual = usuario.getVeiculo().getKmAtual();
 
