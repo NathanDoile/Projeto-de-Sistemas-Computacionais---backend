@@ -21,11 +21,7 @@ public class ValidarPlacaValidator {
             }
         }
 
-        if(!isDigit(placa.charAt(3))){
-            throw new ResponseStatusException(BAD_REQUEST, "Formato de placa incorreto.");
-        }
-
-        if(!isLetterOrDigit(placa.charAt(4))){
+        if(!isDigit(placa.charAt(3)) || !isLetterOrDigit(placa.charAt(4))){
             throw new ResponseStatusException(BAD_REQUEST, "Formato de placa incorreto.");
         }
 
