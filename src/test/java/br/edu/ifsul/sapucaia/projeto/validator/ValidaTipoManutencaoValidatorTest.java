@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.validator;
 
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaTipoManutencaoValidatorTest {
+class ValidaTipoManutencaoValidatorTest {
 
     @InjectMocks
     private ValidaTipoManutencaoValidator tested;
@@ -28,27 +27,22 @@ public class ValidaTipoManutencaoValidatorTest {
     }
 
     @Test
-    @DisplayName("Deve dar erro se tipo de manutencao for nulo")
-    void deveDarErroSeTipoManutencaoNulo(){
+    @DisplayName("Deve dar erro se tipo de manutencao for nulo ou vazio")
+    void deveDarErroSeTipoManutencaoNuloOuVazio(){
 
-        String tipo = null;
+        String tipoI = null;
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.tipoValido(tipo));
+        ResponseStatusException exceptionI = assertThrows(ResponseStatusException.class, () -> tested.tipoValido(tipoI));
 
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Campo tipo é obrigatório.", exception.getReason());
-    }
+        assertEquals(BAD_REQUEST, exceptionI.getStatusCode());
+        assertEquals("Campo tipo é obrigatório.", exceptionI.getReason());
 
-    @Test
-    @DisplayName("Deve dar erro se tipo de manutencao for vazio")
-    void deveDarErroSeTipoManutencaoVazio(){
+        String tipoII = "                   ";
 
-        String tipo = "                   ";
+        ResponseStatusException exceptionII = assertThrows(ResponseStatusException.class, () -> tested.tipoValido(tipoII));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.tipoValido(tipo));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Campo tipo é obrigatório.", exception.getReason());
+        assertEquals(BAD_REQUEST, exceptionII.getStatusCode());
+        assertEquals("Campo tipo é obrigatório.", exceptionII.getReason());
     }
 
     @Test

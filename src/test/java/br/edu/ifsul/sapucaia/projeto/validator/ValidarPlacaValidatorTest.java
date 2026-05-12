@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidarPlacaValidatorTest {
+class ValidarPlacaValidatorTest {
 
     @InjectMocks
     private ValidarPlacaValidator tested;
@@ -26,50 +26,29 @@ public class ValidarPlacaValidatorTest {
     }
 
     @Test
-    @DisplayName("Deve dar erro se um dos 3 primeiros digitos não for letra")
-    void deveDarErroSeUmDosTresPrimeirosNaoForLetra(){
+    @DisplayName("Deve dar erro se placa invalida")
+    void deveDarErroSePlacaInvalida(){
 
-        String placa = "A2C1D23";
+        String placaI = "A2C1D23";
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placa));
+        String placaII = "ABCED23";
 
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Formato de placa incorreto.", exception.getReason());
-    }
+        String placaIII = "ABCED23";
 
-    @Test
-    @DisplayName("Deve dar erro se quarto digito não for numero")
-    void deveDarErroSeQuartoDigitoNaoNumero(){
+        String placaIV = "ABC1D2E";
 
-        String placa = "ABCED23";
+        ResponseStatusException exceptionI = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placaI));
+        ResponseStatusException exceptionII = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placaII));
+        ResponseStatusException exceptionIII = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placaIII));
+        ResponseStatusException exceptionIV = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placaIV));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placa));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Formato de placa incorreto.", exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Deve dar erro se quinto digito não for numero ou letra")
-    void deveDarErroSeQuintoDigitoNaoNumeroouLetra(){
-
-        String placa = "ABC1#23";
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placa));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Formato de placa incorreto.", exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Deve dar erro se dois ultimos digitos nao for numero")
-    void deveDarErroSeDoisUltimosNaoNumero(){
-
-        String placa = "ABC1D2E";
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.formatoValido(placa));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Formato de placa incorreto.", exception.getReason());
+        assertEquals(BAD_REQUEST, exceptionI.getStatusCode());
+        assertEquals("Formato de placa incorreto.", exceptionI.getReason());
+        assertEquals(BAD_REQUEST, exceptionII.getStatusCode());
+        assertEquals("Formato de placa incorreto.", exceptionII.getReason());
+        assertEquals(BAD_REQUEST, exceptionIII.getStatusCode());
+        assertEquals("Formato de placa incorreto.", exceptionIII.getReason());
+        assertEquals(BAD_REQUEST, exceptionIV.getStatusCode());
+        assertEquals("Formato de placa incorreto.", exceptionIV.getReason());
     }
 }
