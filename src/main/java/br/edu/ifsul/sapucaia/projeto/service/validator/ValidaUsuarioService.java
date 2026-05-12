@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.service.validator;
 
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

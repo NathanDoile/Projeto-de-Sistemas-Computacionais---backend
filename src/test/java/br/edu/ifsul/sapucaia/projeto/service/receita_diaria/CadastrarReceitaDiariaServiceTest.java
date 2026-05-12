@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.Cadastrar
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 import br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
@@ -26,16 +25,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.SEMANAL;
-import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.LocalDate.now;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CadastrarReceitaDiariaServiceTest {
+class git CadastrarReceitaDiariaServiceTest {
 
     @InjectMocks
     private CadastrarReceitaDiariaService tested;
