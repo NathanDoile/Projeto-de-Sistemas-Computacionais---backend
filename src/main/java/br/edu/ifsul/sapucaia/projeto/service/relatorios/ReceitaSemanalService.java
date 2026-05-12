@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesD
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,13 @@ public class ReceitaSemanalService {
 
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final ValidaUsuarioService validaUsuarioService;
+    private final UsuarioRepository usuarioRepository;
 
     public InformacoesDaSemanaResponse buscarReceitaDaSemana(Long idUsuario) {
 
-        Usuario usuario = validaUsuarioService.buscarUsuarioPorId(idUsuario);
+        validaUsuarioService.porId(idUsuario);
+
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
         LocalDate inicioSemana = LocalDate.now()
                 .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -53,7 +57,6 @@ public class ReceitaSemanalService {
             ganhoBruto += valor;
 
             LocalDate data = r.getDataReceita();
-            if (data == null) continue;
 
             switch (data.getDayOfWeek()) {
                 case MONDAY -> segunda += valor;

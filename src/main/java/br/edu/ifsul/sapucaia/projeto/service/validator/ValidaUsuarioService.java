@@ -20,10 +20,4 @@ public class ValidaUsuarioService {
             throw new ResponseStatusException(NOT_FOUND, "ID do usuário não existe.");
         }
     }
-    public Usuario buscarUsuarioPorId(Long idUsuario) {
-        return usuarioRepository
-                .findByIdUsuarioAndIsAtivo(idUsuario, true)
-                .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
-    }
 }

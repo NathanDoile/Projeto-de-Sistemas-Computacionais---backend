@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.Cadastrar
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 import br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
@@ -25,6 +26,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.SEMANAL;
+import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.LocalDate.now;
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,7 +80,7 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        verify(metaRepository, times(1)).save(metaCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
@@ -89,6 +93,35 @@ class CadastrarReceitaDiariaServiceTest {
 
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
+
+        assertEquals(request.getIdUsuario(), receitaDiariaResponse.getUsuario().getIdUsuario());
+        assertEquals(request.getDataReceita(), receitaDiariaResponse.getDataReceita());
+        assertEquals(request.getValor(), receitaDiariaResponse.getValor());
+        assertEquals(usuario, receitaDiariaResponse.getUsuario());
+        assertTrue(receitaDiariaResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar receita diaria corretamente sem registrar em metas")
+    void deveCadastrarReceitaDiariaCorretamenteSemRegistrarMetas(){
+
+        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+        request.setDataReceita(now().minusYears(1));
+
+        Usuario usuario = usuario();
+
+        when(usuarioRepository.findById(request.getIdUsuario())).thenReturn(Optional.of(usuario));
+
+        tested.cadastrar(request);
+
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
+        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(usuarioRepository).findById(request.getIdUsuario());
+        verify(metaRepository, never()).save(any(Meta.class));
+        verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
+
+        ReceitaDiaria receitaDiariaResponse = receitaDiariaCaptor.getValue();
 
         assertEquals(request.getIdUsuario(), receitaDiariaResponse.getUsuario().getIdUsuario());
         assertEquals(request.getDataReceita(), receitaDiariaResponse.getDataReceita());

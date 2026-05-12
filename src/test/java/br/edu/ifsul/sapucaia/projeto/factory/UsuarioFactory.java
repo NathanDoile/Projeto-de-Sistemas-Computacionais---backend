@@ -5,7 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
 import java.util.List;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
+import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.*;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.LocalDate.of;
@@ -25,7 +25,7 @@ public class UsuarioFactory {
                 .possuiVeiculo(true)
                 .notificacaoManutencao(true)
                 .notificacaoVencimento(true)
-                .metas(List.of(meta()))
+                .metas(List.of(metaDiaria(), metaSemanal(), metaMensal()))
                 .veiculo(veiculo())
                 .receitasDiarias(List.of(receitaDiaria()))
                 .build();

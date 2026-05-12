@@ -7,6 +7,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class ResumoFinanceiroPeriodoService {
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final CustoRepository custoRepository;
     private final ValidaUsuarioService validaUsuarioService;
+    private final UsuarioRepository usuarioRepository;
 
     public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(
             Long idUsuario,
@@ -30,7 +32,9 @@ public class ResumoFinanceiroPeriodoService {
             LocalDate fim
     ) {
 
-        Usuario usuario = validaUsuarioService.buscarUsuarioPorId(idUsuario);
+        validaUsuarioService.porId(idUsuario);
+
+        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
         Veiculo veiculo = usuario.getVeiculo();
 
         double ganhoBruto = receitaDiariaRepository

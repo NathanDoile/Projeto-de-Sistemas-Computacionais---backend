@@ -4,8 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.meta.BuscarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.SEMANAL;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
 
 public class MetaFactory {
 
@@ -35,6 +34,45 @@ public class MetaFactory {
                 .idMeta(1L)
                 .titulo("Salario")
                 .formato(MENSAL)
+                .valorDesejado(3000)
+                .valorAtual(0)
+                .isAtivo(true)
+                .build();
+    }
+
+    public static Meta metaMensal() {
+
+        return Meta
+                .builder()
+                .idMeta(1L)
+                .titulo("Salario")
+                .formato(MENSAL)
+                .valorDesejado(3000)
+                .valorAtual(0)
+                .isAtivo(true)
+                .build();
+    }
+
+    public static Meta metaSemanal() {
+
+        return Meta
+                .builder()
+                .idMeta(1L)
+                .titulo("Salario")
+                .formato(SEMANAL)
+                .valorDesejado(3000)
+                .valorAtual(0)
+                .isAtivo(true)
+                .build();
+    }
+
+    public static Meta metaDiaria() {
+
+        return Meta
+                .builder()
+                .idMeta(1L)
+                .titulo("Salario")
+                .formato(DIARIA)
                 .valorDesejado(3000)
                 .valorAtual(0)
                 .isAtivo(true)

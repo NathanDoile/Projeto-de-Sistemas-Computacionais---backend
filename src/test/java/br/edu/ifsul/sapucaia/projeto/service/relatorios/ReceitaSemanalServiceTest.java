@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesD
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.DayOfWeek.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,23 +39,40 @@ class ReceitaSemanalServiceTest {
     @Mock
     private ValidaUsuarioService validaUsuarioService;
 
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
     @Test
     @DisplayName("Deve retornar a receita semanal corretamente")
     void deveRetornarReceitaSemanalCorretamente(){
 
         Usuario usuario = usuario();
 
+        List<ReceitaDiaria> receitas = new ArrayList<>();
+
+        LocalDate hoje = LocalDate.now();
+
+        receitas.add(receitaDiaria());
+
+        for(int i = 1; i < 7; i++){
+            ReceitaDiaria receita = receitaDiaria();
+            receita.setDataReceita(hoje.minusDays(i));
+
+            receitas.add(receita);
+        }
+
+        usuario.setReceitasDiarias(receitas);
+
         Long id = usuario.getIdUsuario();
 
-        List<ReceitaDiaria> receitas = usuario.getReceitasDiarias();
-
-        when(validaUsuarioService.buscarUsuarioPorId(id)).thenReturn(usuario);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(receitas);
 
         InformacoesDaSemanaResponse response = tested.buscarReceitaDaSemana(id);
 
-        verify(validaUsuarioService).buscarUsuarioPorId(id);
+        verify(validaUsuarioService).porId(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class));
 
         double ganhoBrutoEsperado = receitas
@@ -92,11 +111,12 @@ class ReceitaSemanalServiceTest {
 
         Long id = usuario.getIdUsuario();
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).buscarUsuarioPorId(id);
+        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
 
         assertThrows(ResponseStatusException.class, () -> tested.buscarReceitaDaSemana(id));
 
-        verify(validaUsuarioService).buscarUsuarioPorId(id);
+        verify(validaUsuarioService).porId(id);
+        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(id, true);
         verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
     }
 }
