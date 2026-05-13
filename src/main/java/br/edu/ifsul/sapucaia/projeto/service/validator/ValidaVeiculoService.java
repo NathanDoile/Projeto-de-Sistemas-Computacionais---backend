@@ -16,7 +16,7 @@ public class ValidaVeiculoService {
     public void porId(Long idVeiculo) {
 
         if(!veiculoRepository.existsByIdVeiculoAndIsAtivo(idVeiculo, true)){
-            throw new ResponseStatusException(NOT_FOUND, "Veículo não existe.");
+            throw new ResponseStatusException(NOT_FOUND, "ID do veículo não existe.");
         }
     }
 
