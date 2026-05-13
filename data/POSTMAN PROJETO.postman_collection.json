@@ -86,38 +86,6 @@
       "response": []
     },
     {
-      "name": "IA",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "localhost:8080/ia?message=Fiat Mobi Like 2023 1.0 fire flex 156000 km",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "ia"
-          ],
-          "query": [
-            {
-              "key": "message",
-              "value": "Fiat Mobi Like 2023 1.0 fire flex 156000 km",
-              "type": "text"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "Cadastrar Receita Diaria",
       "request": {
         "method": "POST",
@@ -557,6 +525,38 @@
             {
               "key": "{idUsuario}",
               "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "IA",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "localhost:8080/ia?message=Fiat Mobi Like 2023 1.0 fire flex 156000 km",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "ia"
+          ],
+          "query": [
+            {
+              "key": "message",
+              "value": "Fiat Mobi Like 2023 1.0 fire flex 156000 km",
+              "type": "text"
             }
           ]
         }

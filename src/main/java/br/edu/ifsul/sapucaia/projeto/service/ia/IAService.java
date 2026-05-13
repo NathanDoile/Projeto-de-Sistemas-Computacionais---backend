@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.ia;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.ia.*;
+import br.edu.ifsul.sapucaia.projeto.exception.IAException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class IAService {
             return response.getBody();
 
         }catch (RestClientException e){
-            throw new RuntimeException("Erro na chamada para a API do Gemini", e);
+            throw new IAException("Erro na chamada para a API do Gemini", e);
         }
     }
 }
