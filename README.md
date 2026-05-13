@@ -247,5 +247,5 @@
 
 - **Últimas transações**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador de usuário
+  - Parâmetros de URL: `id`, é o identificador do usuário
   - `GET /ultimas-transacoes/{idUsuario}`
