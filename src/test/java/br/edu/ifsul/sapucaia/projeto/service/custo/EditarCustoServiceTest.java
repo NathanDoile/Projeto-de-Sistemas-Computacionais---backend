@@ -56,14 +56,14 @@ class EditarCustoServiceTest {
         Long id = 1L;
         Custo custo = CustoFactory.custo();
 
-        when(custoRepository.findById(id)).thenReturn(Optional.of(custo));
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
 
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
-        verify(custoRepository).findById(id);
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(custoRepository).save(custoCaptor.capture());
 
         Custo response = custoCaptor.getValue();
@@ -89,7 +89,7 @@ class EditarCustoServiceTest {
         verify(validaCustoService).porId(idCusto);
         verify(validaValorCustoValidator, never()).isPositivo(anyDouble());
         verify(validaTipoCustoValidator, never()).tipoValido(anyString());
-        verify(custoRepository, never()).findById(anyLong());
+        verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).save(any(Custo.class));
     }
 }

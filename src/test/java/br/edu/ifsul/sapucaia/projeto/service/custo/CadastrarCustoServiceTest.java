@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.service.custo;
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
@@ -72,7 +73,7 @@ class CadastrarCustoServiceTest {
 
         Custo custoResponse = custoCaptor.getValue();
 
-        assertEquals(request.getTipo(), custoResponse.getTipo().toString());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
         assertEquals(request.getValor(), custoResponse.getValor());
         assertEquals(request.getDescricao(), custoResponse.getDescricao());
         assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());

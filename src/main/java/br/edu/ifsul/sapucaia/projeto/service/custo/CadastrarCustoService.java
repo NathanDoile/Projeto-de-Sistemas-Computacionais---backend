@@ -37,7 +37,7 @@ public class CadastrarCustoService {
 
         Custo custo = toEntity(request);
       
-        Veiculo veiculo = veiculoRepository.findById(request.getIdVeiculo()).get();
+        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         custo.setVeiculo(veiculo);
 
         custo.setAtivo(true);
