@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
@@ -10,6 +9,10 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.deTexto;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +33,10 @@ public class EditarCustoService {
         validaValorCustoValidator.isPositivo(editarCustoRequest.getValor());
         validaTipoCustoValidator.tipoValido(editarCustoRequest.getTipo());
 
-        Custo custo = custoRepository.findById(editarCustoRequest.getIdCusto()).get();
+        Custo custo = custoRepository.findByIdCustoAndIsAtivo(editarCustoRequest.getIdCusto(), true)
+        .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Id do custo não encontrado."));
 
-        custo.setTipo(TipoCusto.deTexto(editarCustoRequest.getTipo()));
+        custo.setTipo(deTexto(editarCustoRequest.getTipo()));
         custo.setValor(editarCustoRequest.getValor());
         custo.setDataVencimento(editarCustoRequest.getDataVencimento());
         custo.setDataPagamento(editarCustoRequest.getDataPagamento());

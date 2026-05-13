@@ -5,6 +5,7 @@ public enum TipoCusto {
     COMBUSTIVEL("Combustível"),
     SEGURO("Seguro"),
     IMPOSTOS("Impostos"),
+    MULTAS("Multas"),
     OUTROS("Outros");
 
     private String descricao;

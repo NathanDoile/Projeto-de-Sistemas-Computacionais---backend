@@ -2,11 +2,13 @@ package br.edu.ifsul.sapucaia.projeto.controller.request.custo;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
+@Builder
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class EditarCustoRequest {
 
     @NotNull
