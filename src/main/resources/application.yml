@@ -6,3 +6,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+gemini:
+  baseurl: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=%s
+  api:
+    key: CHAVEAPI

@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "8d4df33e-1802-4c49-b027-9b07abfe91a2",
+    "_postman_id": "71e9c158-150d-465a-92fc-32064a5b3bf1",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "53222404",
-    "_collection_link": "https://go.postman.co/collection/53222404-8d4df33e-1802-4c49-b027-9b07abfe91a2?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/53222404-71e9c158-150d-465a-92fc-32064a5b3bf1?source=collection_link"
   },
   "item": [
     {
@@ -80,6 +80,38 @@
           "path": [
             "usuario",
             "login-usuario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "IA",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "localhost:8080/ia?message=Fiat Mobi Like 2023 1.0 fire flex 156000 km",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "ia"
+          ],
+          "query": [
+            {
+              "key": "message",
+              "value": "Fiat Mobi Like 2023 1.0 fire flex 156000 km",
+              "type": "text"
+            }
           ]
         }
       },
