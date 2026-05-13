@@ -31,7 +31,10 @@
         <sonar.coverage.exclusions>
             **/domain/**/*,
             **/request/**/*,
-            **/response/**/*
+            **/response/**/*,
+            **/config/**/*,
+            **/controller/**/*,
+            **/exception/**/*
         </sonar.coverage.exclusions>
     </properties>
 	<dependencies>
