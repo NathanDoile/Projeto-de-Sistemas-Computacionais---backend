@@ -15,13 +15,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
 import static br.edu.ifsul.sapucaia.projeto.mapper.AdministradorMapper.toEntity;
@@ -70,7 +66,7 @@ public class CadastrarReceitaDiariaService {
             condicaoParaInsercao.put(SEMANAL, dataDaReceita.isAfter(inicioSemana) || dataDaReceita.equals(inicioSemana));
             condicaoParaInsercao.put(MENSAL, dataDaReceita.getMonth() == hoje.getMonth() && dataDaReceita.getYear() == hoje.getYear());
 
-            if(condicaoParaInsercao.get(meta.getFormato())){
+            if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
                 double novoValorMeta = meta.getValorAtual() + receitaDiaria.getValor();
 
                 meta.setValorAtual(novoValorMeta);

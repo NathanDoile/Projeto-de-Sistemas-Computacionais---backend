@@ -6,8 +6,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.RetornaDadosVei
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo;
 
-import java.time.LocalDate;
-
 public class VeiculoMapper {
 
     private VeiculoMapper(){}

@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculo
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
-import br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
@@ -15,8 +14,6 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toEntity;
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toResponse;
