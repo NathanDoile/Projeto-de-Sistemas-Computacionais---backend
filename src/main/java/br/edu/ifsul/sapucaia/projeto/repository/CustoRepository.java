@@ -8,10 +8,13 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface CustoRepository extends JpaRepository<Custo, Long> {
 
     boolean existsByIdCustoAndIsAtivo(@NotNull Long idCusto, boolean isAtivo);
+
+    Optional<Custo> findByIdCustoAndIsAtivo(Long idCusto, boolean isAtivo);
 
     List<Custo> findByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean isAtivo);
 
