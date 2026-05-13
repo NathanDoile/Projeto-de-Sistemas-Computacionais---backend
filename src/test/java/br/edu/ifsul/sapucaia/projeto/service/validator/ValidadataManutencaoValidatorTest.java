@@ -12,6 +12,8 @@ import static java.time.LocalDate.now;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+import java.time.LocalDate;
+
 @ExtendWith(MockitoExtension.class)
 class ValidadataManutencaoValidatorTest {
 
@@ -30,8 +32,9 @@ class ValidadataManutencaoValidatorTest {
     @DisplayName("Deve dar erro se a data da manutenção for maior que hoje")
     void deveDarErroSeDataMaiorQueHoje() {
 
+        LocalDate data = now().plusDays(1);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> tested.dataMenorQueHoje(now().plusDays(1)));
+                () -> tested.dataMenorQueHoje(data));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("Data da manutenção não deve ser superior à hoje.", exception.getReason());
