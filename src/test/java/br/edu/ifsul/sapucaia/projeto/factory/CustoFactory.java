@@ -1,10 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
-<<<<<<< HEAD
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
-=======
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest;
->>>>>>> e2542900563fa3895822c8b716a82782046e09f5
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.COMBUSTIVEL;
@@ -29,7 +26,6 @@ public class CustoFactory {
                 .build();
     }
 
-<<<<<<< HEAD
     public static CadastrarCustoRequest cadastrarCustoRequest() {
 
         return CadastrarCustoRequest
@@ -42,8 +38,7 @@ public class CustoFactory {
                 .dataPagamento(now())
                 .build();
     }
-}
-=======
+
     public static EditarCustoRequest editarCustoRequest() {
 
         return EditarCustoRequest
@@ -58,4 +53,3 @@ public class CustoFactory {
     }
 
 }
->>>>>>> e2542900563fa3895822c8b716a82782046e09f5
