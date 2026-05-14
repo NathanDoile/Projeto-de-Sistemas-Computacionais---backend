@@ -1,7 +1,9 @@
 package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class LoginUsuarioService {
 
     private final ValidaSenhaAtualUsuarioService validaSenhaAtualUsuarioService;
 
-    public void loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
+    public LoginUsuarioResponse loginUsuario(LoginUsuarioRequest loginUsuarioRequest){
 
         // Busca o usuário pelo e-mail
         Usuario usuario = usuarioRepository.findByEmail(loginUsuarioRequest.getEmail())
@@ -35,5 +37,7 @@ public class LoginUsuarioService {
                     usuario.getIdUsuario()
             );
         }
+
+        return UsuarioMapper.toResponseLogin(usuario);
     }
 }

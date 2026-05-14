@@ -117,6 +117,9 @@
                                 <exclude>**/request/*</exclude>
                                 <exclude>**/response/*</exclude>
                                 <exclude>**/domain/*</exclude>
+                                <exclude>**/config/**/*</exclude>
+                                <exclude>**/controller/**/*</exclude>
+                                <exclude>**/exception/**/*</exclude>
                             </excludes>
                         </configuration>
                     </execution>

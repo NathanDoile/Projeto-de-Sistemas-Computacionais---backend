@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.LoginUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioService;
@@ -43,11 +44,19 @@ class LoginUsuarioServiceTest {
 
         when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(usuario));
 
-        tested.loginUsuario(request);
+        LoginUsuarioResponse response = tested.loginUsuario(request);
 
         verify(usuarioRepository).findByEmail(request.getEmail());
         verify(usuarioRepository, never()).delete(any(Usuario.class));
         verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenha(), usuario.getIdUsuario());
+
+        assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
+        assertEquals(usuario.getNome(), response.getNome());
+        assertEquals(usuario.getEmail(), response.getEmail());
+        assertEquals(usuario.getDataCadastro(), response.getDataCadastro());
+        assertEquals(usuario.getTelefone(), response.getTelefone());
+        assertEquals(usuario.isNotificacaoVencimento(), response.isNotificacaoVencimento());
+        assertEquals(usuario.isNotificacaoManutencao(), response.isNotificacaoManutencao());
     }
 
     @Test

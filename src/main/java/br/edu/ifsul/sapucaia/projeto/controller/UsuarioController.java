@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
+import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.*;
 import jakarta.validation.Valid;
@@ -43,8 +44,8 @@ public class UsuarioController {
 
     @PostMapping("/login-usuario")
     @ResponseStatus(OK)
-    public void loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
-        loginUsuarioService.loginUsuario(loginUsuarioRequest);
+    public LoginUsuarioResponse loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
+        return loginUsuarioService.loginUsuario(loginUsuarioRequest);
     }
 
     @DeleteMapping("/{id}/excluir-conta")

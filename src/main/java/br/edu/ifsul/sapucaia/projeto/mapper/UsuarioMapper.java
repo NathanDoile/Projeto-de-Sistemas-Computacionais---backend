@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.mapper;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.CadastrarUsuarioRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
@@ -25,6 +26,20 @@ public class UsuarioMapper {
                 .email(usuario.getEmail())
                 .dataCadastro(usuario.getDataCadastro())
                 .telefone(usuario.getTelefone())
+                .build();
+    }
+
+    public static LoginUsuarioResponse toResponseLogin(Usuario usuario) {
+
+        return LoginUsuarioResponse
+                .builder()
+                .idUsuario(usuario.getIdUsuario())
+                .nome(usuario.getNome())
+                .email(usuario.getEmail())
+                .dataCadastro(usuario.getDataCadastro())
+                .telefone(usuario.getTelefone())
+                .notificacaoVencimento(usuario.isNotificacaoVencimento())
+                .notificacaoManutencao(usuario.isNotificacaoManutencao())
                 .build();
     }
 }
