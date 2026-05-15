@@ -19,11 +19,11 @@ public class BuscarMetasService {
 
     private final MetaRepository metaRepository;
 
-    public List<BuscarMetaResponse> buscar(BuscarMetaRequest request) {
+    public List<BuscarMetaResponse> buscar(Long idUsuario) {
 
-        validaUsuarioService.porId(request.getIdUsuario());
+        validaUsuarioService.porId(idUsuario);
 
-        List<Meta> metas = metaRepository.findByUsuarioIdUsuarioAndIsAtivo(request.getIdUsuario(), true);
+        List<Meta> metas = metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
 
         return metas
                 .stream()

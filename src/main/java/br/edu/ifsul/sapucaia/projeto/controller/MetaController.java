@@ -29,10 +29,10 @@ public class MetaController {
         cadastrarMetaService.cadastrar(cadastrarMetaRequest);
     }
 
-    @GetMapping
+    @GetMapping("/{idUsuario}")
     @ResponseStatus(OK)
-    public List<BuscarMetaResponse> buscarMetas(@Valid @RequestBody BuscarMetaRequest request){
-        return buscarMetasService.buscar(request);
+    public List<BuscarMetaResponse> buscarMetas(@PathVariable Long idUsuario){
+        return buscarMetasService.buscar(idUsuario);
     }
     
 }

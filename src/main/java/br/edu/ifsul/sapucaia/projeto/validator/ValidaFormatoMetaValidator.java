@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class ValidaFormatoMetaValidator {
+public class    ValidaFormatoMetaValidator {
 
     public void formatoValido(String formatoEscolhido) {
         if(!formatoEscolhido.equalsIgnoreCase("Diária") &&

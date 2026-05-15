@@ -127,12 +127,9 @@
 
 - **Buscar metas**
     - Precisa estar logado para utilizar esse path
-    - `GET /`
-    ```json
-    {
-      "idUsuario": 1
-    }
-    ```
+    - `GET /{id}`
+    - Parâmetros de URL: `id`, é o identificador do usuario
+
 
 ### Rota: `/custo`
 
@@ -169,7 +166,7 @@
 
 - **Buscar custos em aberto/não pagos**
     - Precisa estar logado para utilizar esse path;
-    - Parâmetros de URL: `id`, é o identificador do veículo
+    - Parâmetros de URL: `id`, é o identificador do usuario
     - `GET /{id}/em-aberto`
 
 ### Rota: `/veiculo`

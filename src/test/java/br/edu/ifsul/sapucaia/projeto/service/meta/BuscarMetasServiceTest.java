@@ -38,16 +38,16 @@ class BuscarMetasServiceTest {
     @DisplayName("Deve buscar as metas corretamente")
     void deveBuscarMetasCorretamente(){
 
-        BuscarMetaRequest request = buscarMetaRequest();
+        Long idUsuario = 1L;
 
         List<Meta> metas = List.of(meta(), meta());
 
-        when(metaRepository.findByUsuarioIdUsuarioAndIsAtivo(request.getIdUsuario(), true)).thenReturn(metas);
+        when(metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true)).thenReturn(metas);
 
-        List<BuscarMetaResponse> response = tested.buscar(request);
+        List<BuscarMetaResponse> response = tested.buscar(idUsuario);
 
-        verify(validaUsuarioService).porId(request.getIdUsuario());
-        verify(metaRepository).findByUsuarioIdUsuarioAndIsAtivo(request.getIdUsuario(), true);
+        verify(validaUsuarioService).porId(idUsuario);
+        verify(metaRepository).findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
 
         assertEquals(2, response.size());
 
@@ -64,13 +64,13 @@ class BuscarMetasServiceTest {
     @DisplayName("Não deve buscar as metas com id do usuario incorreto")
     void naoDeveBuscarMetasIdUsuarioIncorreto(){
 
-        BuscarMetaRequest request = buscarMetaRequest();
+        Long idUsuario = 1L;
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(request.getIdUsuario());
+        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(idUsuario);
 
-        assertThrows(ResponseStatusException.class, () -> tested.buscar(request));
+        assertThrows(ResponseStatusException.class, () -> tested.buscar(idUsuario));
 
-        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(validaUsuarioService).porId(idUsuario);
         verify(metaRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
     }
 }
