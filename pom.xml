@@ -34,7 +34,8 @@
             **/response/**/*,
             **/config/**/*,
             **/controller/**/*,
-            **/exception/**/*
+            **/exception/**/*,
+            **/ia/**/*
         </sonar.coverage.exclusions>
     </properties>
 	<dependencies>
@@ -120,6 +121,7 @@
                                 <exclude>**/config/**/*</exclude>
                                 <exclude>**/controller/**/*</exclude>
                                 <exclude>**/exception/**/*</exclude>
+                                <exclude>**/ia/**/*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
