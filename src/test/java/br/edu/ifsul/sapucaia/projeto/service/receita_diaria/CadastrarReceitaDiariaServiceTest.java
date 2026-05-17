@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.DayOfWeek.MONDAY;
@@ -68,7 +69,7 @@ class CadastrarReceitaDiariaServiceTest {
     @DisplayName("Deve cadastrar receita diaria corretamente")
     void deveCadastrarReceitaDiariaCorretamente(){
 
-        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         Usuario usuario = usuario();
 
@@ -129,10 +130,10 @@ class CadastrarReceitaDiariaServiceTest {
     @DisplayName("Deve cadastrar receita diaria corretamente sem registrar em metas")
     void deveCadastrarReceitaDiariaCorretamenteSemRegistrarMetas(){
 
-        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
-        request.setDataReceita(now().minusYears(1));
+        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         Usuario usuario = usuario();
+        usuario.setMetas(new ArrayList<>());
 
         when(usuarioRepository.findById(request.getIdUsuario())).thenReturn(Optional.of(usuario));
 
@@ -158,7 +159,7 @@ class CadastrarReceitaDiariaServiceTest {
     @DisplayName("Não deve cadastrar a receita diaria se id do usuario incorreto")
     void naoDeveCadastrarReceitaDiariaSeIdUsuarioIncorreto(){
 
-        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         request.setIdUsuario(5L);
 
@@ -178,7 +179,7 @@ class CadastrarReceitaDiariaServiceTest {
     @DisplayName("Não deve cadastrar a receita diaria se valor da receita nao positivo")
     void naoDeveCadastrarReceitaDiariaSeValorNaoPositivo(){
 
-        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         request.setValor(-22.00);
 
@@ -198,7 +199,7 @@ class CadastrarReceitaDiariaServiceTest {
     @DisplayName("Não deve cadastrar a receita diaria se data maior que hoje")
     void naoDeveCadastrarReceitaDiariaSeDataMaiorQueHoje(){
 
-        CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
+        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         request.setDataReceita(now().plusDays(1));
 
