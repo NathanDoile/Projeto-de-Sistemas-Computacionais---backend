@@ -22,11 +22,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.LocalDate.now;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -67,6 +71,22 @@ class CadastrarReceitaDiariaServiceTest {
         CadastrarReceitaDiariaRequest request = ReceitaDiariaFactory.cadastrarReceitaDiariaRequest();
 
         Usuario usuario = usuario();
+
+        List<ReceitaDiaria> receitas = new ArrayList<>();
+
+        ReceitaDiaria receitaHoje = receitaDiaria();
+
+        ReceitaDiaria receitaInicioDaSemana = receitaDiaria();
+        receitaInicioDaSemana.setDataReceita(now().with(previousOrSame(MONDAY)));
+
+        ReceitaDiaria receitaForaDoMes = receitaDiaria();
+        receitaForaDoMes.setDataReceita(now().minusMonths(2));
+
+        receitas.add(receitaHoje);
+        receitas.add(receitaInicioDaSemana);
+        receitas.add(receitaForaDoMes);
+
+        usuario.setReceitasDiarias(receitas);
 
         when(usuarioRepository.findById(request.getIdUsuario())).thenReturn(Optional.of(usuario));
 

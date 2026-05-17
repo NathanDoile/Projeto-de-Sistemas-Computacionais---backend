@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.EnumMap;
 import java.util.List;
+
+import static java.time.DayOfWeek.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,10 +32,10 @@ public class ReceitaSemanalService {
         Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
         LocalDate inicioSemana = LocalDate.now()
-                .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                .with(TemporalAdjusters.previousOrSame(MONDAY));
 
         LocalDate fimSemana = LocalDate.now()
-                .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+                .with(TemporalAdjusters.nextOrSame(SUNDAY));
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(
@@ -43,41 +46,33 @@ public class ReceitaSemanalService {
 
         double ganhoBruto = 0;
 
-        double segunda = 0;
-        double terca = 0;
-        double quarta = 0;
-        double quinta = 0;
-        double sexta = 0;
-        double sabado = 0;
-        double domingo = 0;
+        EnumMap<DayOfWeek, Double> diasDaSemana = new EnumMap<>(DayOfWeek.class);
+
+        for(DayOfWeek diaDaSemama : DayOfWeek.values()){
+            diasDaSemana.put(diaDaSemama, 0.0);
+        }
 
         for (ReceitaDiaria r : receitas) {
 
             double valor = r.getValor();
             ganhoBruto += valor;
 
-            LocalDate data = r.getDataReceita();
+            DayOfWeek diaDaSemana = r.getDataReceita().getDayOfWeek();
 
-            switch (data.getDayOfWeek()) {
-                case MONDAY -> segunda += valor;
-                case TUESDAY -> terca += valor;
-                case WEDNESDAY -> quarta += valor;
-                case THURSDAY -> quinta += valor;
-                case FRIDAY -> sexta += valor;
-                case SATURDAY -> sabado += valor;
-                case SUNDAY -> domingo += valor;
-            }
+            Double novoValor = diasDaSemana.get(diaDaSemana) + valor;
+
+            diasDaSemana.put(diaDaSemana, novoValor);
         }
 
         return InformacoesDaSemanaResponse.builder()
                 .ganhoBruto(ganhoBruto)
-                .segunda(segunda)
-                .terca(terca)
-                .quarta(quarta)
-                .quinta(quinta)
-                .sexta(sexta)
-                .sabado(sabado)
-                .domingo(domingo)
+                .segunda(diasDaSemana.get(MONDAY))
+                .terca(diasDaSemana.get(TUESDAY))
+                .quarta(diasDaSemana.get(WEDNESDAY))
+                .quinta(diasDaSemana.get(THURSDAY))
+                .sexta(diasDaSemana.get(FRIDAY))
+                .sabado(diasDaSemana.get(SATURDAY))
+                .domingo(diasDaSemana.get(SUNDAY))
                 .build();
     }
 }
