@@ -79,12 +79,20 @@ class CadastrarReceitaDiariaServiceTest {
         ReceitaDiaria receitaInicioDaSemana = receitaDiaria();
         receitaInicioDaSemana.setDataReceita(now().with(previousOrSame(MONDAY)));
 
+        ReceitaDiaria receitaForaDaSemana = receitaDiaria();
+        receitaForaDaSemana.setDataReceita(now().minusWeeks(1));
+
         ReceitaDiaria receitaForaDoMes = receitaDiaria();
         receitaForaDoMes.setDataReceita(now().minusMonths(2));
 
+        ReceitaDiaria receitaForaDoAno = receitaDiaria();
+        receitaForaDoAno.setDataReceita(now().minusYears(1));
+
         receitas.add(receitaHoje);
         receitas.add(receitaInicioDaSemana);
+        receitas.add(receitaForaDaSemana);
         receitas.add(receitaForaDoMes);
+        receitas.add(receitaForaDoAno);
 
         usuario.setReceitasDiarias(receitas);
 
