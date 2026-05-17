@@ -23,8 +23,6 @@ public class BuscarCustosEmAbertoService {
 
     private final CustoRepository custoRepository;
 
-    private final VeiculoRepository veiculoRepository;
-
     private final UsuarioRepository usuarioRepository;
 
     public List<BuscarCustosEmAbertoResponse> buscar(Long id) {
