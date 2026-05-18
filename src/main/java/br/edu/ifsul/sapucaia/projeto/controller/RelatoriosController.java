@@ -1,16 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse; // ✅ ADICIONA ISSO
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/relatorios")

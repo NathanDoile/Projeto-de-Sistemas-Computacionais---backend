@@ -63,20 +63,6 @@ class CadastrarReceitaDiariaServiceTest {
     @Captor
     private ArgumentCaptor<Meta> metaCaptor;
 
-    /*
-        ReceitaDiaria receitaInicioDaSemana = receitaDiaria();
-        receitaInicioDaSemana.setDataReceita(now().with(previousOrSame(MONDAY)));
-
-        ReceitaDiaria receitaForaDaSemana = receitaDiaria();
-        receitaForaDaSemana.setDataReceita(now().minusWeeks(1));
-
-        ReceitaDiaria receitaForaDoMes = receitaDiaria();
-        receitaForaDoMes.setDataReceita(now().minusMonths(2));
-
-        ReceitaDiaria receitaForaDoAno = receitaDiaria();
-        receitaForaDoAno.setDataReceita(now().minusYears(1));
-     */
-
     @Test
     @DisplayName("Deve cadastrar receita diaria corretamente")
     void deveCadastrarReceitaDiariaCorretamente(){

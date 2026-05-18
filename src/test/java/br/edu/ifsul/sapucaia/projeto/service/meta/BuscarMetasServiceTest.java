@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.service.meta;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.meta.BuscarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
@@ -15,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.buscarMetaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

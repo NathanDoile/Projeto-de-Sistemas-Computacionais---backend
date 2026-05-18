@@ -1,5 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
+import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
+import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,32 +34,17 @@ public class GastosPorCategoriaDoPeriodoService {
     private final CustoRepository custoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
+    private final PeriodoDataHelper periodoDataHelper;
 
-    public GastosPorCategoriaDoMesResponse calcularPorPeriodo(
-            Long idUsuario,
-            String tipo,
-            String dataBase
-    ) {
+    public GastosPorCategoriaDoMesResponse calcularPorPeriodo(Long idUsuario, String tipo, String dataBase) {
 
         validaUsuarioService.porId(idUsuario);
         validaTipoPeriodoValidator.porTipo(tipo);
 
-        LocalDate dataBaseDate = (dataBase != null)
-                ? parse(dataBase)
-                : now();
+        PeriodoData periodoData = periodoDataHelper.calcularData(tipo, dataBase);
 
-        List<LocalDate> datasInicioFim = new ArrayList<>();
-
-        switch (tipo.toLowerCase()) {
-            case "dia" -> datasInicioFim = calcularPorDia(dataBaseDate);
-
-            case "semana" -> datasInicioFim = calcularPorSemana(dataBaseDate);
-
-            case "mes" -> datasInicioFim = calcularPorMes(dataBaseDate);
-        }
-
-        LocalDate inicio = datasInicioFim.get(0);
-        LocalDate fim = datasInicioFim.get(1);
+        LocalDate inicio = periodoData.dataInicio();
+        LocalDate fim = periodoData.dataFim();
 
         Usuario usuario = usuarioRepository
                 .findByIdUsuarioAndIsAtivo(idUsuario, true)
@@ -83,23 +70,5 @@ public class GastosPorCategoriaDoPeriodoService {
                 .impostos(gastosMap.getOrDefault(TipoCusto.IMPOSTOS, 0.0))
                 .outros(gastosMap.getOrDefault(TipoCusto.OUTROS, 0.0))
                 .build();
-    }
-
-    private List<LocalDate> calcularPorDia(LocalDate dia) {
-        return List.of(dia, dia);
-    }
-
-    private List<LocalDate> calcularPorSemana(LocalDate dataBase) {
-        LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
-        LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
-
-        return List.of(inicioSemana, fimSemana);
-    }
-
-    private List<LocalDate> calcularPorMes(LocalDate dataBase) {
-        LocalDate inicioMes = dataBase.with(TemporalAdjusters.firstDayOfMonth());
-        LocalDate fimMes = dataBase.with(TemporalAdjusters.lastDayOfMonth());
-
-        return List.of(inicioMes, fimMes);
     }
 }
