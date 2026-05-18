@@ -2,11 +2,14 @@ package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
+import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.CustoFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -29,32 +34,36 @@ class BuscarCustosEmAbertoServiceTest {
     private BuscarCustosEmAbertoService tested;
 
     @Mock
-    private ValidaVeiculoService validaVeiculoService;
+    private ValidaUsuarioService validaUsuarioService;
 
     @Mock
     private CustoRepository custoRepository;
 
     @Mock
-    private VeiculoRepository veiculoRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Test
     @DisplayName("Deve buscar custos em aberto corretamente")
     void deveBuscarCustosEmAbertoCorretamente() {
 
         Long id = 1L;
-        Veiculo veiculo = VeiculoFactory.veiculo();
+
+        Usuario usuario = usuario();
+
         Custo custo = CustoFactory.custo();
         custo.setDataPagamento(null);
-        custo.setVeiculo(veiculo);
+        custo.setVeiculo(usuario.getVeiculo());
 
-        when(veiculoRepository.findByIdVeiculoAndIsAtivo(id, true)).thenReturn(veiculo);
+        Veiculo veiculo = custo.getVeiculo();
+
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
         when(custoRepository.findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true))
                 .thenReturn(List.of(custo));
 
         List<BuscarCustosEmAbertoResponse> response = tested.buscar(id);
 
-        verify(validaVeiculoService).porId(id);
-        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(id, true);
+        verify(validaUsuarioService).porId(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(custoRepository).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true);
 
         assertEquals(1, response.size());
@@ -69,12 +78,12 @@ class BuscarCustosEmAbertoServiceTest {
 
         Long id = 1L;
 
-        doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(id);
+        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
 
         assertThrows(ResponseStatusException.class, () -> tested.buscar(id));
 
-        verify(validaVeiculoService).porId(id);
-        verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
+        verify(validaUsuarioService).porId(id);
+        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(any(Veiculo.class), anyBoolean());
     }
 }
