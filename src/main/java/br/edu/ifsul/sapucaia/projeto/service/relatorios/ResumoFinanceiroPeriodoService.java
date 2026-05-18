@@ -9,6 +9,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,11 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.time.LocalDate.now;
+import static java.time.LocalDate.parse;
 
 @Service
 @RequiredArgsConstructor
@@ -25,55 +31,72 @@ public class ResumoFinanceiroPeriodoService {
     private final CustoRepository custoRepository;
     private final ValidaUsuarioService validaUsuarioService;
     private final UsuarioRepository usuarioRepository;
+    private final ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
 
-    public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(
-            Long idUsuario,
-            LocalDate inicio,
-            LocalDate fim
-    ) {
+    public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(Long idUsuario, String tipo, String dataBase) {
 
         validaUsuarioService.porId(idUsuario);
+        validaTipoPeriodoValidator.porTipo(tipo);
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
-        Veiculo veiculo = usuario.getVeiculo();
+        LocalDate dataBaseDate = (dataBase != null)
+                ? parse(dataBase)
+                : now();
 
-        double ganhoBruto = receitaDiariaRepository
-                .findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicio, fim)
-                .stream()
-                .mapToDouble(ReceitaDiaria::getValor)
-                .sum();
+        List<LocalDate> datasInicioFim = new ArrayList<>();
 
-        double gastoTotal = custoRepository
-                .findByVeiculoIdVeiculoAndDataPagamentoBetween(
-                        veiculo.getIdVeiculo(), inicio, fim)
-                .stream()
-                .mapToDouble(Custo::getValor)
-                .sum();
+        switch (tipo.toLowerCase()) {
+            case "dia" -> datasInicioFim = calcularPorDia(dataBaseDate);
 
-        double lucroLiquido = ganhoBruto - gastoTotal;
+            case "semana" -> datasInicioFim = calcularPorSemana(dataBaseDate);
 
-        return ResumoFinanceiroPeriodoResponse.builder()
-                .ganhoBruto(ganhoBruto)
-                .gastoTotal(gastoTotal)
-                .lucroLiquido(lucroLiquido)
-                .build();
+            case "mes" -> datasInicioFim = calcularPorMes(dataBaseDate);
+        }
+
+        LocalDate inicio = datasInicioFim.get(0);
+        LocalDate fim = datasInicioFim.get(1);
+
+            Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
+            Veiculo veiculo = usuario.getVeiculo();
+
+            double ganhoBruto = receitaDiariaRepository
+                    .findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicio, fim)
+                    .stream()
+                    .mapToDouble(ReceitaDiaria::getValor)
+                    .sum();
+
+            double gastoTotal = custoRepository
+                    .findByVeiculoIdVeiculoAndDataPagamentoBetween(
+                            veiculo.getIdVeiculo(), inicio, fim)
+                    .stream()
+                    .mapToDouble(Custo::getValor)
+                    .sum();
+
+            double lucroLiquido = ganhoBruto - gastoTotal;
+
+            return ResumoFinanceiroPeriodoResponse.builder()
+                    .ganhoBruto(ganhoBruto)
+                    .gastoTotal(gastoTotal)
+                    .lucroLiquido(lucroLiquido)
+                    .build();
+
     }
 
-    public ResumoFinanceiroPeriodoResponse calcularPorDia(Long idUsuario, LocalDate dia) {
-        return calcularPorPeriodo(idUsuario, dia, dia);
+    private List<LocalDate> calcularPorDia(LocalDate dataBase) {
+
+        return List.of(dataBase, dataBase);
     }
 
-    public ResumoFinanceiroPeriodoResponse calcularPorSemana(Long idUsuario, LocalDate dataBase) {
+    private List<LocalDate> calcularPorSemana(LocalDate dataBase) {
         LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
         LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
 
-        return calcularPorPeriodo(idUsuario, inicioSemana, fimSemana);
+        return List.of(inicioSemana, fimSemana);
     }
 
-    public ResumoFinanceiroPeriodoResponse calcularPorMes(Long idUsuario, LocalDate dataBase) {
+    private List<LocalDate> calcularPorMes(LocalDate dataBase) {
         LocalDate inicioMes = dataBase.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate fimMes = dataBase.with(TemporalAdjusters.lastDayOfMonth());
 
-        return calcularPorPeriodo(idUsuario, inicioMes, fimMes);
+        return List.of(inicioMes, fimMes);
     }
 }
