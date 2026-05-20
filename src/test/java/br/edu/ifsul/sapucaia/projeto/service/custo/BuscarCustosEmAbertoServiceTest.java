@@ -41,7 +41,7 @@ class BuscarCustosEmAbertoServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Test
-    @DisplayName("Deve buscar custos em aberto corretamente")
+    @DisplayName("Deve buscar os custos em aberto corretamente")
     void deveBuscarCustosEmAbertoCorretamente() {
 
         Long id = 1L;
@@ -53,10 +53,11 @@ class BuscarCustosEmAbertoServiceTest {
         custo.setVeiculo(usuario.getVeiculo());
 
         Veiculo veiculo = custo.getVeiculo();
+        List<Custo> custos = List.of(custo);
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
         when(custoRepository.findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true))
-                .thenReturn(List.of(custo));
+                .thenReturn(custos);
 
         List<BuscarCustosEmAbertoResponse> response = tested.buscar(id);
 
@@ -64,14 +65,16 @@ class BuscarCustosEmAbertoServiceTest {
         verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(custoRepository).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true);
 
-        assertEquals(1, response.size());
-        assertEquals(custo.getIdCusto(), response.get(0).getIdCusto());
-        assertEquals(custo.getDescricao(), response.get(0).getDescricao());
-        assertEquals(custo.getValor(), response.get(0).getValor());
+        assertEquals(custos.size(), response.size());
+        for (int i = 0; i < response.size(); i++) {
+            assertEquals(custos.get(i).getIdCusto(), response.get(i).getIdCusto());
+            assertEquals(custos.get(i).getDescricao(), response.get(i).getDescricao());
+            assertEquals(custos.get(i).getValor(), response.get(i).getValor());
+        }
     }
 
     @Test
-    @DisplayName("Não deve buscar custos em aberto se veículo for inválido")
+    @DisplayName("Não deve buscar os custos em aberto se o veículo for inválido")
     void naoDeveBuscarCustosSeVeiculoForInvalido() {
 
         Long id = 1L;
