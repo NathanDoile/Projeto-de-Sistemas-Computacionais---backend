@@ -13,8 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
+import static org.springframework.http.HttpStatus.CONFLICT;
 @ExtendWith(MockitoExtension.class)
 class ValidaVeiculoServiceTest {
 
@@ -23,31 +22,61 @@ class ValidaVeiculoServiceTest {
 
     @Mock
     private VeiculoRepository veiculoRepository;
-
     @Test
-    @DisplayName("Não deve dar erro se id do veículo existir")
-    void naoDeveDarErroIdVeiculoExistir(){
+    @DisplayName("Não deve dar erro se placa não existir")
+    void naoDeveDarErroPlacaNaoExistir(){
 
-        Long id = 1L;
-        boolean isAtivo = true;
+        String placa = "ABC1234";
 
-        when(veiculoRepository.existsByIdVeiculoAndIsAtivo(id, isAtivo))
-                .thenReturn(true);
+        when(veiculoRepository.existsByPlacaAndIsAtivo(placa, true))
+                .thenReturn(false);
 
-        assertDoesNotThrow(() -> tested.porId(id));
+        assertDoesNotThrow(() -> tested.jaExistePlaca(placa));
     }
 
     @Test
-    @DisplayName("Deve dar erro se id do veículo não existir")
-    void deveDarErroIdVeiculoNaoExistir(){
+    @DisplayName("Deve dar erro se placa já existir")
+    void deveDarErroPlacaJaExistir(){
 
-        Long id = 1L;
+        String placa = "ABC1234";
+
+        when(veiculoRepository.existsByPlacaAndIsAtivo(placa, true))
+                .thenReturn(true);
 
         ResponseStatusException exception =
                 assertThrows(ResponseStatusException.class,
-                        () -> tested.porId(id));
+                        () -> tested.jaExistePlaca(placa));
 
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertEquals("ID do veículo não existe.", exception.getReason());
+        assertEquals(CONFLICT, exception.getStatusCode());
+        assertEquals("Placa já cadastrada.", exception.getReason());
+    }
+
+    @Test
+    @DisplayName("Não deve dar erro se veículo estiver ativo")
+    void naoDeveDarErroVeiculoAtivo(){
+
+        Long id = 1L;
+
+        when(veiculoRepository.existsByIdVeiculoAndIsAtivo(id, true))
+                .thenReturn(true);
+
+        assertDoesNotThrow(() -> tested.estaAtivo(id));
+    }
+
+    @Test
+    @DisplayName("Deve dar erro se veículo não estiver ativo")
+    void deveDarErroVeiculoNaoAtivo(){
+
+        Long id = 1L;
+
+        when(veiculoRepository.existsByIdVeiculoAndIsAtivo(id, true))
+                .thenReturn(false);
+
+        ResponseStatusException exception =
+                assertThrows(ResponseStatusException.class,
+                        () -> tested.estaAtivo(id));
+
+        assertEquals(CONFLICT, exception.getStatusCode());
+        assertEquals("Veículo não está ativo.", exception.getReason());
     }
 }

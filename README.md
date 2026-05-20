@@ -235,7 +235,7 @@
   - Parâmetros de URL: `id`, é o identificador do usuário
   - Parâmetros de query: data (opcional, formato YYYY-MM-DD)
   - `GET /gastos-categoria-semana/{idUsuario}`
-    
+    git
 - **Gasto por categoria(mês)**
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador do usuário
@@ -244,5 +244,5 @@
 
 - **Últimas transações**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
+  - Parâmetros de URL: `id`, é o identificador de usuário
   - `GET /ultimas-transacoes/{idUsuario}`
