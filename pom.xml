@@ -35,7 +35,9 @@
             **/config/**/*,
             **/controller/**/*,
             **/exception/**/*,
-            **/ia/**/*
+            **/ia/**/*,
+            **/record/**/*,
+            **/*/ProjetoApplication.java
         </sonar.coverage.exclusions>
     </properties>
 	<dependencies>
@@ -122,6 +124,8 @@
                                 <exclude>**/controller/**/*</exclude>
                                 <exclude>**/exception/**/*</exclude>
                                 <exclude>**/ia/**/*</exclude>
+                                <exclude>**/record/**/*</exclude>
+                                <exclude>**/*/ProjetoApplication.java</exclude>
                             </excludes>
                         </configuration>
                     </execution>

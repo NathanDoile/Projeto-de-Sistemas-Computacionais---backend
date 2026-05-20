@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,10 @@ class CadastrarReceitaDiariaServiceTest {
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
+        if(request.getDataReceita().getDayOfWeek().equals(MONDAY)){
+            cadastrarReceitaDiariaRequest().setDataReceita(now().plusDays(1));
+        }
+
         Usuario usuario = usuario();
 
         when(usuarioRepository.findById(request.getIdUsuario())).thenReturn(Optional.of(usuario));
@@ -117,7 +122,12 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        verify(metaRepository, times(3)).save(metaCaptor.capture());
+        if(request.getDataReceita().equals(now())){
+            verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, times(2)).save(metaCaptor.capture());
+        }
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
