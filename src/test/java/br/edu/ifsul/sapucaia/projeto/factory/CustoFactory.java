@@ -5,7 +5,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.COMBUSTIVEL;
-import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.LocalDate.now;
 
 public class CustoFactory {
