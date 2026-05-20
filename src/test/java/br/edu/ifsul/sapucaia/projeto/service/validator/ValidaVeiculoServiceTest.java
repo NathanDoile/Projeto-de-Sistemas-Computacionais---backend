@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @ExtendWith(MockitoExtension.class)
 class ValidaVeiculoServiceTest {
 
@@ -22,6 +24,7 @@ class ValidaVeiculoServiceTest {
 
     @Mock
     private VeiculoRepository veiculoRepository;
+
     @Test
     @DisplayName("Não deve dar erro se placa não existir")
     void naoDeveDarErroPlacaNaoExistir(){
@@ -78,5 +81,34 @@ class ValidaVeiculoServiceTest {
 
         assertEquals(CONFLICT, exception.getStatusCode());
         assertEquals("Veículo não está ativo.", exception.getReason());
+    }
+
+    @Test
+    @DisplayName("Não deve dar erro se id existir")
+    void naoDeveDarErroIdExistir(){
+
+        Long id = 1L;
+
+        when(veiculoRepository.existsByIdVeiculoAndIsAtivo(id, true))
+                .thenReturn(true);
+
+        assertDoesNotThrow(() -> tested.porId(id));
+    }
+
+    @Test
+    @DisplayName("Deve dar erro se id não existir")
+    void deveDarErroIdNaoExistir(){
+
+        Long id = 1L;
+
+        when(veiculoRepository.existsByIdVeiculoAndIsAtivo(id, true))
+                .thenReturn(false);
+
+        ResponseStatusException exception =
+                assertThrows(ResponseStatusException.class,
+                        () -> tested.porId(id));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertEquals("ID do veículo não existe.", exception.getReason());
     }
 }
