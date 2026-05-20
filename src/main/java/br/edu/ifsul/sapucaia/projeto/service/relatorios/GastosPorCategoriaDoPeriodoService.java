@@ -6,10 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,10 +18,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
-import org.springframework.web.server.ResponseStatusException;
-
-import static java.time.LocalDate.now;
-import static java.time.LocalDate.parse;
 
 @Service
 @RequiredArgsConstructor

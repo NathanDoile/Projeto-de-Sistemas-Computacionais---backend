@@ -3,7 +3,6 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
@@ -30,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class GastosPorCategoriaDoPeriodoServiceTest {
+class GastosPorCategoriaDoPeriodoServiceTest {
 
     @InjectMocks
     private GastosPorCategoriaDoPeriodoService tested;

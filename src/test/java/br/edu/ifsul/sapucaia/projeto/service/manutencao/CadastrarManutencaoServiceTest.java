@@ -72,7 +72,7 @@ class CadastrarManutencaoServiceTest {
     private ArgumentCaptor<Custo> custoCaptor;
 
     @Test
-    @DisplayName("Deve cadastrar manutenção corretamente")
+    @DisplayName("Deve cadastrar a manutenção corretamente")
     void deveCadastrarManutencaoCorretamente() {
 
         CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
@@ -110,7 +110,7 @@ class CadastrarManutencaoServiceTest {
     }
 
     @Test
-    @DisplayName("Não deve cadastrar manutenção se veículo for inválido")
+    @DisplayName("Não deve cadastrar a manutenção se o veículo for inválido")
     void naoDeveCadastrarManutencaoSeVeiculoForInvalido() {
 
         CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
@@ -128,4 +128,64 @@ class CadastrarManutencaoServiceTest {
         verify(custoRepository, never()).findById(anyLong());
         verify(manutencaoRepository, never()).save(any(Manutencao.class));
     }
+
+    @Test
+    @DisplayName("Não deve cadastrar a manutenção se o tipo for inválido")
+    void naoDeveCadastrarManutencaoSeTipoForInvalido() {
+
+        CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
+
+        doThrow(ResponseStatusException.class)
+                .when(validaTipoManutencaoValidator).tipoValido(request.getTipo());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaTipoManutencaoValidator).tipoValido(request.getTipo());
+        verify(validadataManutencaoValidator, never()).dataMenorQueHoje(any(java.time.LocalDate.class));
+        verify(validaVeiculoService, never()).porId(anyLong());
+        verify(validaCustoService, never()).porId(anyLong());
+        verify(validaCustoPossuiManutencaoService, never()).porId(anyLong());
+        verify(manutencaoRepository, never()).save(any(Manutencao.class));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar a manutenção se a data for inválida")
+    void naoDeveCadastrarManutencaoSeDataForInvalida() {
+
+        CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
+
+        doThrow(ResponseStatusException.class)
+                .when(validadataManutencaoValidator).dataMenorQueHoje(request.getDataManutencao());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaTipoManutencaoValidator).tipoValido(request.getTipo());
+        verify(validadataManutencaoValidator).dataMenorQueHoje(request.getDataManutencao());
+        verify(validaVeiculoService, never()).porId(anyLong());
+        verify(validaCustoService, never()).porId(anyLong());
+        verify(validaCustoPossuiManutencaoService, never()).porId(anyLong());
+        verify(manutencaoRepository, never()).save(any(Manutencao.class));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar a manutenção se o custo for inválido")
+    void naoDeveCadastrarManutencaoSeCustoForInvalido() {
+
+        CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
+
+        doThrow(ResponseStatusException.class)
+                .when(validaCustoService).porId(request.getIdCusto());
+
+        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
+
+        verify(validaTipoManutencaoValidator).tipoValido(request.getTipo());
+        verify(validadataManutencaoValidator).dataMenorQueHoje(request.getDataManutencao());
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaCustoService).porId(request.getIdCusto());
+        verify(validaCustoPossuiManutencaoService, never()).porId(anyLong());
+        verify(veiculoRepository, never()).findById(anyLong());
+        verify(custoRepository, never()).findById(anyLong());
+        verify(manutencaoRepository, never()).save(any(Manutencao.class));
+    }
 }
+
