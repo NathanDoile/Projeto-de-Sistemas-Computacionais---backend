@@ -22,12 +22,11 @@ public class PeriodoDataHelperTest {
     void deveRetornarDatasCorretamenteSeTipoDia(){
 
         String tipo = "dia";
-        String dataBase = "2026-05-20";
 
-        PeriodoData response = tested.calcularData(tipo, dataBase);
+        PeriodoData response = tested.calcularData(tipo, null);
 
-        assertEquals(LocalDate.of(2026, 5, 20), response.dataInicio());
-        assertEquals(LocalDate.of(2026, 5, 20), response.dataFim());
+        assertEquals(LocalDate.now(), response.dataInicio());
+        assertEquals(LocalDate.now(), response.dataFim());
     }
 
     @Test
