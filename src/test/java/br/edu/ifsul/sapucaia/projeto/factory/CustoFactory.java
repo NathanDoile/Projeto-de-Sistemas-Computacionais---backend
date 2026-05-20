@@ -21,7 +21,6 @@ public class CustoFactory {
                 .dataPagamento(now())
                 .descricao("Custo de teste")
                 .isAtivo(true)
-                .veiculo(veiculo())
                 .manutencao(null)
                 .build();
     }

@@ -48,7 +48,7 @@ public class GastosPorCategoriaDoPeriodoService {
 
         Usuario usuario = usuarioRepository
                 .findByIdUsuarioAndIsAtivo(idUsuario, true)
-                .orElseThrow();
+                .get();
 
         List<Custo> custos = custoRepository
                 .findByVeiculoIdVeiculoAndDataPagamentoBetween(
@@ -68,6 +68,7 @@ public class GastosPorCategoriaDoPeriodoService {
                 .combustivel(gastosMap.getOrDefault(TipoCusto.COMBUSTIVEL, 0.0))
                 .seguro(gastosMap.getOrDefault(TipoCusto.SEGURO, 0.0))
                 .impostos(gastosMap.getOrDefault(TipoCusto.IMPOSTOS, 0.0))
+                .multas(gastosMap.getOrDefault(TipoCusto.MULTAS, 0.0))
                 .outros(gastosMap.getOrDefault(TipoCusto.OUTROS, 0.0))
                 .build();
     }

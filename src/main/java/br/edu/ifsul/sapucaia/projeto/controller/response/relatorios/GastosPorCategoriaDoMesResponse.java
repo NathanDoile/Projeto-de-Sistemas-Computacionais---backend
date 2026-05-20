@@ -16,4 +16,5 @@ public class GastosPorCategoriaDoMesResponse {
 
     private double outros;
 
+    private double multas;
 }
