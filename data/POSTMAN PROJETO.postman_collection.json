@@ -1,10 +1,9 @@
 {
   "info": {
-    "_postman_id": "71e9c158-150d-465a-92fc-32064a5b3bf1",
+    "_postman_id": "0111d30a-11de-4ce8-a9dd-20e60a0f7af5",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53222404",
-    "_collection_link": "https://go.postman.co/collection/53222404-71e9c158-150d-465a-92fc-32064a5b3bf1?source=collection_link"
+    "_exporter_id": "29566159"
   },
   "item": [
     {
@@ -69,7 +68,12 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
+          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"a4Gj@j21\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "localhost:8080/usuario/login-usuario",
@@ -282,6 +286,34 @@
           "path": [
             "custo",
             "editar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar KM",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idUsuario\":1,\r\n    \"kmAtualizado\": 45300\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/veiculo/atualizar-km",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo",
+            "atualizar-km"
           ]
         }
       },
