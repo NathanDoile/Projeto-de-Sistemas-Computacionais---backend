@@ -131,6 +131,11 @@
     - Parâmetros de URL: `id`, é o identificador do usuario
 
 
+- **Excluir meta**
+    - Precisa estar logado para utilizar esse path
+    - `DELETE /{id}`
+    - Parâmetros de URL: `id`, é o identificador da meta
+
 ### Rota: `/custo`
 
 - **Cria um custo**

@@ -5,6 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaKmAtualizadoVeiculoValidator;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class AtualizarKmVeiculoService {
 
     private final ValidaKmAtualizadoVeiculoValidator validaKmAtualizadoVeiculoValidator;
 
+    @Transactional
     public void atualizar(@Valid AtualizarKmVeiculoRequest atualizarKmVeiculoRequest) {
 
         validaUsuarioService.porId(atualizarKmVeiculoRequest.getIdUsuario());
