@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.meta.BuscarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.service.meta.BuscarMetasService;

@@ -49,7 +49,7 @@ class EditarCustoServiceTest {
     private ArgumentCaptor<Custo> custoCaptor;
 
     @Test
-    @DisplayName("Deve editar custo corretamente")
+    @DisplayName("Deve editar o custo corretamente")
     void deveEditarCustoCorretamente() {
 
         EditarCustoRequest request = editarCustoRequest();
@@ -76,7 +76,7 @@ class EditarCustoServiceTest {
     }
 
     @Test
-    @DisplayName("Não deve editar custo se custo for inválido")
+    @DisplayName("Não deve editar o custo se o custo for inválido")
     void naoDeveEditarCustoSeCustoForInvalido() {
 
         Long idCusto = 1L;
@@ -89,6 +89,42 @@ class EditarCustoServiceTest {
         verify(validaCustoService).porId(idCusto);
         verify(validaValorCustoValidator, never()).isPositivo(anyDouble());
         verify(validaTipoCustoValidator, never()).tipoValido(anyString());
+        verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
+        verify(custoRepository, never()).save(any(Custo.class));
+    }
+
+    @Test
+    @DisplayName("Não deve editar o custo se o valor for inválido")
+    void naoDeveEditarCustoSeValorForInvalido() {
+
+        EditarCustoRequest request = editarCustoRequest();
+        Long idCusto = request.getIdCusto();
+
+        doThrow(ResponseStatusException.class).when(validaValorCustoValidator).isPositivo(request.getValor());
+
+        assertThrows(ResponseStatusException.class, () -> tested.editar(request));
+
+        verify(validaCustoService).porId(idCusto);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator, never()).tipoValido(anyString());
+        verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
+        verify(custoRepository, never()).save(any(Custo.class));
+    }
+
+    @Test
+    @DisplayName("Não deve editar o custo se o tipo for inválido")
+    void naoDeveEditarCustoSeTipoForInvalido() {
+
+        EditarCustoRequest request = editarCustoRequest();
+        Long idCusto = request.getIdCusto();
+
+        doThrow(ResponseStatusException.class).when(validaTipoCustoValidator).tipoValido(request.getTipo());
+
+        assertThrows(ResponseStatusException.class, () -> tested.editar(request));
+
+        verify(validaCustoService).porId(idCusto);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).save(any(Custo.class));
     }

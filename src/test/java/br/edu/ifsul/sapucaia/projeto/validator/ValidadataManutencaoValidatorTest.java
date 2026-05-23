@@ -1,6 +1,5 @@
-package br.edu.ifsul.sapucaia.projeto.service.validator;
+package br.edu.ifsul.sapucaia.projeto.validator;
 
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,28 +14,28 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
-class ValidaDataReceitaDiariaValidatorTest {
+class ValidadataManutencaoValidatorTest {
 
     @InjectMocks
-    private ValidaDataReceitaDiariaValidator tested;
+    private ValidadataManutencaoValidator tested;
 
     @Test
-    @DisplayName("Não deve dar erro se a data da receita for menor ou igual a hoje")
+    @DisplayName("Não deve dar erro se a data da manutenção for menor ou igual a hoje")
     void naoDeveDarErroSeDataMenorOuIgualHoje() {
 
-        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(now()));
-        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(now().minusDays(1)));
+        assertDoesNotThrow(() -> tested.dataMenorQueHoje(now()));
+        assertDoesNotThrow(() -> tested.dataMenorQueHoje(now().minusDays(1)));
     }
 
     @Test
-    @DisplayName("Deve dar erro se a data da receita for maior que hoje")
+    @DisplayName("Deve dar erro se a data da manutenção for maior que hoje")
     void deveDarErroSeDataMaiorQueHoje() {
 
         LocalDate data = now().plusDays(1);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> tested.naoMaiorQueHoje(data));
+                () -> tested.dataMenorQueHoje(data));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Data da sua receita não pode ser superior à hoje", exception.getReason());
+        assertEquals("Data da manutenção não deve ser superior à hoje.", exception.getReason());
     }
 }

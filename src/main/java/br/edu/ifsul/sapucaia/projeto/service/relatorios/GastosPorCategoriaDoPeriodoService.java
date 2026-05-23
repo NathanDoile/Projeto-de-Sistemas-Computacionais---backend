@@ -1,11 +1,12 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
+import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
+import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,18 +26,22 @@ public class GastosPorCategoriaDoPeriodoService {
     private final ValidaUsuarioService validaUsuarioService;
     private final CustoRepository custoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
+    private final PeriodoDataHelper periodoDataHelper;
 
-    public GastosPorCategoriaDoMesResponse calcularPorPeriodo(
-            Long idUsuario,
-            LocalDate inicio,
-            LocalDate fim
-    ) {
+    public GastosPorCategoriaDoMesResponse calcularPorPeriodo(Long idUsuario, String tipo, String dataBase) {
 
         validaUsuarioService.porId(idUsuario);
+        validaTipoPeriodoValidator.porTipo(tipo);
+
+        PeriodoData periodoData = periodoDataHelper.calcularData(tipo, dataBase);
+
+        LocalDate inicio = periodoData.dataInicio();
+        LocalDate fim = periodoData.dataFim();
 
         Usuario usuario = usuarioRepository
                 .findByIdUsuarioAndIsAtivo(idUsuario, true)
-                .orElseThrow();
+                .get();
 
         List<Custo> custos = custoRepository
                 .findByVeiculoIdVeiculoAndDataPagamentoBetween(
@@ -56,25 +61,8 @@ public class GastosPorCategoriaDoPeriodoService {
                 .combustivel(gastosMap.getOrDefault(TipoCusto.COMBUSTIVEL, 0.0))
                 .seguro(gastosMap.getOrDefault(TipoCusto.SEGURO, 0.0))
                 .impostos(gastosMap.getOrDefault(TipoCusto.IMPOSTOS, 0.0))
+                .multas(gastosMap.getOrDefault(TipoCusto.MULTAS, 0.0))
                 .outros(gastosMap.getOrDefault(TipoCusto.OUTROS, 0.0))
                 .build();
-    }
-
-    public GastosPorCategoriaDoMesResponse calcularPorDia(Long idUsuario, LocalDate dia) {
-        return calcularPorPeriodo(idUsuario, dia, dia);
-    }
-
-    public GastosPorCategoriaDoMesResponse calcularPorSemana(Long idUsuario, LocalDate dataBase) {
-        LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
-        LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
-
-        return calcularPorPeriodo(idUsuario, inicioSemana, fimSemana);
-    }
-
-    public GastosPorCategoriaDoMesResponse calcularPorMes(Long idUsuario, LocalDate dataBase) {
-        LocalDate inicioMes = dataBase.with(TemporalAdjusters.firstDayOfMonth());
-        LocalDate fimMes = dataBase.with(TemporalAdjusters.lastDayOfMonth());
-
-        return calcularPorPeriodo(idUsuario, inicioMes, fimMes);
     }
 }

@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.service.meta;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.meta.BuscarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper;

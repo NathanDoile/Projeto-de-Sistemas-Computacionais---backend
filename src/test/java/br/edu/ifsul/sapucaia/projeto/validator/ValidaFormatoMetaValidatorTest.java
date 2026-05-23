@@ -1,6 +1,5 @@
-package br.edu.ifsul.sapucaia.projeto.service.validator;
+package br.edu.ifsul.sapucaia.projeto.validator;
 
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +21,7 @@ class ValidaFormatoMetaValidatorTest {
     void naoDeveDarErroSeFormatoMetaValido() {
 
         assertDoesNotThrow(() -> tested.formatoValido("Diária"));
+        assertDoesNotThrow(() -> tested.formatoValido("Diaria"));
         assertDoesNotThrow(() -> tested.formatoValido("Semanal"));
         assertDoesNotThrow(() -> tested.formatoValido("mensal"));
     }

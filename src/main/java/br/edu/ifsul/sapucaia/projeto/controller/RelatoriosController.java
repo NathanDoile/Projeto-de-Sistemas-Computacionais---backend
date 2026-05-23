@@ -1,16 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse; // ✅ ADICIONA ISSO
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/relatorios")
@@ -37,62 +35,18 @@ public class RelatoriosController {
     public ResumoFinanceiroPeriodoResponse getResumoFinanceiro(
             @PathVariable Long idUsuario,
             @RequestParam String tipo,
-            @RequestParam(required = false) String data
+            @RequestParam(required = false) String dataBase
     ) {
-
-        LocalDate dataBase = (data != null)
-                ? LocalDate.parse(data)
-                : LocalDate.now();
-
-        switch (tipo.toLowerCase()) {
-            case "dia":
-                return resumoFinanceiroService.calcularPorDia(idUsuario, dataBase);
-
-            case "semana":
-                return resumoFinanceiroService.calcularPorSemana(idUsuario, dataBase);
-
-            case "mes":
-                return resumoFinanceiroService.calcularPorMes(idUsuario, dataBase);
-
-            default:
-                throw new IllegalArgumentException("Tipo inválido");
-        }
+        return resumoFinanceiroService.calcularPorPeriodo(idUsuario, tipo, dataBase);
     }
 
-    //DIA
-    @GetMapping("/gastos-categoria-dia/{idUsuario}")
+    @GetMapping("/gastos-categoria/{idUsuario}")
     public GastosPorCategoriaDoMesResponse getPorDia(
             @PathVariable Long idUsuario,
-            @RequestParam String data
+            @RequestParam String tipo,
+            @RequestParam String dataBase
     ) {
-        LocalDate dia = LocalDate.parse(data);
-        return gastosPorCategoriaService.calcularPorDia(idUsuario, dia);
-    }
-
-    //SEMANA
-    @GetMapping("/gastos-categoria-semana/{idUsuario}")
-    public GastosPorCategoriaDoMesResponse getPorSemana(
-            @PathVariable Long idUsuario,
-            @RequestParam(required = false) String data
-    ) {
-        LocalDate dataBase = (data != null)
-                ? LocalDate.parse(data)
-                : LocalDate.now();
-
-        return gastosPorCategoriaService.calcularPorSemana(idUsuario, dataBase);
-    }
-
-    //MÊS
-    @GetMapping("/gastos-categoria-mes/{idUsuario}")
-    public GastosPorCategoriaDoMesResponse getPorMes(
-            @PathVariable Long idUsuario,
-            @RequestParam(required = false) String data
-    ) {
-        LocalDate dataBase = (data != null)
-                ? LocalDate.parse(data)
-                : LocalDate.now();
-
-        return gastosPorCategoriaService.calcularPorMes(idUsuario, dataBase);
+        return gastosPorCategoriaService.calcularPorPeriodo(idUsuario, tipo, dataBase);
     }
 
     @GetMapping("/ultimas-transacoes/{idUsuario}")

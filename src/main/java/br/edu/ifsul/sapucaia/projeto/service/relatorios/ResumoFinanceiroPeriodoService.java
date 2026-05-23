@@ -5,10 +5,13 @@ import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
+import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,11 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.time.LocalDate.now;
+import static java.time.LocalDate.parse;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +33,18 @@ public class ResumoFinanceiroPeriodoService {
     private final CustoRepository custoRepository;
     private final ValidaUsuarioService validaUsuarioService;
     private final UsuarioRepository usuarioRepository;
+    private final ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
+    private final PeriodoDataHelper periodoDataHelper;
 
-    public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(
-            Long idUsuario,
-            LocalDate inicio,
-            LocalDate fim
-    ) {
+    public ResumoFinanceiroPeriodoResponse calcularPorPeriodo(Long idUsuario, String tipo, String dataBase) {
 
         validaUsuarioService.porId(idUsuario);
+        validaTipoPeriodoValidator.porTipo(tipo);
+
+        PeriodoData periodoData = periodoDataHelper.calcularData(tipo, dataBase);
+
+        LocalDate inicio = periodoData.dataInicio();
+        LocalDate fim = periodoData.dataFim();
 
         Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
         Veiculo veiculo = usuario.getVeiculo();
@@ -57,23 +69,6 @@ public class ResumoFinanceiroPeriodoService {
                 .gastoTotal(gastoTotal)
                 .lucroLiquido(lucroLiquido)
                 .build();
-    }
 
-    public ResumoFinanceiroPeriodoResponse calcularPorDia(Long idUsuario, LocalDate dia) {
-        return calcularPorPeriodo(idUsuario, dia, dia);
-    }
-
-    public ResumoFinanceiroPeriodoResponse calcularPorSemana(Long idUsuario, LocalDate dataBase) {
-        LocalDate inicioSemana = dataBase.with(DayOfWeek.MONDAY);
-        LocalDate fimSemana = dataBase.with(DayOfWeek.SUNDAY);
-
-        return calcularPorPeriodo(idUsuario, inicioSemana, fimSemana);
-    }
-
-    public ResumoFinanceiroPeriodoResponse calcularPorMes(Long idUsuario, LocalDate dataBase) {
-        LocalDate inicioMes = dataBase.with(TemporalAdjusters.firstDayOfMonth());
-        LocalDate fimMes = dataBase.with(TemporalAdjusters.lastDayOfMonth());
-
-        return calcularPorPeriodo(idUsuario, inicioMes, fimMes);
     }
 }

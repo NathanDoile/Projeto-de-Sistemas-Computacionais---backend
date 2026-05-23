@@ -3,6 +3,9 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 
+import java.util.List;
+
+import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static java.time.LocalDate.of;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo.CARRO;
 
@@ -19,6 +22,7 @@ public class VeiculoFactory {
                 .ano(2021)
                 .cor("Branco")
                 .kmAtual(78300)
+                .custos(List.of(custo()))
                 .build();
     }
 

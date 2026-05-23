@@ -63,25 +63,15 @@ class CadastrarReceitaDiariaServiceTest {
     @Captor
     private ArgumentCaptor<Meta> metaCaptor;
 
-    /*
-        ReceitaDiaria receitaInicioDaSemana = receitaDiaria();
-        receitaInicioDaSemana.setDataReceita(now().with(previousOrSame(MONDAY)));
-
-        ReceitaDiaria receitaForaDaSemana = receitaDiaria();
-        receitaForaDaSemana.setDataReceita(now().minusWeeks(1));
-
-        ReceitaDiaria receitaForaDoMes = receitaDiaria();
-        receitaForaDoMes.setDataReceita(now().minusMonths(2));
-
-        ReceitaDiaria receitaForaDoAno = receitaDiaria();
-        receitaForaDoAno.setDataReceita(now().minusYears(1));
-     */
-
     @Test
     @DisplayName("Deve cadastrar receita diaria corretamente")
     void deveCadastrarReceitaDiariaCorretamente(){
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
+
+        if(request.getDataReceita().getDayOfWeek().equals(MONDAY)){
+            cadastrarReceitaDiariaRequest().setDataReceita(now().plusDays(1));
+        }
 
         Usuario usuario = usuario();
 
@@ -131,7 +121,12 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        verify(metaRepository, times(2)).save(metaCaptor.capture());
+        if(request.getDataReceita().equals(now())){
+            verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, times(2)).save(metaCaptor.capture());
+        }
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();

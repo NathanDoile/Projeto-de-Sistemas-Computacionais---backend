@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaValorReceitaDiariaValidatorTest {
+class ValidaValorReceitaDiariaValidatorTest {
 
     @InjectMocks
     private ValidaValorReceitaDiariaValidator tested;

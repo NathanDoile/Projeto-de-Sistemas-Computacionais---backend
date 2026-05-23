@@ -5,12 +5,9 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.CustoFactory;
-import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -43,7 +41,7 @@ class BuscarCustosEmAbertoServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Test
-    @DisplayName("Deve buscar custos em aberto corretamente")
+    @DisplayName("Deve buscar os custos em aberto corretamente")
     void deveBuscarCustosEmAbertoCorretamente() {
 
         Long id = 1L;
@@ -55,10 +53,11 @@ class BuscarCustosEmAbertoServiceTest {
         custo.setVeiculo(usuario.getVeiculo());
 
         Veiculo veiculo = custo.getVeiculo();
+        List<Custo> custos = List.of(custo);
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
         when(custoRepository.findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true))
-                .thenReturn(List.of(custo));
+                .thenReturn(custos);
 
         List<BuscarCustosEmAbertoResponse> response = tested.buscar(id);
 
@@ -66,14 +65,16 @@ class BuscarCustosEmAbertoServiceTest {
         verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(custoRepository).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true);
 
-        assertEquals(1, response.size());
-        assertEquals(custo.getIdCusto(), response.get(0).getIdCusto());
-        assertEquals(custo.getDescricao(), response.get(0).getDescricao());
-        assertEquals(custo.getValor(), response.get(0).getValor());
+        assertEquals(custos.size(), response.size());
+        for (int i = 0; i < response.size(); i++) {
+            assertEquals(custos.get(i).getIdCusto(), response.get(i).getIdCusto());
+            assertEquals(custos.get(i).getDescricao(), response.get(i).getDescricao());
+            assertEquals(custos.get(i).getValor(), response.get(i).getValor());
+        }
     }
 
     @Test
-    @DisplayName("Não deve buscar custos em aberto se veículo for inválido")
+    @DisplayName("Não deve buscar os custos em aberto se o veículo for inválido")
     void naoDeveBuscarCustosSeVeiculoForInvalido() {
 
         Long id = 1L;
