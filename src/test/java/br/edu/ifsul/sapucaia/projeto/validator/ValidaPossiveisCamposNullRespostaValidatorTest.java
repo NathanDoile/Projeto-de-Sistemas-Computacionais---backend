@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaPossiveisCamposNullRespostaValidatorTest {
+class ValidaPossiveisCamposNullRespostaValidatorTest {
 
     @InjectMocks
     private ValidaPossiveisCamposNullRespostaIAValidator tested;

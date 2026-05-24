@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidaManutencaoIAResponseValidatorTest {
+class ValidaManutencaoIAResponseValidatorTest {
 
     @InjectMocks
     private ValidaManutencaoIAResponseValidator tested;

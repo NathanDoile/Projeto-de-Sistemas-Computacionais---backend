@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class CadastrarVeiculoServiceTest {
@@ -154,9 +153,9 @@ class CadastrarVeiculoServiceTest {
         assertEquals(request.getModelo(), veiculoResponse.getModelo());
         assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
         assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
-        assertEquals(veiculoResponse.getIntervaloEntreManutencoesKm(), 0);
-        assertEquals(veiculoResponse.getIntervaloEntreManutencoesMeses(), 0);
-        assertEquals(veiculoResponse.getProximaManutencaoKm(), 0);
+        assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesKm());
+        assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesMeses());
+        assertEquals(0, veiculoResponse.getProximaManutencaoKm());
         assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(0));
         assertTrue(veiculoResponse.isAtivo());
         assertEquals(usuario, veiculoResponse.getUsuario());

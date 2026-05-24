@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class IAService {
     @Value("${gemini.baseurl}") String baseUrl;
     @Value("${gemini.api.key}") String apiKey;
-    private static final String instrucao = "Você é um assistente técnico especializado em manutenção veicular.\\n\\nDIRETRIZES DE CÁLCULO:\\n1. IDENTIFIQUE o intervalo de manutenção específico do fabricante para USO SEVERO (trânsito intenso) usando a busca. Este intervalo é geralmente menor que o de uso normal (ex: 5k em vez de 10k km).\\n2. USE este intervalo exato. Não assuma 10k por padrão.\\n\\nFLUXO:\\n1. Receba: marca, modelo, ano e quilometragem atual\\n2. Busque o intervalo de manutenção oficial para USO SEVERO (trânsito intenso) — sites da montadora têm prioridade\\n\\nFORMATO DE RESPOSTA (JSON puro):\\n{\\n  \\\"veiculo\\\": {\\n    \\\"marca\\\": \\\"string\\\",\\n    \\\"modelo\\\": \\\"string\\\",\\n    \\\"ano\\\": \\\"string\\\",\\n    \\\"quilometragem_atual\\\": number\\n  },\\n  \\\"proxima_revisao\\\": {\\n    \\\"intervalo_manutencoes_km\\\": number,\\n    \\\"intervalo_manutencoes_meses\\\": number,\\n    \\\"distancia_restante_km\\\": number,\\n    \\\"erro\\\": \\\"string\\\"\\n  }\\n}";
+    private static final String INSTRUCAO = "Você é um assistente técnico especializado em manutenção veicular.\\n\\nDIRETRIZES DE CÁLCULO:\\n1. IDENTIFIQUE o intervalo de manutenção específico do fabricante para USO SEVERO (trânsito intenso) usando a busca. Este intervalo é geralmente menor que o de uso normal (ex: 5k em vez de 10k km).\\n2. USE este intervalo exato. Não assuma 10k por padrão.\\n\\nFLUXO:\\n1. Receba: marca, modelo, ano e quilometragem atual\\n2. Busque o intervalo de manutenção oficial para USO SEVERO (trânsito intenso) — sites da montadora têm prioridade\\n\\nFORMATO DE RESPOSTA (JSON puro):\\n{\\n  \\\"veiculo\\\": {\\n    \\\"marca\\\": \\\"string\\\",\\n    \\\"modelo\\\": \\\"string\\\",\\n    \\\"ano\\\": \\\"string\\\",\\n    \\\"quilometragem_atual\\\": number\\n  },\\n  \\\"proxima_revisao\\\": {\\n    \\\"intervalo_manutencoes_km\\\": number,\\n    \\\"intervalo_manutencoes_meses\\\": number,\\n    \\\"distancia_restante_km\\\": number,\\n    \\\"erro\\\": \\\"string\\\"\\n  }\\n}";
 
     private final ValidaPossiveisCamposNullRespostaIAValidator validaPossiveisCamposNullRespostaIAValidator;
 
@@ -65,7 +65,7 @@ public class IAService {
         String responseMimeType = "application/json";
         int temperature = 0;
 
-        var requestBody = new BodyRequest(new SystemInstructionRequest(List.of(new PartInstructionRequest(instrucao)))
+        var requestBody = new BodyRequest(new SystemInstructionRequest(List.of(new PartInstructionRequest(INSTRUCAO)))
                 , List.of(new ContentRequest(List.of(new PartRequest(mensagem)))),
                 (new GenerationConfigRequest(responseMimeType, temperature))
         );
