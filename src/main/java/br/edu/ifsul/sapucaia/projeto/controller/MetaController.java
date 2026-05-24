@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaReques
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.service.meta.BuscarMetasService;
 import br.edu.ifsul.sapucaia.projeto.service.meta.CadastrarMetaService;
+import br.edu.ifsul.sapucaia.projeto.service.meta.DeletarMetaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ public class MetaController {
 
     private final BuscarMetasService buscarMetasService;
 
+    private final DeletarMetaService deletarMetaService;
+
     @PostMapping
     @ResponseStatus(CREATED)
     public void cadastrar(@Valid @RequestBody CadastrarMetaRequest cadastrarMetaRequest) {
@@ -33,5 +36,10 @@ public class MetaController {
     public List<BuscarMetaResponse> buscarMetas(@PathVariable Long idUsuario){
         return buscarMetasService.buscar(idUsuario);
     }
-    
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(OK)
+    public void deletar(@PathVariable Long id){
+        deletarMetaService.deletar(id);
+    }
 }

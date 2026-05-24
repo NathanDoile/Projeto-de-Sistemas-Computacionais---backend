@@ -131,6 +131,11 @@
     - Parâmetros de URL: `id`, é o identificador do usuario
 
 
+- **Excluir meta**
+    - Precisa estar logado para utilizar esse path
+    - `DELETE /{id}`
+    - Parâmetros de URL: `id`, é o identificador da meta
+
 ### Rota: `/custo`
 
 - **Cria um custo**
@@ -172,25 +177,37 @@
 ### Rota: `/veiculo`
 - Cria um veiculo;
     - Precisa estar logado para utilizar esse path;
-        - `POST /`
+    - `POST /`
 
-            ```json
-              {
-                      "marca":"VW",
-                      "modelo":"ONIX",
-                      "placa":"ABC1A23",
-                      "tipo":"carro",
-                      "ano":2023,
-                      "cor":"azul",
-                      "kmAtual":23589,
-                      "idUsuario":1
-              }
-            ```   
+        ```json
+          {
+                  "marca":"VW",
+                  "modelo":"ONIX",
+                  "placa":"ABC1A23",
+                  "tipo":"carro",
+                  "ano":2023,
+                  "cor":"azul",
+                  "kmAtual":23589,
+                  "idUsuario":1
+          }
+        ```   
 
 - **Retornar dados do veículo**
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador do veículo
   - `GET /{id}`
+
+
+- Atualizar quilometragem do veículo
+  - Precisa estar logado para utilizar esse path;
+  - `PUT /atualizar-km`
+      
+      ```json
+            {
+                    "idUsuario":1,
+                    "kmAtualizado":45300
+            }
+      ```   
 
 ### Rota: `/manutencao`
 - Cria uma manutencao;

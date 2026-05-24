@@ -30,8 +30,6 @@
 		<java.version>17</java.version>
         <sonar.coverage.exclusions>
             **/domain/**/*,
-            **/request/**/*,
-            **/response/**/*,
             **/config/**/*,
             **/controller/**/*,
             **/exception/**/*,
@@ -117,8 +115,6 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>**/request/*</exclude>
-                                <exclude>**/response/*</exclude>
                                 <exclude>**/domain/*</exclude>
                                 <exclude>**/config/**/*</exclude>
                                 <exclude>**/controller/**/*</exclude>
