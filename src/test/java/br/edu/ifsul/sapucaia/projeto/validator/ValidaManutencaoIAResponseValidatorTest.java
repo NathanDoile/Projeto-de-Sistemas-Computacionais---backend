@@ -49,7 +49,7 @@ class ValidaManutencaoIAResponseValidatorTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.validaDadosResposta(resposta));
 
-        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
+        assertEquals(UNPROCESSABLE_CONTENT, exception.getStatusCode());
         assertEquals("Intervalo de manutenção inválido: " + resposta.proximaRevisao().intervaloManutencoesKm(), exception.getReason());
 
     }
