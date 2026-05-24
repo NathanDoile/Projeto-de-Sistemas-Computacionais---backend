@@ -36,6 +36,14 @@ public class Veiculo {
 
     private int kmAtual;
 
+    private int intervaloEntreManutencoesKm;
+
+    private int intervaloEntreManutencoesMeses;
+
+    private int proximaManutencaoKm;
+
+    private LocalDate proximaManutencaoData;
+
     private boolean isAtivo;
 
     @OneToMany(mappedBy = "veiculo")

@@ -1,11 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ManutencaoIAResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import br.edu.ifsul.sapucaia.projeto.factory.IAFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
@@ -27,8 +30,10 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class CadastrarVeiculoServiceTest {
@@ -60,6 +65,9 @@ class CadastrarVeiculoServiceTest {
     @Mock
     private ValidaUsuarioComVeiculoService validaUsuarioComVeiculoService;
 
+    @Mock
+    private IAService iaService;
+
     @Captor
     private ArgumentCaptor<Veiculo> veiculoCaptor;
 
@@ -74,7 +82,10 @@ class CadastrarVeiculoServiceTest {
 
         Usuario usuario = usuario();
 
+        ManutencaoIAResponse iaresponse = IAFactory.response();
+
         when(usuarioRepository.findById(usuario.getIdUsuario())).thenReturn(Optional.of(usuario));
+        when(iaService.chamadaChat(anyString())).thenReturn(iaresponse);
 
         tested.cadastrar(request);
 
@@ -99,6 +110,54 @@ class CadastrarVeiculoServiceTest {
         assertEquals(request.getModelo(), veiculoResponse.getModelo());
         assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
         assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertEquals(veiculoResponse.getIntervaloEntreManutencoesKm(), iaresponse.proximaRevisao().intervaloManutencoesKm());
+        assertEquals(veiculoResponse.getIntervaloEntreManutencoesMeses(), iaresponse.proximaRevisao().intervaloManutencoesMeses());
+        assertEquals(veiculoResponse.getProximaManutencaoKm(), request.getKmAtual() + iaresponse.proximaRevisao().distanciaRestanteKm());
+        assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(iaresponse.proximaRevisao().intervaloManutencoesMeses()));
+        assertTrue(veiculoResponse.isAtivo());
+        assertEquals(usuario, veiculoResponse.getUsuario());
+        assertEquals(veiculoResponse, usuarioResponse.getVeiculo());
+        assertTrue(usuarioResponse.isPossuiVeiculo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar veiculo, mas informações da IA estarão zeradas")
+    void deveCadastrarVeiculoIAZerada(){
+
+        CadastrarVeiculoRequest request = VeiculoFactory.cadastrarVeiculoRequest();
+
+        Usuario usuario = usuario();
+
+        when(usuarioRepository.findById(usuario.getIdUsuario())).thenReturn(Optional.of(usuario));
+        when(iaService.chamadaChat(anyString())).thenThrow(new RuntimeException("IA indisponível"));
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).jaExistePlaca(request.getPlaca());
+        verify(validarPlacaValidator).formatoValido(request.getPlaca());
+        verify(validaTipoVeiculoValidator).tipoAceito(request.getTipo());
+        verify(validaAnoVeiculoValidator).anoMenorQueAtual(request.getAno());
+        verify(validaUsuarioService).porId(request.getIdUsuario());
+        verify(usuarioRepository).findById(usuario.getIdUsuario());
+        verify(validaUsuarioComVeiculoService).porUsuario(usuario);
+        verify(veiculoRepository).save(veiculoCaptor.capture());
+        verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Veiculo veiculoResponse = veiculoCaptor.getValue();
+        Usuario usuarioResponse = usuarioCaptor.getValue();
+
+        assertEquals(request.getPlaca(), veiculoResponse.getPlaca());
+        assertEquals(request.getTipo().toUpperCase(), veiculoResponse.getTipo().name());
+        assertEquals(request.getCor(), veiculoResponse.getCor());
+        assertEquals(request.getAno(), veiculoResponse.getAno());
+        assertEquals(request.getMarca(), veiculoResponse.getMarca());
+        assertEquals(request.getModelo(), veiculoResponse.getModelo());
+        assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
+        assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertEquals(veiculoResponse.getIntervaloEntreManutencoesKm(), 0);
+        assertEquals(veiculoResponse.getIntervaloEntreManutencoesMeses(), 0);
+        assertEquals(veiculoResponse.getProximaManutencaoKm(), 0);
+        assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(0));
         assertTrue(veiculoResponse.isAtivo());
         assertEquals(usuario, veiculoResponse.getUsuario());
         assertEquals(veiculoResponse, usuarioResponse.getVeiculo());

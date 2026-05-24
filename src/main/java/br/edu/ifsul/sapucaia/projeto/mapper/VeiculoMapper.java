@@ -38,6 +38,10 @@ public class VeiculoMapper {
                 .ano(veiculo.getAno())
                 .cor(veiculo.getCor())
                 .kmAtual(veiculo.getKmAtual())
+                .intervaloEntreManutencoesKm(veiculo.getIntervaloEntreManutencoesKm())
+                .intervaloEntreManutencoesMeses(veiculo.getIntervaloEntreManutencoesMeses())
+                .proximaManutencaoKm(veiculo.getProximaManutencaoKm())
+                .proximaManutencaoData(veiculo.getProximaManutencaoData())
                 .build();
     }
 

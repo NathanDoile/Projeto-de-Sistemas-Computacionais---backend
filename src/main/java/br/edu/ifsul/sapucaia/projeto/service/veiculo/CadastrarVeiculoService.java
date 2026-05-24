@@ -1,11 +1,15 @@
 package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ManutencaoIAResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ProximaRevisaoIAResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import br.edu.ifsul.sapucaia.projeto.exception.IAException;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
@@ -14,10 +18,12 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toEntity;
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toResponse;
 import static java.time.LocalDate.now;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +45,11 @@ public class CadastrarVeiculoService {
 
     private final ValidaUsuarioComVeiculoService validaUsuarioComVeiculoService;
 
-    public CadastrarVeiculoResponse cadastrar(CadastrarVeiculoRequest cadastrarVeiculoRequest) {
+    private final IAService iaService;
 
+    private ManutencaoIAResponse manutencaoIAResponse;
+
+    public CadastrarVeiculoResponse cadastrar(CadastrarVeiculoRequest cadastrarVeiculoRequest) {
 
         validaVeiculoService.jaExistePlaca(cadastrarVeiculoRequest.getPlaca());
         validarPlacaValidator.formatoValido(cadastrarVeiculoRequest.getPlaca());
@@ -58,6 +67,26 @@ public class CadastrarVeiculoService {
         veiculo.setUsuario(usuario);
 
         veiculo.setAtivo(true);
+
+        try {
+             manutencaoIAResponse = iaService.chamadaChat(cadastrarVeiculoRequest.getMarca() + " " +
+                    cadastrarVeiculoRequest.getModelo() + " " +
+                    cadastrarVeiculoRequest.getAno() + " " +
+                    cadastrarVeiculoRequest.getKmAtual() + " km");
+
+            veiculo.setProximaManutencaoKm(veiculo.getKmAtual() + manutencaoIAResponse.proximaRevisao().distanciaRestanteKm());
+        }
+        catch(Exception e){
+            manutencaoIAResponse = new ManutencaoIAResponse(
+                    null,
+                    new ProximaRevisaoIAResponse(0,0, 0)
+            );
+            veiculo.setProximaManutencaoKm(0);
+        }
+
+        veiculo.setIntervaloEntreManutencoesKm(manutencaoIAResponse.proximaRevisao().intervaloManutencoesKm());
+        veiculo.setIntervaloEntreManutencoesMeses(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses());
+        veiculo.setProximaManutencaoData(veiculo.getDataUltimaAtualizacaoKm().plusMonths(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses()));
 
         veiculoRepository.save(veiculo);
 

@@ -41,6 +41,10 @@ CREATE TABLE veiculo(
     km_atual INTEGER NOT NULL,
     data_ultima_atualizacao_km DATE NOT NULL,
     id_usuario BIGINT UNSIGNED UNIQUE NOT NULL,
+    intervalo_entre_manutencoes_km INTEGER NOT NULL,
+    intervalo_entre_manutencoes_meses INTEGER NOT NULL,
+    proxima_manutencao_Km INTEGER NOT NULL,
+    proxima_manutencao_data DATE NOT NULL,
     is_ativo BOOLEAN NOT NULL,
     PRIMARY KEY(id_veiculo),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)

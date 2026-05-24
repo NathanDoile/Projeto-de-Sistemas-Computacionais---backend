@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ManutencaoIAResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 
 import java.util.List;
