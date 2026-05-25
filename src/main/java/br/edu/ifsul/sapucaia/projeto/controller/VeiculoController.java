@@ -4,8 +4,10 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.AtualizarKmVeicu
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.RetornaDadosVeiculoResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.InformacoesManutencaoVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.service.veiculo.AtualizarKmVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.veiculo.CadastrarVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.service.veiculo.InformacoesManutencaoVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.veiculo.RetornaDadosVeiculoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ public class VeiculoController {
 
     private final RetornaDadosVeiculoService retornaDadosVeiculoService;
 
+    private final InformacoesManutencaoVeiculoService informacoesManutencaoVeiculoService;
+
     private final AtualizarKmVeiculoService atualizarKmVeiculoService;
 
     @PostMapping
@@ -35,6 +39,12 @@ public class VeiculoController {
     @ResponseStatus(OK)
     public RetornaDadosVeiculoResponse retornaDadosVeiculo(@PathVariable Long id){
         return retornaDadosVeiculoService.dadosVeiculo(id);
+    }
+
+    @GetMapping("/{id}/informacoes-manutencao")
+    @ResponseStatus(OK)
+    public InformacoesManutencaoVeiculoResponse informacoesManutencao(@PathVariable Long id) {
+        return informacoesManutencaoVeiculoService.buscarInformacoesManutencao(id);
     }
 
     @PutMapping("/atualizar-km")

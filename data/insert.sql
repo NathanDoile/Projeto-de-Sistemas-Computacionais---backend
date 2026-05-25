@@ -26,5 +26,5 @@ VALUES ('2026-04-21', 350.00, 1, TRUE),
        ('2026-04-02', 480.10, 3, TRUE);
 
 INSERT INTO manutencao(tipo, data_manutencao, descricao, id_veiculo, id_custo, is_ativo)
-VALUES ('Corretiva', '2026-03-20', 'Troca das pastilhas de freio dianteiras', 1, 2, TRUE),
-       ('Preventiva', '2026-03-25', 'Alinhamento e balanceamento', 2, 3, TRUE);
+VALUES ('CORRETIVA', '2026-03-20', 'Troca das pastilhas de freio dianteiras', 1, 2, TRUE),
+       ('PREVENTIVA', '2026-03-25', 'Alinhamento e balanceamento', 2, 3, TRUE);
