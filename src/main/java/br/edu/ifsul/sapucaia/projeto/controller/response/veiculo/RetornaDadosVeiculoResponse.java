@@ -26,4 +26,12 @@ public class RetornaDadosVeiculoResponse {
     private String cor;
 
     private int kmAtual;
+
+    private int intervaloEntreManutencoesKm;
+
+    private int intervaloEntreManutencoesMeses;
+
+    private int proximaManutencaoKm;
+
+    private LocalDate proximaManutencaoData;
 }

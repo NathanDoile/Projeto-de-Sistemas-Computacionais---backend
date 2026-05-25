@@ -53,7 +53,10 @@ class RetornaDadosVeiculoServiceTest {
         assertEquals(veiculo.getAno(), response.getAno());
         assertEquals(veiculo.getCor(), response.getCor());
         assertEquals(veiculo.getKmAtual(), response.getKmAtual());
-
+        assertEquals(veiculo.getIntervaloEntreManutencoesKm(), response.getIntervaloEntreManutencoesKm());
+        assertEquals(veiculo.getIntervaloEntreManutencoesMeses(), response.getIntervaloEntreManutencoesMeses());
+        assertEquals(veiculo.getProximaManutencaoKm(), response.getProximaManutencaoKm());
+        assertEquals(veiculo.getProximaManutencaoData(), response.getProximaManutencaoData());
     }
 
     @Test

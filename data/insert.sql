@@ -7,8 +7,8 @@ VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE, TRUE,
 
 INSERT INTO veiculo(modelo, marca, ano, placa, cor, tipo, km_atual, id_usuario, is_ativo, data_ultima_atualizacao_km,intervalo_entre_manutencoes_km, intervalo_entre_manutencoes_meses, proxima_manutencao_Km, proxima_manutencao_data)
 VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'CARRO', 45200, 1, TRUE, NOW(), 5000, 6, 50200, date_add(NOW(), INTERVAL 6 MONTH)),
-       ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'CARRO', 78300, 2, TRUE, NOW(), 7500, 6, 50200, date_add(NOW(), INTERVAL 6 MONTH)),
-       ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'CARRO', 112000, 3, TRUE, NOW(), 5000, 6, 50200, date_add(NOW(), INTERVAL 6 MONTH));
+       ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'CARRO', 78300, 2, TRUE, NOW(), 7500, 6, 85800, date_add(NOW(), INTERVAL 6 MONTH)),
+       ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'CARRO', 112000, 3, TRUE, NOW(), 5000, 6, 117000, date_add(NOW(), INTERVAL 6 MONTH));
 
 INSERT INTO meta(titulo, formato, valor_atual, valor_desejado, id_usuario, is_ativo)
 VALUES ('Presente para a filha', 'SEMANAL', 0, 300.0, 1, TRUE),
