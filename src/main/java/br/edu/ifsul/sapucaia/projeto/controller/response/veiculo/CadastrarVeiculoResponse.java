@@ -27,11 +27,13 @@ public class CadastrarVeiculoResponse {
 
     private int kmAtual;
 
-    private int intervaloEntreManutencoesKm;
-
     private int intervaloEntreManutencoesMeses;
+
+    private LocalDate proximaManutencaoData;
+
+    private int intervaloEntreManutencoesKm;
 
     private int proximaManutencaoKm;
 
-    private LocalDate proximaManutencaoData;
+
 }

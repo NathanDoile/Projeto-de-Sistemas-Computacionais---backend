@@ -29,9 +29,9 @@ public class RetornaDadosVeiculoResponse {
 
     private int intervaloEntreManutencoesKm;
 
-    private int intervaloEntreManutencoesMeses;
-
     private int proximaManutencaoKm;
+
+    private int intervaloEntreManutencoesMeses;
 
     private LocalDate proximaManutencaoData;
 }
