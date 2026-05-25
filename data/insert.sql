@@ -10,10 +10,10 @@ VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'CARRO', 45200, 1, T
        ('Cronos', 'Fiat', 2021, 'RLS3F42', 'Branco', 'CARRO', 78300, 2, TRUE, NOW(), 7500, 6, 85800, date_add(NOW(), INTERVAL 6 MONTH)),
        ('Corolla', 'Toyota', 2020, 'QNY4G11', 'Preto', 'CARRO', 112000, 3, TRUE, NOW(), 5000, 6, 117000, date_add(NOW(), INTERVAL 6 MONTH));
 
-INSERT INTO meta(titulo, formato, valor_atual, valor_desejado, id_usuario, is_ativo)
-VALUES ('Presente para a filha', 'SEMANAL', 0, 300.0, 1, TRUE),
-       ('Trocar bateria do celular', 'SEMANAL', 0, 200.0, 2, TRUE),
-       ('Jantar em restaurante japonês', 'SEMANAL', 0, 300.0, 3, TRUE);
+INSERT INTO meta(titulo, formato, valor_atual, valor_desejado, id_usuario, is_ativo, tipo)
+VALUES ('Presente para a filha', 'SEMANAL', 0, 300.0, 1, TRUE, 'RECEITA'),
+       ('Trocar bateria do celular', 'SEMANAL', 0, 200.0, 2, TRUE, 'CUSTO'),
+       ('Jantar em restaurante japonês', 'SEMANAL', 0, 300.0, 3, TRUE, 'CUSTO');
 
 INSERT INTO custo(tipo, valor, data_vencimento, data_pagamento, descricao, id_veiculo, is_ativo)
 VALUES ('COMBUSTIVEL', 100.00, null, '2026-04-22', 'Abastecimento completo', 1, TRUE),

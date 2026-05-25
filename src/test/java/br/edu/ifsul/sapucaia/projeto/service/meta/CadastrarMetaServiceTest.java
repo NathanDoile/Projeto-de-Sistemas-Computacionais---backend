@@ -71,6 +71,7 @@ class CadastrarMetaServiceTest {
         assertEquals(request.getTitulo(), metaResponse.getTitulo());
         assertEquals(request.getValor(), metaResponse.getValorDesejado());
         assertEquals(request.getFormato(), metaResponse.getFormato().toString());
+        assertEquals(request.getTipo(), metaResponse.getTipo().toString());
         assertEquals(usuario, metaResponse.getUsuario());
         assertTrue(metaResponse.isAtivo());
         assertEquals(0, metaResponse.getValorAtual());

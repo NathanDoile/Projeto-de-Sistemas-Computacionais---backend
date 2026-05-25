@@ -18,6 +18,9 @@ public class CadastrarMetaRequest {
     private String formato;
 
     @NotNull
+    private String tipo;
+
+    @NotNull
     private Double valor;
 
     @NotNull

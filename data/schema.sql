@@ -25,6 +25,7 @@ CREATE TABLE meta(
     valor_desejado DOUBLE NOT NULL,
     id_usuario BIGINT UNSIGNED NOT NULL,
     is_ativo BOOLEAN NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
     PRIMARY KEY(id_meta),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)
      ON DELETE CASCADE

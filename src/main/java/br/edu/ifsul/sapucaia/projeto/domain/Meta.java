@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.domain;
 
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,9 @@ public class Meta {
 
     @Enumerated(STRING)
     private FormatoMeta formato;
+
+    @Enumerated(STRING)
+    private TipoMeta tipo;
 
     private double valorDesejado;
 

@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaReques
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta;
 
 public class MetaMapper {
 
@@ -15,6 +16,7 @@ public class MetaMapper {
                 .builder()
                 .titulo(cadastrarMetaRequest.getTitulo())
                 .formato(FormatoMeta.deTexto(cadastrarMetaRequest.getFormato()))
+                .tipo(TipoMeta.deTexto(cadastrarMetaRequest.getTipo()))
                 .valorDesejado(cadastrarMetaRequest.getValor())
                 .build();
     }
@@ -26,6 +28,7 @@ public class MetaMapper {
                 .idMeta(meta.getIdMeta())
                 .titulo(meta.getTitulo())
                 .formato(meta.getFormato())
+                .tipo(meta.getTipo())
                 .valorDesejado(meta.getValorDesejado())
                 .valorAtual(meta.getValorAtual())
                 .percentualAtingido((meta.getValorAtual()/ meta.getValorDesejado()) * 100)

@@ -5,6 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaReques
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 
 public class MetaFactory {
 
@@ -15,6 +16,7 @@ public class MetaFactory {
                 .titulo("Meta Teste")
                 .valor(200.00)
                 .formato(SEMANAL.toString())
+                .tipo(RECEITA.toString())
                 .idUsuario(1L)
                 .build();
     }
@@ -34,6 +36,7 @@ public class MetaFactory {
                 .idMeta(1L)
                 .titulo("Salario")
                 .formato(MENSAL)
+                .tipo(RECEITA)
                 .valorDesejado(3000)
                 .valorAtual(0)
                 .isAtivo(true)
@@ -47,6 +50,7 @@ public class MetaFactory {
                 .idMeta(1L)
                 .titulo("Salario")
                 .formato(MENSAL)
+                .tipo(RECEITA)
                 .valorDesejado(3000)
                 .valorAtual(0)
                 .isAtivo(true)
@@ -60,6 +64,7 @@ public class MetaFactory {
                 .idMeta(1L)
                 .titulo("Salario")
                 .formato(SEMANAL)
+                .tipo(RECEITA)
                 .valorDesejado(3000)
                 .valorAtual(0)
                 .isAtivo(true)
@@ -73,6 +78,7 @@ public class MetaFactory {
                 .idMeta(1L)
                 .titulo("Salario")
                 .formato(DIARIA)
+                .tipo(RECEITA)
                 .valorDesejado(3000)
                 .valorAtual(0)
                 .isAtivo(true)
