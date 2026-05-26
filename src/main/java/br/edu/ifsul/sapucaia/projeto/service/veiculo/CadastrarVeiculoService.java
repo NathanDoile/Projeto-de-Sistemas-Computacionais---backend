@@ -47,7 +47,7 @@ public class CadastrarVeiculoService {
 
     private final IAService iaService;
 
-    private ManutencaoIAResponse manutencaoIAResponse;
+    ManutencaoIAResponse manutencaoIAResponse;
 
     public CadastrarVeiculoResponse cadastrar(CadastrarVeiculoRequest cadastrarVeiculoRequest) {
 

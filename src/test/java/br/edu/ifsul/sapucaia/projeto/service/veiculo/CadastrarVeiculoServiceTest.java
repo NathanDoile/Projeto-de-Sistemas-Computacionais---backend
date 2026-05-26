@@ -95,6 +95,7 @@ class CadastrarVeiculoServiceTest {
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
+        verify(iaService).chamadaChat(anyString());
         verify(veiculoRepository).save(veiculoCaptor.capture());
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
@@ -139,6 +140,7 @@ class CadastrarVeiculoServiceTest {
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
+        verify(iaService).chamadaChat(anyString());
         verify(veiculoRepository).save(veiculoCaptor.capture());
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
