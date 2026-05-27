@@ -73,6 +73,19 @@ class CadastrarVeiculoServiceTest {
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
+    private void assertsVeiculo(CadastrarVeiculoRequest request, Veiculo veiculoResponse, Usuario usuario){
+        assertEquals(request.getPlaca(), veiculoResponse.getPlaca());
+        assertEquals(request.getTipo().toUpperCase(), veiculoResponse.getTipo().name());
+        assertEquals(request.getCor(), veiculoResponse.getCor());
+        assertEquals(request.getAno(), veiculoResponse.getAno());
+        assertEquals(request.getMarca(), veiculoResponse.getMarca());
+        assertEquals(request.getModelo(), veiculoResponse.getModelo());
+        assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
+        assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertTrue(veiculoResponse.isAtivo());
+        assertEquals(usuario, veiculoResponse.getUsuario());
+    }
+
     @Test
     @DisplayName("Deve cadastrar veiculo corretamente")
     void deveCadastrarVeiculoCorretamente(){
@@ -102,20 +115,12 @@ class CadastrarVeiculoServiceTest {
         Veiculo veiculoResponse = veiculoCaptor.getValue();
         Usuario usuarioResponse = usuarioCaptor.getValue();
 
-        assertEquals(request.getPlaca(), veiculoResponse.getPlaca());
-        assertEquals(request.getTipo().toUpperCase(), veiculoResponse.getTipo().name());
-        assertEquals(request.getCor(), veiculoResponse.getCor());
-        assertEquals(request.getAno(), veiculoResponse.getAno());
-        assertEquals(request.getMarca(), veiculoResponse.getMarca());
-        assertEquals(request.getModelo(), veiculoResponse.getModelo());
-        assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
-        assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertsVeiculo(request, veiculoResponse, usuarioResponse);
+
         assertEquals(veiculoResponse.getIntervaloEntreManutencoesKm(), iaresponse.proximaRevisao().intervaloManutencoesKm());
         assertEquals(veiculoResponse.getIntervaloEntreManutencoesMeses(), iaresponse.proximaRevisao().intervaloManutencoesMeses());
         assertEquals(veiculoResponse.getProximaManutencaoKm(), request.getKmAtual() + iaresponse.proximaRevisao().distanciaRestanteKm());
         assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(iaresponse.proximaRevisao().intervaloManutencoesMeses()));
-        assertTrue(veiculoResponse.isAtivo());
-        assertEquals(usuario, veiculoResponse.getUsuario());
         assertEquals(veiculoResponse, usuarioResponse.getVeiculo());
         assertTrue(usuarioResponse.isPossuiVeiculo());
     }
@@ -147,20 +152,12 @@ class CadastrarVeiculoServiceTest {
         Veiculo veiculoResponse = veiculoCaptor.getValue();
         Usuario usuarioResponse = usuarioCaptor.getValue();
 
-        assertEquals(request.getPlaca(), veiculoResponse.getPlaca());
-        assertEquals(request.getTipo().toUpperCase(), veiculoResponse.getTipo().name());
-        assertEquals(request.getCor(), veiculoResponse.getCor());
-        assertEquals(request.getAno(), veiculoResponse.getAno());
-        assertEquals(request.getMarca(), veiculoResponse.getMarca());
-        assertEquals(request.getModelo(), veiculoResponse.getModelo());
-        assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
-        assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertsVeiculo(request, veiculoResponse, usuarioResponse);
+
         assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesKm());
         assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesMeses());
         assertEquals(0, veiculoResponse.getProximaManutencaoKm());
         assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(0));
-        assertTrue(veiculoResponse.isAtivo());
-        assertEquals(usuario, veiculoResponse.getUsuario());
         assertEquals(veiculoResponse, usuarioResponse.getVeiculo());
         assertTrue(usuarioResponse.isPossuiVeiculo());
     }
