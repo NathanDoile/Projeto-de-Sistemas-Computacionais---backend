@@ -77,7 +77,15 @@ public class UsuarioFactory {
                 .build();
     }
 
-    public static AlterarNotificacoesRequest alterarNotificacoesRequest() {
+    public static AlterarNotificacoesRequest alterarNotificacaoManutencaoRequest() {
+
+        return AlterarNotificacoesRequest
+                .builder()
+                .notificacao("Manutenção")
+                .build();
+    }
+
+    public static AlterarNotificacoesRequest alterarNotificacaoVencimentoRequest() {
 
         return AlterarNotificacoesRequest
                 .builder()

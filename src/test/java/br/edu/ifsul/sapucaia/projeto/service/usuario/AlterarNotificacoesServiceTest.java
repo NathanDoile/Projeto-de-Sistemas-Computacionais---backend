@@ -17,8 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.alterarNotificacoesRequest;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -41,9 +40,32 @@ class AlterarNotificacoesServiceTest {
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
     @Test
-    @DisplayName("Deve alterar estado da notificação se tipo válido")
-    void deveAlterarEstadoNotificacaoValida(){
-        AlterarNotificacoesRequest request = alterarNotificacoesRequest();
+    @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção")
+    void deveAlterarEstadoNotificacaoManutencao(){
+        AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
+
+        Usuario usuario = usuario();
+        Long id = usuario.getIdUsuario();
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+
+        tested.alterarNotificacoes(id, request);
+
+        verify(validaUsuarioService).porId(id);
+        verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
+        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(id, response.getIdUsuario());
+        assertFalse(response.isNotificacaoManutencao());
+    }
+
+    @Test
+    @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento")
+    void deveAlterarEstadoNotificacaoVencimento(){
+        AlterarNotificacoesRequest request = alterarNotificacaoVencimentoRequest();
 
         Usuario usuario = usuario();
         Long id = usuario.getIdUsuario();
@@ -66,7 +88,7 @@ class AlterarNotificacoesServiceTest {
     @Test
     @DisplayName("Não deve alterar estado da notificação se usuário não encontrado")
     void naoDeveAlterarEstadoNotificacaoUsuarioInvalido(){
-        AlterarNotificacoesRequest request = alterarNotificacoesRequest();
+        AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
 
         Usuario usuario = usuario();
         Long id = usuario.getIdUsuario();
@@ -84,7 +106,8 @@ class AlterarNotificacoesServiceTest {
     @Test
     @DisplayName("Não deve alterar estado da notificação se tipo de notificação for invalido")
     void naoDeveAlterarEstadoNotificacaoInvalida(){
-        AlterarNotificacoesRequest request = alterarNotificacoesRequest();
+        AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
+        request.setNotificacao("Errada");
 
         Usuario usuario = usuario();
         Long id = usuario.getIdUsuario();
