@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaCorretaService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class ExcluirContaUsuarioServiceTest {
     @Mock
     private ValidaUsuarioService validaUsuarioService;
 
+    @Mock
+    private ValidaSenhaCorretaService validaSenhaCorretaService;
+
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
@@ -47,13 +51,12 @@ class ExcluirContaUsuarioServiceTest {
 
         Usuario usuario = usuario();
 
-        when(usuarioRepository.existsByIdUsuarioAndSenhaAndIsAtivoTrue(id, request.getSenha())).thenReturn(true);
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
 
         tested.excluirConta(id, request);
 
         verify(validaUsuarioService).porId(id);
-        verify(usuarioRepository).existsByIdUsuarioAndSenhaAndIsAtivoTrue(id, request.getSenha());
+        verify(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
         verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
@@ -77,7 +80,7 @@ class ExcluirContaUsuarioServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.excluirConta(id, request));
 
         verify(validaUsuarioService).porId(id);
-        verify(usuarioRepository, never()).existsByIdUsuarioAndSenhaAndIsAtivoTrue(any(Long.class), any(String.class));
+        verify(validaSenhaCorretaService, never()).porIDESenha(id, request.getSenha());
         verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
@@ -91,16 +94,13 @@ class ExcluirContaUsuarioServiceTest {
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
         request.setSenha("Senhaerrada");
 
-        when(usuarioRepository.existsByIdUsuarioAndSenhaAndIsAtivoTrue(id, request.getSenha())).thenReturn(false);
+        doThrow(ResponseStatusException.class).when(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.excluirConta(id, request));
+        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(id, request));
 
         verify(validaUsuarioService).porId(id);
-        verify(usuarioRepository).existsByIdUsuarioAndSenhaAndIsAtivoTrue(id, request.getSenha());
+        verify(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
         verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
         verify(usuarioRepository, never()).save(any(Usuario.class));
-
-        assertEquals(UNAUTHORIZED, exception.getStatusCode());
-        assertEquals("Senha incorreta.", exception.getReason());
     }
 }

@@ -21,8 +21,7 @@ public class UsuarioController {
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
     private final LoginUsuarioService loginUsuarioService;
     private final ExcluirContaUsuarioService excluirContaUsuarioService;
-    private final AlterarNotificacaoManutencaoService alterarNotificacaoManutencaoService;
-    private final AlterarNotificacaoVencimentoService alterarNotificacaoVencimentoService;
+    private final AlterarNotificacoesService alterarNotificacoesService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -54,15 +53,9 @@ public class UsuarioController {
         excluirContaUsuarioService.excluirConta(id, excluirContaUsuarioRequest);
     }
 
-    @PatchMapping("/notificacao-manutencao/{id}")
+    @PutMapping("/notificacoes/{id}")
     @ResponseStatus(OK)
-    public void alterarNotificacaoManutencao(@PathVariable Long id,@Valid @RequestBody AlterarNotificacaoManutencaoRequest alterarNotificacaoManutencaoRequest){
-        alterarNotificacaoManutencaoService.alterarNotificacaoManutencao(id, alterarNotificacaoManutencaoRequest);
-    }
-
-    @PatchMapping("/notificacao-vencimento/{id}")
-    @ResponseStatus(OK)
-    public void alterarNotificacaoVencimento(@PathVariable Long id, @Valid @RequestBody AlterarNotificacaoVencimentoRequest request){
-        alterarNotificacaoVencimentoService.alterarNotificacaoVencimento(id, request);
+    public void alterarNotificacoes(@PathVariable Long id, @Valid @RequestBody AlterarNotificacoesRequest request){
+        alterarNotificacoesService.alterarNotificacoes(id, request);
     }
 }

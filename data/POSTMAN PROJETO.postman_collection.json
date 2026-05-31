@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "67c7309a-7c37-4c49-8b10-c99ccda9ac0f",
+    "_postman_id": "383dd108-a1c4-4be0-b92c-86806c67f1d8",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-67c7309a-7c37-4c49-8b10-c99ccda9ac0f?source=collection_link"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://go.postman.co/collection/53222404-383dd108-a1c4-4be0-b92c-86806c67f1d8?source=collection_link"
   },
   "item": [
     {
@@ -259,6 +259,42 @@
             "usuario",
             "{id}",
             "editar-perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar Notificações",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"notificacao\": \"VENCIMENTO\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/notificacoes/:{id}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            "notificacoes",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "3"
+            }
           ]
         }
       },
