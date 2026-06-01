@@ -41,7 +41,7 @@ public class RelatoriosController {
     }
 
     @GetMapping("/gastos-categoria/{idUsuario}")
-    public GastosPorCategoriaDoMesResponse getPorDia(
+    public GastosPorCategoriaDoMesResponse getGastosPorCategoria(
             @PathVariable Long idUsuario,
             @RequestParam String tipo,
             @RequestParam String dataBase

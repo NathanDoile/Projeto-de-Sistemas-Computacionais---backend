@@ -164,7 +164,12 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        verify(metaRepository, times(1)).save(metaCaptor.capture());
+        if(now().getMonth() == request.getDataReceita().getMonth()){
+            verify(metaRepository, times(1)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, never()).save(metaCaptor.capture());
+        }
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
