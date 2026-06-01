@@ -12,22 +12,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CadastrarCustoRequest{
+public class CadastrarCustoRequest {
 
-    @NotNull
+    @NotNull(message = "O ID do veículo é obrigatório.")
     private Long idVeiculo;
 
-    @NotBlank
+    @NotBlank(message = "O tipo é obrigatório.")
     private String tipo;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "O valor é obrigatório.")
+    @Positive(message = "O valor deve ser maior que zero.")
     private double valor;
 
     private LocalDate dataVencimento;
 
     private LocalDate dataPagamento;
 
-    @NotBlank
+    @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 }

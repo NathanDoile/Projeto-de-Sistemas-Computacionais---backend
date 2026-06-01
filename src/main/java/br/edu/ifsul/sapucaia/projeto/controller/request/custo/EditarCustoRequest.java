@@ -7,25 +7,27 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Builder
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class EditarCustoRequest {
 
-    @NotNull
+    @NotNull(message = "O ID do custo é obrigatório.")
     private Long idCusto;
 
-    @NotBlank
+    @NotBlank(message = "O tipo é obrigatório.")
     private String tipo;
 
-    @NotNull
+    @NotNull(message = "O valor é obrigatório.")
     private double valor;
 
-    @NotNull
+    @NotNull(message = "A data de vencimento é obrigatória.")
     private LocalDate dataVencimento;
 
-    @NotNull
+    @NotNull(message = "A data de pagamento é obrigatória.")
     private LocalDate dataPagamento;
 
-    @NotBlank
+    @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 }

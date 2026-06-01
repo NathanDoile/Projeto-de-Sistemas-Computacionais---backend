@@ -9,10 +9,8 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.deTexto;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +31,9 @@ public class EditarCustoService {
         validaValorCustoValidator.isPositivo(editarCustoRequest.getValor());
         validaTipoCustoValidator.tipoValido(editarCustoRequest.getTipo());
 
-        Custo custo = custoRepository.findByIdCustoAndIsAtivo(editarCustoRequest.getIdCusto(), true)
-        .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Id do custo não encontrado."));
+        Custo custo = custoRepository.findByIdCustoAndIsAtivo(
+                        editarCustoRequest.getIdCusto(), true)
+                .get();
 
         custo.setTipo(deTexto(editarCustoRequest.getTipo()));
         custo.setValor(editarCustoRequest.getValor());
