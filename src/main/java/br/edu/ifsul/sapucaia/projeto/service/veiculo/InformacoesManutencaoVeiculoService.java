@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.InformacoesManu
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
-import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import jakarta.transaction.Transactional;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,69 +20,79 @@ public class InformacoesManutencaoVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
-    private final ManutencaoRepository manutencaoRepository;
-
     @Transactional
     public InformacoesManutencaoVeiculoResponse buscarInformacoesManutencao(Long idVeiculo) {
 
         validaVeiculoService.porId(idVeiculo);
-
-        List<Manutencao> manutencaos = manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
+        validaVeiculoService.estaAtivo(idVeiculo);
 
         Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true);
 
-        List<Manutencao> manutencaosPreventivas = manutencaos
-                .stream()
-                .filter(manutencao -> manutencao.getTipo().equals(PREVENTIVA))
-                .toList();
+        int manutencoesPreventivas = 0;
+        int manutencoesCorretivas = 0;
+        int manutencoesPreditivas = 0;
+        double valorTotalPreventivas = 0.0;
+        double valorTotalCorretivas = 0.0;
+        double valorTotalPreditivas = 0.0;
+        double somaValoresManutencao = 0.0;
+        int manutencoesComCusto = 0;
 
-        List<Manutencao> manutencaosCorretivas = manutencaos
-                .stream()
-                .filter(manutencao -> manutencao.getTipo().equals(CORRETIVA))
-                .toList();
+        List<Manutencao> manutencoes = veiculo.getManutencoes();
+        if (manutencoes != null) {
+            for (Manutencao manutencao : manutencoes) {
+                if (!manutencao.isAtivo()) {
+                    continue;
+                }
 
-        List<Manutencao> manutencaosPreditivas = manutencaos
-                .stream()
-                .filter(manutencao -> manutencao.getTipo().equals(PREDITIVA))
-                .toList();
+                Custo custo = manutencao.getCusto();
+                double valorCusto = 0.0;
+                if (custo != null && custo.isAtivo()) {
+                    valorCusto = custo.getValor();
+                }
 
-        int manutencoesPreventivas = manutencaosPreventivas.size();
+                if (manutencao.getTipo() != null) {
+                    switch (manutencao.getTipo()) {
+                        case PREVENTIVA -> {
+                            manutencoesPreventivas++;
+                            valorTotalPreventivas += valorCusto;
+                        }
+                        case CORRETIVA -> {
+                            manutencoesCorretivas++;
+                            valorTotalCorretivas += valorCusto;
+                        }
+                        case PREDITIVA -> {
+                            manutencoesPreditivas++;
+                            valorTotalPreditivas += valorCusto;
+                        }
+                    }
+                }
 
-        int manutencoesCorretivas = manutencaosCorretivas.size();
+                if (valorCusto > 0) {
+                    manutencoesComCusto++;
+                    somaValoresManutencao += valorCusto;
+                }
+            }
+        }
 
-        int manutencoesPreditivas = manutencaosPreditivas.size();
+        double mediaPrecoManutencao = 0.0;
+        if (manutencoesComCusto > 0) {
+            mediaPrecoManutencao = somaValoresManutencao / manutencoesComCusto;
+        }
 
-        double valorTotalPreventivas = manutencaosPreventivas
-                .stream()
-                .mapToDouble(manutencao -> manutencao.getCusto().getValor())
-                .sum();
+        double totalCustos = 0.0;
+        List<Custo> custos = veiculo.getCustos();
+        if (custos != null) {
+            for (Custo custo : custos) {
+                if (custo.isAtivo()) {
+                    totalCustos += custo.getValor();
+                }
+            }
+        }
 
-        double valorTotalCorretivas = manutencaosCorretivas
-                .stream()
-                .mapToDouble(manutencao -> manutencao.getCusto().getValor())
-                .sum();
-
-        double valorTotalPreditivas = manutencaosPreditivas
-                .stream()
-                .mapToDouble(manutencao -> manutencao.getCusto().getValor())
-                .sum();
-
-        double somaValoresManutencao = valorTotalPreventivas + valorTotalCorretivas + valorTotalPreditivas;
-
-        int manutencoesComCusto = manutencaos.size();
-
-        double mediaPrecoManutencao = somaValoresManutencao / manutencoesComCusto;
-
-        double totalCustos = veiculo.getCustos() == null ? 0.00 :
-                veiculo.getCustos()
-                .stream()
-                .filter(Custo::isAtivo)
-                .mapToDouble(Custo::getValor)
-                .sum();
-
-        double valorCustoPorKmRodado = veiculo.getKmAtual() > 0
-                ? totalCustos / veiculo.getKmAtual()
-                : 0.00;
+        double valorCustoPorKmRodado = 0.0;
+        if (veiculo.getKmAtual() > 0) {
+            valorCustoPorKmRodado = totalCustos / veiculo.getKmAtual();
+        }
 
         return InformacoesManutencaoVeiculoResponse.builder()
                 .totalManutencoesPreventivas(manutencoesPreventivas)
