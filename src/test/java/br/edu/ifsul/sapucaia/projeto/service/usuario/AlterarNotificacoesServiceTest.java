@@ -40,8 +40,8 @@ class AlterarNotificacoesServiceTest {
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
     @Test
-    @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção")
-    void deveAlterarEstadoNotificacaoManutencao(){
+    @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção e estiver ativada")
+    void deveAlterarEstadoNotificacaoManutencaoAtivada(){
         AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
 
         Usuario usuario = usuario();
@@ -63,8 +63,32 @@ class AlterarNotificacoesServiceTest {
     }
 
     @Test
-    @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento")
-    void deveAlterarEstadoNotificacaoVencimento(){
+    @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção e estiver desativada")
+    void deveAlterarEstadoNotificacaoManutencaoDesativada(){
+        AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
+
+        Usuario usuario = usuario();
+        usuario.setNotificacaoManutencao(false);
+        Long id = usuario.getIdUsuario();
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+
+        tested.alterarNotificacoes(id, request);
+
+        verify(validaUsuarioService).porId(id);
+        verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
+        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(id, response.getIdUsuario());
+        assertTrue(response.isNotificacaoManutencao());
+    }
+
+    @Test
+    @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento e estiver ativada")
+    void deveAlterarEstadoNotificacaoVencimentoAtivada(){
         AlterarNotificacoesRequest request = alterarNotificacaoVencimentoRequest();
 
         Usuario usuario = usuario();
@@ -83,6 +107,30 @@ class AlterarNotificacoesServiceTest {
 
         assertEquals(id, response.getIdUsuario());
         assertFalse(response.isNotificacaoVencimento());
+    }
+
+    @Test
+    @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento e estiver desativada")
+    void deveAlterarEstadoNotificacaoVencimentoDesativada(){
+        AlterarNotificacoesRequest request = alterarNotificacaoVencimentoRequest();
+
+        Usuario usuario = usuario();
+        usuario.setNotificacaoVencimento(false);
+        Long id = usuario.getIdUsuario();
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+
+        tested.alterarNotificacoes(id, request);
+
+        verify(validaUsuarioService).porId(id);
+        verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
+        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(id, response.getIdUsuario());
+        assertTrue(response.isNotificacaoVencimento());
     }
 
     @Test

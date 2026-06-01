@@ -27,7 +27,6 @@ public class AlterarNotificacoesService {
         validaTipoNotificacaoValidator.tipoValido(alterarNotificacoesRequest.getNotificacao());
         Usuario usuario = usuarioRepository.findById(id).get();
 
-
         if(TipoNotificacao.deTexto(alterarNotificacoesRequest.getNotificacao()) == MANUTENCAO){
             usuario.setNotificacaoManutencao(!usuario.isNotificacaoManutencao());
         }

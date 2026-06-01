@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CadastrarCustoRequest {
+public class CadastrarCustoRequest{
 
     @NotNull
     private Long idVeiculo;

@@ -21,7 +21,6 @@ import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.excluirContaU
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
 class ExcluirContaUsuarioServiceTest {

@@ -2,6 +2,8 @@ package br.edu.ifsul.sapucaia.projeto.repository;
 
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 
@@ -18,8 +20,6 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
 
     List<Custo> findByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean isAtivo);
 
-    List<Custo> findByVeiculoAndDataPagamentoIsNullAndIsAtivo(Veiculo veiculo, boolean b);
-
     List<Custo> findByVeiculoIdVeiculoAndDataPagamentoBetween(Long idVeiculo, LocalDate inicioSemana, LocalDate hoje);
 
     Collection<Custo> findByVeiculoIdVeiculoBetween(
@@ -27,4 +27,6 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
             LocalDate inicioMes,
             LocalDate fimMes
     );
+
+    Page<Custo> findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(Veiculo veiculo, boolean isAtivo, Pageable pageable);
 }

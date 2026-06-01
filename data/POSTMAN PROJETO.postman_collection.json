@@ -362,7 +362,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/custo/:{id}/em-aberto",
+          "raw": "localhost:8080/custo/:{id}/em-aberto?page=0&size=2",
           "host": [
             "localhost"
           ],
@@ -371,6 +371,16 @@
             "custo",
             ":{id}",
             "em-aberto"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "2"
+            }
           ],
           "variable": [
             {

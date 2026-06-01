@@ -14,6 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -46,6 +50,8 @@ class BuscarCustosEmAbertoServiceTest {
 
         Long id = 1L;
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         Usuario usuario = usuario();
 
         Custo custo = CustoFactory.custo();
@@ -53,23 +59,23 @@ class BuscarCustosEmAbertoServiceTest {
         custo.setVeiculo(usuario.getVeiculo());
 
         Veiculo veiculo = custo.getVeiculo();
-        List<Custo> custos = List.of(custo);
+        Page<Custo> custos = new PageImpl<>(List.of(custo), pageable, 1);
 
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
-        when(custoRepository.findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true))
+        when(custoRepository.findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable))
                 .thenReturn(custos);
 
-        List<BuscarCustosEmAbertoResponse> response = tested.buscar(id);
+        Page<BuscarCustosEmAbertoResponse> response = tested.buscar(id, pageable);
 
         verify(validaUsuarioService).porId(id);
         verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
-        verify(custoRepository).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true);
+        verify(custoRepository).findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable);
 
-        assertEquals(custos.size(), response.size());
-        for (int i = 0; i < response.size(); i++) {
-            assertEquals(custos.get(i).getIdCusto(), response.get(i).getIdCusto());
-            assertEquals(custos.get(i).getDescricao(), response.get(i).getDescricao());
-            assertEquals(custos.get(i).getValor(), response.get(i).getValor());
+        assertEquals(custos.getTotalElements(), response.getTotalElements());
+        for (int i = 0; i < response.getContent().size(); i++) {
+            assertEquals(custos.getContent().get(i).getIdCusto(), response.getContent().get(i).getIdCusto());
+            assertEquals(custos.getContent().get(i).getDescricao(), response.getContent().get(i).getDescricao());
+            assertEquals(custos.getContent().get(i).getValor(), response.getContent().get(i).getValor());
         }
     }
 
@@ -79,12 +85,14 @@ class BuscarCustosEmAbertoServiceTest {
 
         Long id = 1L;
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
 
-        assertThrows(ResponseStatusException.class, () -> tested.buscar(id));
+        assertThrows(ResponseStatusException.class, () -> tested.buscar(id, pageable));
 
         verify(validaUsuarioService).porId(id);
         verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
-        verify(custoRepository, never()).findByVeiculoAndDataPagamentoIsNullAndIsAtivo(any(Veiculo.class), anyBoolean());
+        verify(custoRepository, never()).findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(any(Veiculo.class), anyBoolean(), any(Pageable.class));
     }
 }

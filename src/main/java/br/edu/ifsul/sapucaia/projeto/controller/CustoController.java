@@ -5,6 +5,8 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbe
 import br.edu.ifsul.sapucaia.projeto.service.custo.BuscarCustosEmAbertoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.EditarCustoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
@@ -39,9 +41,10 @@ public class CustoController {
         editarCustoService.editar(editarCustoRequest);
     }
 
+
     @GetMapping("/{id}/em-aberto")
     @ResponseStatus(OK)
-    public List<BuscarCustosEmAbertoResponse> buscarCustosEmAberto(@PathVariable Long id){
-        return buscarCustosEmAbertoService.buscar(id);
+    public Page<BuscarCustosEmAbertoResponse> buscarCustosEmAberto(@PathVariable Long id, Pageable pageable){
+        return buscarCustosEmAbertoService.buscar(id, pageable);
     }
 }

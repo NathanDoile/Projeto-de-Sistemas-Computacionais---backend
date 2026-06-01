@@ -160,8 +160,10 @@
 
 - **Buscar custos em aberto/não pagos**
     - Precisa estar logado para utilizar esse path;
-    - Parâmetros de URL: `id`, é o identificador do usuario
-    - `GET /{id}/em-aberto`
+    - Parâmetros de URL: `id`, é o identificador do usuario;
+    - Parâmetros de URL: `page`, é qual página de custos quer buscar;
+    - Parâmetros de URL: `size`, é o tamanho da lista de custos que quer mostrar em cada página;
+    - `GET /{id}/em-aberto?page=0$size=2`
 
 ### Rota: `/veiculo`
 - Cria um veiculo;
