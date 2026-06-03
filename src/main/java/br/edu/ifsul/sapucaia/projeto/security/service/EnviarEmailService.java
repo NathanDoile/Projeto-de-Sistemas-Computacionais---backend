@@ -64,8 +64,8 @@ public class EnviarEmailService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado para o e-mail: " + emailPara));
 
         email.setRemetente(usuario.getNome());
+        email.setAtivo(true);
 
         enviar(email);
-
     }
 }

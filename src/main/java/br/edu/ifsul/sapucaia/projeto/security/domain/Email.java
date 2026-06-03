@@ -32,4 +32,6 @@ public class Email {
     @Enumerated(STRING)
     private StatusEmail statusEmail;
 
+    private boolean isAtivo;
+
 }

@@ -11,7 +11,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: projetodesistemas3a2026@gmail.com
-    password: backend3a2026
+    password: edzx uhrd ypyz ihre
     protocol: smtp
     properties:
       "[mail.smtp.auth]": true

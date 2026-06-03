@@ -9,7 +9,6 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaNovaSenhaUsuarioSer
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,8 +19,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class RedefinirSenhaService {
-
-    private final PasswordEncoder passwordEncoder;
 
     private final UsuarioRepository usuarioRepository;
 
@@ -63,7 +60,7 @@ public class RedefinirSenhaService {
         validaCodigoValidator.validarCodigo(usuario, request.getCodigo());
         validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
 
-        usuario.setSenha(passwordEncoder.encode(request.getSenha()));
+        usuario.setSenha(request.getSenha());
         usuario.setCodigoRedefinirSenha(null);
         usuario.setTentativasRedefinirSenha(0);
         usuarioRepository.save(usuario);

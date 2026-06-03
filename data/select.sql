@@ -11,3 +11,5 @@ SELECT * FROM  custo;
 SELECT * FROM receita_diaria;
 
 SELECT * FROM manutencao;
+
+SELECT * FROM email;
