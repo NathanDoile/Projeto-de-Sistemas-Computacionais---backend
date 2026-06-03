@@ -371,6 +371,230 @@ class EditarCustoServiceTest {
     }
 
     @Test
+    @DisplayName("Deve editar o custo com custos não diarios")
+    void deveEditarCustoComCustosNaoDiarios() {
+
+        EditarCustoRequest request = editarCustoRequest();
+
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setUsuario(usuario());
+
+        custo.setDataPagamento(now().with(previousOrSame(MONDAY)));
+
+        if(custo.getDataPagamento().equals(now())){
+            custo.getDataPagamento().plusDays(1);
+        }
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        custo.getVeiculo().getUsuario().setMetas(metas);
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+
+        tested.editar(request);
+
+        verify(validaCustoService).porId(id);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+
+        Custo response = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            if(metasRaiz.get(i).getFormato().equals(DIARIA)){
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else{
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+        }
+
+        assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
+        assertEquals(request.getDataPagamento(), response.getDataPagamento());
+        assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Deve editar o custo com custos não semanais")
+    void deveEditarCustoComCustosNaoSemanais() {
+
+        EditarCustoRequest request = editarCustoRequest();
+
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setUsuario(usuario());
+        custo.setDataPagamento(now().minusWeeks(1));
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        custo.getVeiculo().getUsuario().setMetas(metas);
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+
+        tested.editar(request);
+
+        verify(validaCustoService).porId(id);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+
+        Custo response = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            if(metasRaiz.get(i).getFormato().equals(DIARIA)){
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else if(metasRaiz.get(i).getFormato().equals(SEMANAL)){
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else if(metasRaiz.get(i).getFormato().equals(MENSAL)
+                    && (now().getMonth() != request.getDataPagamento().getMonth()
+                    || now().getYear() != request.getDataPagamento().getYear())){
+
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else{
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+        }
+
+        assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
+        assertEquals(request.getDataPagamento(), response.getDataPagamento());
+        assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Deve editar o custo com custos não mensais")
+    void deveEditarCustoComCustosNaoMensais() {
+
+        EditarCustoRequest request = editarCustoRequest();
+
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setUsuario(usuario());
+        custo.setDataPagamento(now().minusMonths(1));
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        custo.getVeiculo().getUsuario().setMetas(metas);
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+
+        tested.editar(request);
+
+        verify(validaCustoService).porId(id);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+
+        Custo response = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
+        assertEquals(request.getDataPagamento(), response.getDataPagamento());
+        assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Deve editar o custo com custos não anual")
+    void deveEditarCustoComCustosNaoAnual() {
+
+        EditarCustoRequest request = editarCustoRequest();
+
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setUsuario(usuario());
+        custo.setDataPagamento(now().minusYears(1));
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        custo.getVeiculo().getUsuario().setMetas(metas);
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+
+        tested.editar(request);
+
+        verify(validaCustoService).porId(id);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+
+        Custo response = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
+        assertEquals(request.getDataPagamento(), response.getDataPagamento());
+        assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
     @DisplayName("Não deve editar o custo se o custo for inválido")
     void naoDeveEditarCustoSeCustoForInvalido() {
 
