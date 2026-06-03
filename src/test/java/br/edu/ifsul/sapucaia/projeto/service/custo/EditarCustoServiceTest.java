@@ -275,11 +275,59 @@ class EditarCustoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve editar o custo com metas não mensai")
+    @DisplayName("Deve editar o custo com metas não mensais")
     void deveEditarCustoComMetasNaoMensais() {
 
         EditarCustoRequest request = editarCustoRequest();
         request.setDataPagamento(now().minusMonths(1));
+
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        custo.getVeiculo().getUsuario().setMetas(metas);
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+
+        tested.editar(request);
+
+        verify(validaCustoService).porId(id);
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+
+        Custo response = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
+        assertEquals(request.getDataPagamento(), response.getDataPagamento());
+        assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Deve editar o custo com metas não anual")
+    void deveEditarCustoComMetasNaoAnual() {
+
+        EditarCustoRequest request = editarCustoRequest();
+        request.setDataPagamento(now().minusYears(1));
 
         Long id = 1L;
 

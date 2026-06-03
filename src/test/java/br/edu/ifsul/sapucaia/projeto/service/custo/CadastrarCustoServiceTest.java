@@ -307,6 +307,55 @@ class CadastrarCustoServiceTest {
     }
 
     @Test
+    @DisplayName("Deve cadastrar custo com metas não anual")
+    void deveCadastraCustoComMetasNaoAnual(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(now().minusYears(1));
+
+        Veiculo veiculoMock = veiculo();
+        veiculoMock.setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        veiculoMock.getUsuario().setMetas(metas);
+
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
+                .thenReturn(veiculoMock);
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository)
+                .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        verify(metaRepository, never()).save(metaCaptor.capture());
+        verify(custoRepository).save(custoCaptor.capture());
+
+        Custo custoResponse = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
+        assertEquals(request.getValor(), custoResponse.getValor());
+        assertEquals(request.getDescricao(), custoResponse.getDescricao());
+        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
+        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
+        assertEquals(veiculoMock, custoResponse.getVeiculo());
+        assertTrue(custoResponse.isAtivo());
+    }
+
+    @Test
     @DisplayName("Nao deve cadastrar custo com id veiculo errado")
     void naoCadastraCustoComIdVeiculoErrado(){
 
