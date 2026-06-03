@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.DIARIA;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,7 +40,7 @@ class DeletarMetaServiceTest {
 
         Long id = 1L;
 
-        Meta meta = meta();
+        Meta meta = meta(DIARIA, RECEITA);
 
         when(metaRepository.findByIdMetaAndIsAtivo(id, true)).thenReturn(meta);
 

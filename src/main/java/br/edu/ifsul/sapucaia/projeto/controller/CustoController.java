@@ -1,19 +1,16 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
+import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.service.custo.BuscarCustosEmAbertoService;
+import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.EditarCustoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
-import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import jakarta.validation.Valid;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;

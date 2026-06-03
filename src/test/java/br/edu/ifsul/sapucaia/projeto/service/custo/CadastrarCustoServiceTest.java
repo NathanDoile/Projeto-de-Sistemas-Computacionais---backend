@@ -2,9 +2,11 @@ package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
+import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
@@ -19,12 +21,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
 import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.cadastrarCustoRequest;
+import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.LocalDate.now;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,14 +56,21 @@ class CadastrarCustoServiceTest {
     @Mock
     private ValidaTipoCustoValidator validaTipoCustoValidator;
 
+    @Mock
+    private MetaRepository metaRepository;
+
     @Captor
     private ArgumentCaptor<Custo> custoCaptor;
 
+    @Captor
+    private ArgumentCaptor<Meta> metaCaptor;
+
     @Test
-    @DisplayName("Deve cadastrar custo")
-    void cadastraCustoComValoresCorretos(){
+    @DisplayName("Deve cadastrar custo sem metas")
+    void deveCadastraCustoSemMetas(){
 
         CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(null);
 
         Veiculo veiculoMock = veiculo();
 
@@ -70,8 +85,217 @@ class CadastrarCustoServiceTest {
         verify(veiculoRepository)
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         verify(custoRepository).save(custoCaptor.capture());
+        verify(metaRepository, never()).save(any(Meta.class));
 
         Custo custoResponse = custoCaptor.getValue();
+
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
+        assertEquals(request.getValor(), custoResponse.getValor());
+        assertEquals(request.getDescricao(), custoResponse.getDescricao());
+        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
+        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
+        assertEquals(veiculoMock, custoResponse.getVeiculo());
+        assertTrue(custoResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar custo com metas")
+    void deveCadastraCustoComMetas(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+
+        if(request.getDataPagamento().getDayOfWeek().equals(MONDAY)){
+            request.setDataPagamento(now().plusDays(1));
+        }
+
+        Veiculo veiculoMock = veiculo();
+        veiculoMock.setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        veiculoMock.getUsuario().setMetas(metas);
+
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
+                .thenReturn(veiculoMock);
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository)
+                .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        verify(metaRepository, times(3)).save(metaCaptor.capture());
+        verify(custoRepository).save(custoCaptor.capture());
+
+        Custo custoResponse = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
+        assertEquals(request.getValor(), custoResponse.getValor());
+        assertEquals(request.getDescricao(), custoResponse.getDescricao());
+        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
+        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
+        assertEquals(veiculoMock, custoResponse.getVeiculo());
+        assertTrue(custoResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar custo com metas não diarias")
+    void deveCadastraCustoComMetasNaoDiarias(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(now().with(previousOrSame(MONDAY)));
+
+        if(request.getDataPagamento().equals(now())){
+            request.getDataPagamento().plusDays(1);
+        }
+
+        Veiculo veiculoMock = veiculo();
+        veiculoMock.setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        veiculoMock.getUsuario().setMetas(metas);
+
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
+                .thenReturn(veiculoMock);
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository)
+                .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        verify(metaRepository, times(2)).save(metaCaptor.capture());
+        verify(custoRepository).save(custoCaptor.capture());
+
+        Custo custoResponse = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
+        assertEquals(request.getValor(), custoResponse.getValor());
+        assertEquals(request.getDescricao(), custoResponse.getDescricao());
+        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
+        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
+        assertEquals(veiculoMock, custoResponse.getVeiculo());
+        assertTrue(custoResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar custo com metas não semanais")
+    void deveCadastraCustoComMetasNaoSemanais(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(now().minusWeeks(1));
+
+        Veiculo veiculoMock = veiculo();
+        veiculoMock.setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        veiculoMock.getUsuario().setMetas(metas);
+
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
+                .thenReturn(veiculoMock);
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository)
+                .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        if(now().getMonth() == request.getDataPagamento().getMonth() && now().getYear() == request.getDataPagamento().getYear()){
+            verify(metaRepository, times(1)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, never()).save(metaCaptor.capture());
+        }
+        verify(custoRepository).save(custoCaptor.capture());
+
+        Custo custoResponse = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
+
+        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
+        assertEquals(request.getValor(), custoResponse.getValor());
+        assertEquals(request.getDescricao(), custoResponse.getDescricao());
+        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
+        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
+        assertEquals(veiculoMock, custoResponse.getVeiculo());
+        assertTrue(custoResponse.isAtivo());
+    }
+
+    @Test
+    @DisplayName("Deve cadastrar custo com metas não mensais")
+    void deveCadastraCustoComMetasNaoMensais(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(now().minusMonths(1));
+
+        Veiculo veiculoMock = veiculo();
+        veiculoMock.setUsuario(usuario());
+
+        List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+        veiculoMock.getUsuario().setMetas(metas);
+
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
+                .thenReturn(veiculoMock);
+
+        tested.cadastrar(request);
+
+        verify(validaVeiculoService).porId(request.getIdVeiculo());
+        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository)
+                .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        verify(metaRepository, never()).save(metaCaptor.capture());
+        verify(custoRepository).save(custoCaptor.capture());
+
+        Custo custoResponse = custoCaptor.getValue();
+
+        List<Meta> metasResponse = metaCaptor.getAllValues();
+
+        for(int i = 0; i < metasResponse.size(); i++){
+
+            List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+
+            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+
+            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+        }
 
         assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
         assertEquals(request.getValor(), custoResponse.getValor());

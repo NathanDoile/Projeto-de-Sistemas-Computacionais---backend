@@ -14,6 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.DIARIA;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,7 +42,7 @@ class BuscarMetasServiceTest {
 
         Long idUsuario = 1L;
 
-        List<Meta> metas = List.of(meta(), meta());
+        List<Meta> metas = List.of(meta(DIARIA, RECEITA), meta(MENSAL, CUSTO));
 
         when(metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true)).thenReturn(metas);
 

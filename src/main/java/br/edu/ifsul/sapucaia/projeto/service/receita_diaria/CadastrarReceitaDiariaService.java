@@ -20,6 +20,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.mapper.AdministradorMapper.toEntity;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.LocalDate.now;
@@ -52,7 +53,10 @@ public class CadastrarReceitaDiariaService {
 
         Usuario usuario = usuarioRepository.findById(cadastrarReceitaDiariaRequest.getIdUsuario()).get();
 
-        List<Meta> metas = usuario.getMetas();
+        List<Meta> metas = usuario.getMetas()
+                .stream()
+                .filter(meta -> meta.getTipo().equals(RECEITA))
+                .toList();
 
         for(Meta meta : metas){
 

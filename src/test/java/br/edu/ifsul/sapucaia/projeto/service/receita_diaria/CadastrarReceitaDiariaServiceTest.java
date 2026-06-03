@@ -70,7 +70,7 @@ class CadastrarReceitaDiariaServiceTest {
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
         if(request.getDataReceita().getDayOfWeek().equals(MONDAY)){
-            cadastrarReceitaDiariaRequest().setDataReceita(now().plusDays(1));
+            request.setDataReceita(now().plusDays(1));
         }
 
         Usuario usuario = usuario();
@@ -164,7 +164,7 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        if(now().getMonth() == request.getDataReceita().getMonth()){
+        if(now().getMonth() == request.getDataReceita().getMonth() && now().getYear() == request.getDataReceita().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{

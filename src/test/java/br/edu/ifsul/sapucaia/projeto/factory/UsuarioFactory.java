@@ -5,7 +5,9 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
 import java.util.List;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.*;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
+import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.LocalDate.of;
@@ -25,7 +27,7 @@ public class UsuarioFactory {
                 .possuiVeiculo(true)
                 .notificacaoManutencao(true)
                 .notificacaoVencimento(true)
-                .metas(List.of(metaDiaria(), metaSemanal(), metaMensal()))
+                .metas(List.of(meta(DIARIA, RECEITA), meta(SEMANAL, RECEITA), meta(MENSAL, RECEITA)))
                 .veiculo(veiculo())
                 .receitasDiarias(List.of(receitaDiaria()))
                 .build();
