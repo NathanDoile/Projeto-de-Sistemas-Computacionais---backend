@@ -6,32 +6,34 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Builder
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class CadastrarVeiculoRequest {
 
-    @NotBlank
+    @NotBlank(message = "O modelo é obrigatório.")
     private String modelo;
 
-    @NotBlank
+    @NotBlank(message = "A marca é obrigatória.")
     private String marca;
 
-    @NotBlank
+    @NotBlank(message = "A placa é obrigatória.")
     @Size(min = 7, max = 7, message = "A placa deve ter 7 caracteres, sem hífen.")
     private String placa;
 
-    @NotBlank
+    @NotBlank(message = "O tipo é obrigatório.")
     private String tipo;
 
-    @NotNull
+    @NotNull(message = "O ano é obrigatório.")
     private int ano;
 
-    @NotBlank
+    @NotBlank(message = "A cor é obrigatória.")
     private String cor;
 
-    @NotNull
+    @NotNull(message = "A quilometragem atual é obrigatória.")
     private int kmAtual;
 
-    @NotNull
+    @NotNull(message = "O ID do usuário é obrigatório.")
     private Long idUsuario;
 }

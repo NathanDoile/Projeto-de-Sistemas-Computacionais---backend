@@ -5,6 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaAtualUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,21 +36,38 @@ class LoginUsuarioServiceTest {
     @Mock
     private ValidaSenhaAtualUsuarioService validaSenhaAtualUsuarioService;
 
+    @Mock
+    private ValidaUsuarioService validaUsuarioService;
+
     @Test
     @DisplayName("Deve realizar o login corretamente")
-    void deveRealizarLoginCorretamente(){
+    void deveRealizarLoginCorretamente() {
 
         LoginUsuarioRequest request = LoginUsuarioRequest();
 
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(usuario));
+        doNothing().when(validaUsuarioService)
+                .porEmail(request.getEmail());
+
+        when(usuarioRepository.findByEmailAndIsAtivo(
+                request.getEmail(),
+                true))
+                .thenReturn(Optional.of(usuario));
 
         LoginUsuarioResponse response = tested.loginUsuario(request);
 
-        verify(usuarioRepository).findByEmail(request.getEmail());
-        verify(usuarioRepository, never()).delete(any(Usuario.class));
-        verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenha(), usuario.getIdUsuario());
+        verify(validaUsuarioService)
+                .porEmail(request.getEmail());
+
+        verify(usuarioRepository)
+                .findByEmailAndIsAtivo(request.getEmail(), true);
+
+        verify(usuarioRepository, never())
+                .delete(any(Usuario.class));
+
+        verify(validaSenhaAtualUsuarioService)
+                .validaSenhaAtualUsuario(request.getSenha(), usuario.getIdUsuario());
 
         assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
         assertEquals(usuario.getNome(), response.getNome());
@@ -61,35 +80,67 @@ class LoginUsuarioServiceTest {
 
     @Test
     @DisplayName("Não deve realizar o login quando e-mail estiver incorreto")
-    void naoDeveRealizarLoginComEmailInvalido(){
+    void naoDeveRealizarLoginComEmailInvalido() {
 
         LoginUsuarioRequest request = LoginUsuarioRequest();
 
-        doThrow(ResponseStatusException.class).when(usuarioRepository).findByEmail(request.getEmail());
+        doThrow(new ResponseStatusException(
+                NOT_FOUND,
+                "E-mail ou senha inválido"))
+                .when(validaUsuarioService)
+                .porEmail(request.getEmail());
 
-        assertThrows(ResponseStatusException.class, () -> tested.loginUsuario(request));
+        assertThrows(
+                ResponseStatusException.class,
+                () -> tested.loginUsuario(request)
+        );
 
-        verify(usuarioRepository).findByEmail(request.getEmail());
-        verify(usuarioRepository, never()).delete(any(Usuario.class));
-        verify(validaSenhaAtualUsuarioService, never()).validaSenhaAtualUsuario(any(String.class), any(Long.class));
+        verify(validaUsuarioService)
+                .porEmail(request.getEmail());
+
+        verify(usuarioRepository, never())
+                .findByEmailAndIsAtivo(anyString(), anyBoolean());
+
+        verify(usuarioRepository, never())
+                .delete(any(Usuario.class));
+
+        verify(validaSenhaAtualUsuarioService, never())
+                .validaSenhaAtualUsuario(anyString(), anyLong());
     }
 
     @Test
     @DisplayName("Não deve realizar o login quando usuario nao tiver veiculo")
-    void naoDeveRealizarLoginQuandoUsuarioNaoTiverVeiculo(){
+    void naoDeveRealizarLoginQuandoUsuarioNaoTiverVeiculo() {
 
         LoginUsuarioRequest request = LoginUsuarioRequest();
 
         Usuario usuario = usuario();
         usuario.setPossuiVeiculo(false);
 
-        when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(usuario));
+        doNothing().when(validaUsuarioService)
+                .porEmail(request.getEmail());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.loginUsuario(request));
+        when(usuarioRepository.findByEmailAndIsAtivo(
+                request.getEmail(),
+                true))
+                .thenReturn(Optional.of(usuario));
 
-        verify(usuarioRepository).findByEmail(request.getEmail());
-        verify(usuarioRepository).delete(usuario);
-        verify(validaSenhaAtualUsuarioService, never()).validaSenhaAtualUsuario(any(String.class), any(Long.class));
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> tested.loginUsuario(request)
+        );
+
+        verify(validaUsuarioService)
+                .porEmail(request.getEmail());
+
+        verify(usuarioRepository)
+                .findByEmailAndIsAtivo(request.getEmail(), true);
+
+        verify(usuarioRepository)
+                .delete(usuario);
+
+        verify(validaSenhaAtualUsuarioService, never())
+                .validaSenhaAtualUsuario(anyString(), anyLong());
 
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("E-mail ou senha inválido", exception.getReason());
@@ -97,19 +148,45 @@ class LoginUsuarioServiceTest {
 
     @Test
     @DisplayName("Não deve realizar o login quando senha estiver incorreto")
-    void naoDeveRealizarLoginComSenhaInvalida(){
+    void naoDeveRealizarLoginComSenhaInvalida() {
 
         LoginUsuarioRequest request = LoginUsuarioRequest();
 
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(usuario));
-        doThrow(ResponseStatusException.class).when(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenha(), usuario.getIdUsuario());
+        doNothing().when(validaUsuarioService)
+                .porEmail(request.getEmail());
 
-        assertThrows(ResponseStatusException.class, () -> tested.loginUsuario(request));
+        when(usuarioRepository.findByEmailAndIsAtivo(
+                request.getEmail(),
+                true))
+                .thenReturn(Optional.of(usuario));
 
-        verify(usuarioRepository).findByEmail(request.getEmail());
-        verify(usuarioRepository, never()).delete(any(Usuario.class));
-        verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenha(), usuario.getIdUsuario());
+        doThrow(ResponseStatusException.class)
+                .when(validaSenhaAtualUsuarioService)
+                .validaSenhaAtualUsuario(
+                        request.getSenha(),
+                        usuario.getIdUsuario()
+                );
+
+        assertThrows(
+                ResponseStatusException.class,
+                () -> tested.loginUsuario(request)
+        );
+
+        verify(validaUsuarioService)
+                .porEmail(request.getEmail());
+
+        verify(usuarioRepository)
+                .findByEmailAndIsAtivo(request.getEmail(), true);
+
+        verify(usuarioRepository, never())
+                .delete(any(Usuario.class));
+
+        verify(validaSenhaAtualUsuarioService)
+                .validaSenhaAtualUsuario(
+                        request.getSenha(),
+                        usuario.getIdUsuario()
+                );
     }
 }

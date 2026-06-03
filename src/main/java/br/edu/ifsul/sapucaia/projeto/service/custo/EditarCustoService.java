@@ -12,7 +12,6 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.EnumMap;
@@ -24,7 +23,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +45,9 @@ public class EditarCustoService {
         validaValorCustoValidator.isPositivo(editarCustoRequest.getValor());
         validaTipoCustoValidator.tipoValido(editarCustoRequest.getTipo());
 
-        Custo custo = custoRepository.findByIdCustoAndIsAtivo(editarCustoRequest.getIdCusto(), true)
-        .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Id do custo não encontrado."));
+        Custo custo = custoRepository.findByIdCustoAndIsAtivo(
+                        editarCustoRequest.getIdCusto(), true)
+                .get();
 
         if(editarCustoRequest.getValor() != custo.getValor()){
             adicionarNovoValorNasMetas(custo, editarCustoRequest.getValor(), editarCustoRequest.getDataPagamento());

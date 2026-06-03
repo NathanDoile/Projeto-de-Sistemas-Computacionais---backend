@@ -15,8 +15,18 @@ public class ValidaUsuarioService {
 
     public void porId(Long idUsuario) {
 
-        if(!usuarioRepository.existsByIdUsuarioAndIsAtivo(idUsuario, true)){
+        if (!usuarioRepository.existsByIdUsuarioAndIsAtivo(idUsuario, true)) {
             throw new ResponseStatusException(NOT_FOUND, "ID do usuário não existe.");
+        }
+    }
+
+    public void porEmail(String email) {
+
+        if (!usuarioRepository.existsByEmailAndIsAtivo(email, true)) {
+            throw new ResponseStatusException(
+                    NOT_FOUND,
+                    "E-mail ou senha inválido"
+            );
         }
     }
 }
