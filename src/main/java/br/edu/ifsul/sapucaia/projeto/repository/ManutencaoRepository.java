@@ -12,4 +12,5 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
     List<Manutencao> findAllByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean isAtivo);
 
     Page<Manutencao> findAllByIsAtivo(boolean isAtivo, Pageable pageable);
+    
 }

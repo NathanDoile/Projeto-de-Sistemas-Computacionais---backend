@@ -5,6 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
+import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,9 @@ class InformacoesManutencaoVeiculoServiceTest {
 
     @Mock
     private VeiculoRepository veiculoRepository;
+
+    @Mock
+    private ManutencaoRepository manutencaoRepository;
 
     @Test
     @DisplayName("Deve retornar as informações de manutenção do veículo corretamente")
@@ -98,12 +102,15 @@ class InformacoesManutencaoVeiculoServiceTest {
         veiculo.setCustos(List.of(custoPreventiva, custoCorretiva, custoPreditiva));
 
         Long idVeiculo = veiculo.getIdVeiculo();
+        when(manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true))
+                .thenReturn(List.of(manutencaoPreventiva, manutencaoCorretiva, manutencaoPreditiva));
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true)).thenReturn(veiculo);
 
         InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao(idVeiculo);
 
         verify(validaVeiculoService).porId(idVeiculo);
         verify(validaVeiculoService).estaAtivo(idVeiculo);
+        verify(manutencaoRepository).findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
         verify(veiculoRepository).findByIdVeiculoAndIsAtivo(idVeiculo, true);
 
         assertEquals(1, response.getTotalManutencoesPreventivas());

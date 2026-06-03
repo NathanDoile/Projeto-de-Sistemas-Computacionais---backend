@@ -7,9 +7,9 @@ import br.edu.ifsul.sapucaia.projeto.service.meta.CadastrarMetaService;
 import br.edu.ifsul.sapucaia.projeto.service.meta.DeletarMetaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -33,8 +33,8 @@ public class MetaController {
 
     @GetMapping("/{idUsuario}")
     @ResponseStatus(OK)
-    public List<BuscarMetaResponse> buscarMetas(@PathVariable Long idUsuario){
-        return buscarMetasService.buscar(idUsuario);
+    public Page<BuscarMetaResponse> buscarMetas(@PathVariable Long idUsuario, Pageable pageable){
+        return buscarMetasService.buscar(idUsuario, pageable);
     }
 
     @DeleteMapping("/{id}")

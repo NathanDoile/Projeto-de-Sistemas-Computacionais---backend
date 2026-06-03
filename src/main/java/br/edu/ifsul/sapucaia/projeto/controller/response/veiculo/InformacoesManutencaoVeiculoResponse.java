@@ -17,4 +17,5 @@ public class InformacoesManutencaoVeiculoResponse {
     private double valorTotalPreditivas;
     private double mediaPrecoManutencao;
     private double valorCustoPorKmRodado;
+    
 }

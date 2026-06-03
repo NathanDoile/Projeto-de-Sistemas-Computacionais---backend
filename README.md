@@ -85,6 +85,30 @@
     }
     ```
 
+### Rota: `/security`
+
+- **Enviar código de redefinição de senha**
+  - Não precisa estar logado para utilizar esse path
+  - `POST /enviar-codigo-redefinir-senha`
+
+    ```json
+    {
+      "email": "usuario@email.com"
+    }
+    ```
+
+- **Redefinir senha**
+  - Não precisa estar logado para utilizar esse path
+  - `PUT /redefinir-senha`
+
+    ```json
+    {
+      "email": "usuario@email.com",
+      "codigo": "ABC12345",
+      "senha": "novaSenha@123"
+    }
+    ```
+
 ### Rota: `/receita-diaria`
 
 - **Cria uma receita diária**
@@ -189,6 +213,25 @@
   - `GET /{id}`
 
 
+- **Obter informações de manutenção do veículo**
+  - Precisa estar logado para utilizar esse path
+  - Parâmetros de URL: `id`, é o identificador do veículo
+  - `GET /{id}/informacoes-manutencao`
+
+    Retorna:
+    ```json
+    {
+      "totalManutencoesPreventivas": 2,
+      "totalManutencoesCorretivas": 1,
+      "totalManutencoesPreditivas": 0,
+      "valorTotalPreventivas": 300.00,
+      "valorTotalCorretivas": 500.00,
+      "valorTotalPreditivas": 0.00,
+      "mediaPrecoManutencao": 266.67,
+      "valorCustoPorKmRodado": 0.012
+    }
+    ```
+
 - Atualizar quilometragem do veículo
   - Precisa estar logado para utilizar esse path;
   - `PUT /atualizar-km`
@@ -198,7 +241,7 @@
                     "idUsuario":1,
                     "kmAtualizado":45300
             }
-      ```   
+      ```
 
 ### Rota: `/manutencao`
 - Cria uma manutencao;

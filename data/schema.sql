@@ -14,6 +14,8 @@ CREATE TABLE usuario(
     notificacao_vencimento BOOLEAN NOT NULL,
     notificacao_manutencao BOOLEAN NOT NULL,
     possui_veiculo BOOLEAN NOT NULL,
+    codigo_redefinir_senha VARCHAR(10),
+    tentativas_redefinir_senha INTEGER,
     is_ativo BOOLEAN NOT NULL,
     PRIMARY KEY(id_usuario));
 
@@ -92,3 +94,16 @@ CREATE TABLE manutencao(
     FOREIGN KEY(id_custo) REFERENCES custo(id_custo)
        ON DELETE CASCADE
        ON UPDATE CASCADE);
+
+CREATE TABLE email(
+    id_email BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    remetente VARCHAR(100) NOT NULL,
+    email_de VARCHAR(100) NOT NULL,
+    email_para VARCHAR(100) NOT NULL,
+    assunto VARCHAR(100) NOT NULL,
+    mensagem TEXT NOT NULL,
+    enviado_em DATETIME NOT NULL,
+    status_email VARCHAR(20) NOT NULL,
+    is_ativo BOOLEAN NOT NULL,
+    PRIMARY KEY(id_email)
+);
