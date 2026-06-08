@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.AtualizarKmVeicu
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.CadastrarVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 
-import java.time.Month;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo.CARRO;

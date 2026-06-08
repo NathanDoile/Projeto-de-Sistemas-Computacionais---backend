@@ -3,7 +3,6 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
-import java.time.Month;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
