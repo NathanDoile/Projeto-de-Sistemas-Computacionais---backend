@@ -43,7 +43,7 @@ class EditarCustoServiceTest {
     @BeforeEach
     void setUp() {
         // Força o Mockito a zerar o histórico de chamadas e interações do repositório
-        reset(metaRepository);
+        reset(metaRepository, custoRepository);
     }
 
     @InjectMocks

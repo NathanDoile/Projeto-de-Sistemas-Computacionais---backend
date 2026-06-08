@@ -39,7 +39,7 @@ class CadastrarCustoServiceTest {
 
     @BeforeEach
     void setUp() {
-        reset(metaRepository);
+        reset(metaRepository, custoRepository);
     }
 
     @InjectMocks
