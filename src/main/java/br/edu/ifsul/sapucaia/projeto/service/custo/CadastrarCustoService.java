@@ -6,6 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.mapper.CustoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
@@ -80,7 +81,7 @@ public class CadastrarCustoService {
         for(Meta meta : metas){
 
             LocalDate dataPagamento = custo.getDataPagamento();
-            LocalDate hoje = now();
+            LocalDate hoje = DateNow.now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
 
             EnumMap<FormatoMeta, Boolean> condicaoParaInsercao = new EnumMap<>(FormatoMeta.class);
