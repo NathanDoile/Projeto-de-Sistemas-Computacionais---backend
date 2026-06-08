@@ -83,7 +83,12 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        verify(metaRepository, times(3)).save(metaCaptor.capture());
+        if(DateNow.now().getDayOfWeek().equals(MONDAY)){
+            verify(metaRepository, times(2)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();

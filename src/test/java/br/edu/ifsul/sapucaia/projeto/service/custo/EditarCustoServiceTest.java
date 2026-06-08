@@ -142,9 +142,17 @@ class EditarCustoServiceTest {
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
-            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+            if(metasRaiz.get(i).getFormato().equals(DIARIA)
+                    && request.getDataPagamento().equals(DateNow.now().plusDays(1))){
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
-            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else{
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
         }
 
         assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
@@ -162,7 +170,7 @@ class EditarCustoServiceTest {
         request.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
         if(request.getDataPagamento().equals(DateNow.now())){
-            request.getDataPagamento().plusDays(1);
+            request.setDataPagamento(request.getDataPagamento().plusDays(1));
         }
 
         Long id = 1L;
@@ -392,7 +400,7 @@ class EditarCustoServiceTest {
         custo.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
         if(custo.getDataPagamento().equals(DateNow.now())){
-            custo.getDataPagamento().plusDays(1);
+            custo.setDataPagamento(custo.getDataPagamento().plusDays(1));
         }
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
@@ -473,21 +481,11 @@ class EditarCustoServiceTest {
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
-            if(metasRaiz.get(i).getFormato().equals(DIARIA)){
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
-
-                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
-            }
-            else if(metasRaiz.get(i).getFormato().equals(SEMANAL)){
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
-
-                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
-            }
-            else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && !(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
+            if(metasRaiz.get(i).getFormato().equals(MENSAL)
+                    && !(!DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
                     || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
