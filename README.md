@@ -254,3 +254,8 @@
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador dogit usuário
   - `GET /ultimas-transacoes/{idUsuario}`
+
+- **Exportar Relatório de Manutenções**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de query: idVeiculo, tipoPeriodo(semana, mes e ano) e dataReferencia(Formato YYYY-MM-DD)
+  - `GET /exportar/manutencoes`
