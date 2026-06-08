@@ -128,7 +128,12 @@ class CadastrarCustoServiceTest {
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
-        verify(metaRepository, times(3)).save(metaCaptor.capture());
+        if(DateNow.now().getDayOfWeek().equals(MONDAY)){
+            verify(metaRepository, times(2)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
         verify(custoRepository).save(custoCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
@@ -176,7 +181,12 @@ class CadastrarCustoServiceTest {
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
-        verify(metaRepository, times(2)).save(metaCaptor.capture());
+        if(DateNow.now().getDayOfWeek().equals(MONDAY)){
+            verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
+        else{
+            verify(metaRepository, times(2)).save(metaCaptor.capture());
+        }
         verify(custoRepository).save(custoCaptor.capture());
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
