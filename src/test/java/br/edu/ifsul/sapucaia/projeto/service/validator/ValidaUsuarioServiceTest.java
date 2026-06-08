@@ -45,4 +45,27 @@ class ValidaUsuarioServiceTest {
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertEquals("ID do usuário não existe.", exception.getReason());
     }
+    @Test
+    @DisplayName("Não deve dar erro se e-mail existir")
+    void naoDeveDarErroEmailExistir() {
+
+        String email = "teste@email.com";
+        boolean isAtivo = true;
+
+        when(usuarioRepository.existsByEmailAndIsAtivo(email, isAtivo)).thenReturn(true);
+
+        assertDoesNotThrow(() -> tested.porEmail(email));
+    }
+
+    @Test
+    @DisplayName("Deve dar erro se e-mail não existir")
+    void deveDarErroEmailNaoExistir() {
+
+        String email = "teste@email.com";
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.porEmail(email));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertEquals("E-mail ou senha inválido", exception.getReason());
+    }
 }

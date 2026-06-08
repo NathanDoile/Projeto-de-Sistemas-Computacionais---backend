@@ -8,6 +8,6 @@ import lombok.*;
 @Getter @Setter
 public class BuscarMetaRequest {
 
-    @NotNull
-    private Long idUsuario;
+    @NotNull (message = "O ID do usuário é obrigatório.")
+    private Long idUsuario ;
 }
