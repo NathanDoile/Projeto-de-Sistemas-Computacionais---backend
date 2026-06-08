@@ -12,13 +12,11 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,6 +36,11 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CadastrarCustoServiceTest {
+
+    @BeforeEach
+    void setUp() {
+        reset(metaRepository);
+    }
 
     @InjectMocks
     private CadastrarCustoService tested;
