@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static br.edu.ifsul.sapucaia.projeto.factory.ManutencaoFactory.manutencao;
 import static java.time.LocalDate.now;
 import static java.util.List.of;
@@ -57,7 +58,10 @@ class ExportarManutencoesServiceTest {
         PeriodoData periodoData = new PeriodoData(now().with(TemporalAdjusters.firstDayOfYear()),
                 now().with(TemporalAdjusters.lastDayOfYear()));
 
-        List<Manutencao> manutencoes = of(manutencao(), manutencao());
+        Manutencao manutencao = manutencao();
+        manutencao.setCusto(custo());
+
+        List<Manutencao> manutencoes = of(manutencao, manutencao);
 
         when(periodoDataHelper.calcularData(tipoPeriodo, dataReferencia)).thenReturn(periodoData);
         when(manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween
