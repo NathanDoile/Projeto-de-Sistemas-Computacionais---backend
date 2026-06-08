@@ -6,6 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.IAFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
@@ -24,7 +25,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
@@ -81,7 +81,7 @@ class CadastrarVeiculoServiceTest {
         assertEquals(request.getMarca(), veiculoResponse.getMarca());
         assertEquals(request.getModelo(), veiculoResponse.getModelo());
         assertEquals(request.getIdUsuario(), veiculoResponse.getUsuario().getIdUsuario());
-        assertEquals(LocalDate.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
+        assertEquals(DateNow.now(), veiculoResponse.getDataUltimaAtualizacaoKm());
         assertTrue(veiculoResponse.isAtivo());
         assertEquals(usuario, veiculoResponse.getUsuario());
     }

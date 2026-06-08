@@ -17,7 +17,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,9 +33,9 @@ import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -217,7 +220,7 @@ class CadastrarCustoServiceTest {
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
-        if(DateNow.now().getMonth() == request.getDataPagamento().getMonth() && DateNow.now().getYear() == request.getDataPagamento().getYear()){
+        if(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth()) && DateNow.now().getYear() == request.getDataPagamento().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{

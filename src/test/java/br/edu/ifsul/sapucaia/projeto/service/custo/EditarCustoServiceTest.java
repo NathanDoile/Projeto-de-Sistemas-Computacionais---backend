@@ -14,7 +14,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,7 +32,6 @@ import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -258,7 +260,7 @@ class EditarCustoServiceTest {
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (DateNow.now().getMonth() != request.getDataPagamento().getMonth()
+                    && !(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
                     || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
@@ -482,7 +484,7 @@ class EditarCustoServiceTest {
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (DateNow.now().getMonth() != request.getDataPagamento().getMonth()
+                    && !(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
                     || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();

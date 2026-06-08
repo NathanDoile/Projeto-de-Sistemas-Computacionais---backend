@@ -18,7 +18,7 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoPossuiManutenc
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidadataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +45,7 @@ class CadastrarManutencaoServiceTest {
     private ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
 
     @Mock
-    private ValidadataManutencaoValidator validadataManutencaoValidator;
+    private ValidaDataManutencaoValidator validadataManutencaoValidator;
 
     @Mock
     private ValidaVeiculoService validaVeiculoService;

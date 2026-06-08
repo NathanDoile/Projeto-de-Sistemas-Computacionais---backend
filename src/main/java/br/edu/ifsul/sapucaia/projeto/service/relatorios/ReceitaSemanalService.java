@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
@@ -31,10 +32,10 @@ public class ReceitaSemanalService {
 
         Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
-        LocalDate inicioSemana = LocalDate.now()
+        LocalDate inicioSemana = DateNow.now()
                 .with(TemporalAdjusters.previousOrSame(MONDAY));
 
-        LocalDate fimSemana = LocalDate.now()
+        LocalDate fimSemana = DateNow.now()
                 .with(TemporalAdjusters.nextOrSame(SUNDAY));
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository

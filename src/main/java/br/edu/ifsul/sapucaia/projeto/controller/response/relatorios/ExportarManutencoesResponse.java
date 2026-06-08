@@ -3,8 +3,6 @@ package br.edu.ifsul.sapucaia.projeto.controller.response.relatorios;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 @Builder
 public class ExportarManutencoesResponse {

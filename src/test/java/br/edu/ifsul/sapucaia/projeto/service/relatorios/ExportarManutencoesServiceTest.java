@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
@@ -22,7 +23,6 @@ import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static br.edu.ifsul.sapucaia.projeto.factory.ManutencaoFactory.manutencao;
-import static java.time.LocalDate.now;
 import static java.util.List.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -53,10 +53,10 @@ class ExportarManutencoesServiceTest {
 
         String tipoPeriodo = "ano";
 
-        String dataReferencia = now().toString();
+        String dataReferencia = DateNow.now().toString();
 
-        PeriodoData periodoData = new PeriodoData(now().with(TemporalAdjusters.firstDayOfYear()),
-                now().with(TemporalAdjusters.lastDayOfYear()));
+        PeriodoData periodoData = new PeriodoData(DateNow.now().with(TemporalAdjusters.firstDayOfYear()),
+                DateNow.now().with(TemporalAdjusters.lastDayOfYear()));
 
         Manutencao manutencao = manutencao();
         manutencao.setCusto(custo());
@@ -92,7 +92,7 @@ class ExportarManutencoesServiceTest {
 
         String tipoPeriodo = "ano";
 
-        String dataReferencia = now().toString();
+        String dataReferencia = DateNow.now().toString();
 
         doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(idVeiculo);
 
@@ -114,7 +114,7 @@ class ExportarManutencoesServiceTest {
 
         String tipoPeriodo = "invalido";
 
-        String dataReferencia = now().toString();
+        String dataReferencia = DateNow.now().toString();
 
         doThrow(ResponseStatusException.class).when(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
 

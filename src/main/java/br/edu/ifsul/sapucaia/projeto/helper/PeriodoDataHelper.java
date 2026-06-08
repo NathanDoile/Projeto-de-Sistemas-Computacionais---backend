@@ -7,7 +7,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
-import static java.time.LocalDate.now;
 import static java.time.LocalDate.parse;
 
 @Component
@@ -17,7 +16,7 @@ public class PeriodoDataHelper {
 
         LocalDate dataBaseDate = (dataBase != null)
                 ? parse(dataBase)
-                : now();
+                : DateNow.now();
 
         LocalDate dataInicio;
         LocalDate dataFim;

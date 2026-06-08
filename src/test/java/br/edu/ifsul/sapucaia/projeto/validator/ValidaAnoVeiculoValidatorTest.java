@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.validator;
 
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,10 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import static java.time.LocalDate.now;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,7 +21,7 @@ class ValidaAnoVeiculoValidatorTest {
     @DisplayName("Não deve dar erro se ano do veículo for válido")
     void naoDeveDarErroSeAnoVeiculoValido(){
 
-        int ano = now().getYear();
+        int ano = DateNow.now().getYear();
 
         assertDoesNotThrow(() -> tested.anoMenorQueAtual(ano));
     }
@@ -32,7 +30,7 @@ class ValidaAnoVeiculoValidatorTest {
     @DisplayName("Deve dar erro se ano do veículo for inválido")
     void deveDarErroSeAnoVeiculoInvalido(){
 
-        int ano = now().getYear() + 1;
+        int ano = DateNow.now().getYear() + 1;
 
         ResponseStatusException exception =
                 assertThrows(ResponseStatusException.class,

@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 
+import java.time.Month;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
@@ -11,6 +12,7 @@ import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.LocalDate.of;
+import static java.time.Month.APRIL;
 
 public class UsuarioFactory {
     public static Usuario usuario() {
@@ -21,7 +23,7 @@ public class UsuarioFactory {
                 .nome("Nome Teste")
                 .email("emailteste@gmail.com")
                 .senha("senhadeteste")
-                .dataCadastro(of(2026, 04, 24))
+                .dataCadastro(of(2026, APRIL, 24))
                 .telefone("51888888888")
                 .isAtivo(true)
                 .possuiVeiculo(true)

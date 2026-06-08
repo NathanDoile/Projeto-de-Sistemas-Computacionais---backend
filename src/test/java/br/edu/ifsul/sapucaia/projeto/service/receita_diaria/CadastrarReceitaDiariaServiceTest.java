@@ -29,7 +29,6 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -165,7 +164,7 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(request.getIdUsuario());
-        if(DateNow.now().getMonth() == request.getDataReceita().getMonth() && DateNow.now().getYear() == request.getDataReceita().getYear()){
+        if(DateNow.now().getMonth().equals(request.getDataReceita().getMonth()) && DateNow.now().getYear() == request.getDataReceita().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{

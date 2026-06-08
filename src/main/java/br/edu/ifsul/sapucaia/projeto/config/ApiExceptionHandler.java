@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.config;
 
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -10,8 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static java.time.LocalTime.now;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -28,7 +27,7 @@ public class ApiExceptionHandler {
         }
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", now());
+        body.put("timestamp", DateNow.now());
         body.put("status", statusCode.value());
         body.put("error", errorPhrase);
         body.put("message", ex.getReason());

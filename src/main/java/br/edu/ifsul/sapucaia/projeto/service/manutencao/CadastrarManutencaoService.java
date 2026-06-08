@@ -15,9 +15,8 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoPossuiManutenc
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidadataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class CadastrarManutencaoService {
 
     private final ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
 
-    private final ValidadataManutencaoValidator validadataManutencaoValidator;
+    private final ValidaDataManutencaoValidator validadataManutencaoValidator;
 
     private final ValidaVeiculoService validaVeiculoService;
 

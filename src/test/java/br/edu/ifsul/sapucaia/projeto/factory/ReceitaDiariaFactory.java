@@ -5,7 +5,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static java.time.LocalDate.now;
 
 public class ReceitaDiariaFactory {
 

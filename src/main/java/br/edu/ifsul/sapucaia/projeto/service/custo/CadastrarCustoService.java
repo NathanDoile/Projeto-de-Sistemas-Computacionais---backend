@@ -7,7 +7,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
-import br.edu.ifsul.sapucaia.projeto.mapper.CustoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
@@ -27,7 +26,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
 import static br.edu.ifsul.sapucaia.projeto.mapper.CustoMapper.toEntity;
 import static br.edu.ifsul.sapucaia.projeto.mapper.CustoMapper.toResponse;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 @RequiredArgsConstructor
@@ -88,7 +86,7 @@ public class CadastrarCustoService {
 
             condicaoParaInsercao.put(DIARIA, dataPagamento.equals(hoje));
             condicaoParaInsercao.put(SEMANAL, dataPagamento.isAfter(inicioSemana) || dataPagamento.equals(inicioSemana));
-            condicaoParaInsercao.put(MENSAL, dataPagamento.getMonth() == hoje.getMonth() && dataPagamento.getYear() == hoje.getYear());
+            condicaoParaInsercao.put(MENSAL, dataPagamento.getMonth().equals(hoje.getMonth()) && dataPagamento.getYear() == hoje.getYear());
 
             if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
                 double novoValorMeta = meta.getValorAtual() + custo.getValor();

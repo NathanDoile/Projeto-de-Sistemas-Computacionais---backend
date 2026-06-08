@@ -24,7 +24,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.mapper.AdministradorMapper.toEntity;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 @Service
@@ -69,7 +68,7 @@ public class CadastrarReceitaDiariaService {
 
             condicaoParaInsercao.put(DIARIA, dataDaReceita.equals(hoje));
             condicaoParaInsercao.put(SEMANAL, dataDaReceita.isAfter(inicioSemana) || dataDaReceita.equals(inicioSemana));
-            condicaoParaInsercao.put(MENSAL, dataDaReceita.getMonth() == hoje.getMonth() && dataDaReceita.getYear() == hoje.getYear());
+            condicaoParaInsercao.put(MENSAL, dataDaReceita.getMonth().equals(hoje.getMonth()) && dataDaReceita.getYear() == hoje.getYear());
 
             if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
                 double novoValorMeta = meta.getValorAtual() + receitaDiaria.getValor();
