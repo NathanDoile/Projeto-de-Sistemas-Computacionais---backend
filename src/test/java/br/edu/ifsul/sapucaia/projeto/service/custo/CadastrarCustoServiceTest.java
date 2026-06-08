@@ -6,6 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
@@ -104,7 +105,7 @@ class CadastrarCustoServiceTest {
         CadastrarCustoRequest request = cadastrarCustoRequest();
 
         if(request.getDataPagamento().getDayOfWeek().equals(MONDAY)){
-            request.setDataPagamento(now().plusDays(1));
+            request.setDataPagamento(DateNow.now().plusDays(1));
         }
 
         Veiculo veiculoMock = veiculo();
@@ -149,9 +150,9 @@ class CadastrarCustoServiceTest {
     void deveCadastraCustoComMetasNaoDiarias(){
 
         CadastrarCustoRequest request = cadastrarCustoRequest();
-        request.setDataPagamento(now().with(previousOrSame(MONDAY)));
+        request.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
-        if(request.getDataPagamento().equals(now())){
+        if(request.getDataPagamento().equals(DateNow.now())){
             request.getDataPagamento().plusDays(1);
         }
 
@@ -197,7 +198,7 @@ class CadastrarCustoServiceTest {
     void deveCadastraCustoComMetasNaoSemanais(){
 
         CadastrarCustoRequest request = cadastrarCustoRequest();
-        request.setDataPagamento(now().minusWeeks(1));
+        request.setDataPagamento(DateNow.now().minusWeeks(1));
 
         Veiculo veiculoMock = veiculo();
         veiculoMock.setUsuario(usuario());
@@ -216,7 +217,7 @@ class CadastrarCustoServiceTest {
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
-        if(now().getMonth() == request.getDataPagamento().getMonth() && now().getYear() == request.getDataPagamento().getYear()){
+        if(DateNow.now().getMonth() == request.getDataPagamento().getMonth() && DateNow.now().getYear() == request.getDataPagamento().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{
@@ -246,7 +247,7 @@ class CadastrarCustoServiceTest {
     void deveCadastraCustoComMetasNaoMensais(){
 
         CadastrarCustoRequest request = cadastrarCustoRequest();
-        request.setDataPagamento(now().minusMonths(1));
+        request.setDataPagamento(DateNow.now().minusMonths(1));
 
         Veiculo veiculoMock = veiculo();
         veiculoMock.setUsuario(usuario());
@@ -290,7 +291,7 @@ class CadastrarCustoServiceTest {
     void deveCadastraCustoComMetasNaoAnual(){
 
         CadastrarCustoRequest request = cadastrarCustoRequest();
-        request.setDataPagamento(now().minusYears(1));
+        request.setDataPagamento(DateNow.now().minusYears(1));
 
         Veiculo veiculoMock = veiculo();
         veiculoMock.setUsuario(usuario());
@@ -360,8 +361,8 @@ class CadastrarCustoServiceTest {
                 .tipo("COMBUSTIVEL")
                 .valor(0.00)
                 .descricao("Custo de teste")
-                .dataVencimento(now().plusDays(5))
-                .dataPagamento(now())
+                .dataVencimento(DateNow.now().plusDays(5))
+                .dataPagamento(DateNow.now())
                 .build();
 
         doThrow(ResponseStatusException.class)
@@ -389,8 +390,8 @@ class CadastrarCustoServiceTest {
                 .tipo("TIPO_INVALIDO")
                 .valor(100.00)
                 .descricao("Custo de teste")
-                .dataVencimento(now().plusDays(5))
-                .dataPagamento(now())
+                .dataVencimento(DateNow.now().plusDays(5))
+                .dataPagamento(DateNow.now())
                 .build();
 
         doThrow(ResponseStatusException.class)

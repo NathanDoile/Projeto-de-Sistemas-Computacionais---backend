@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
@@ -107,7 +108,7 @@ class EditarCustoServiceTest {
         EditarCustoRequest request = editarCustoRequest();
 
         if(request.getDataPagamento().getDayOfWeek().equals(MONDAY)){
-            request.setDataPagamento(now().plusDays(1));
+            request.setDataPagamento(DateNow.now().plusDays(1));
         }
 
         Long id = 1L;
@@ -156,9 +157,9 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoDiarias() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().with(previousOrSame(MONDAY)));
+        request.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
-        if(request.getDataPagamento().equals(now())){
+        if(request.getDataPagamento().equals(DateNow.now())){
             request.getDataPagamento().plusDays(1);
         }
 
@@ -215,7 +216,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoSemanais() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusWeeks(1));
+        request.setDataPagamento(DateNow.now().minusWeeks(1));
 
         Long id = 1L;
 
@@ -257,8 +258,8 @@ class EditarCustoServiceTest {
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (now().getMonth() != request.getDataPagamento().getMonth()
-                    || now().getYear() != request.getDataPagamento().getYear())){
+                    && (DateNow.now().getMonth() != request.getDataPagamento().getMonth()
+                    || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
@@ -283,7 +284,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoMensais() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusMonths(1));
+        request.setDataPagamento(DateNow.now().minusMonths(1));
 
         Long id = 1L;
 
@@ -331,7 +332,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoAnual() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusYears(1));
+        request.setDataPagamento(DateNow.now().minusYears(1));
 
         Long id = 1L;
 
@@ -386,9 +387,9 @@ class EditarCustoServiceTest {
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
 
-        custo.setDataPagamento(now().with(previousOrSame(MONDAY)));
+        custo.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
-        if(custo.getDataPagamento().equals(now())){
+        if(custo.getDataPagamento().equals(DateNow.now())){
             custo.getDataPagamento().plusDays(1);
         }
 
@@ -445,7 +446,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusWeeks(1));
+        custo.setDataPagamento(DateNow.now().minusWeeks(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
@@ -481,8 +482,8 @@ class EditarCustoServiceTest {
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (now().getMonth() != request.getDataPagamento().getMonth()
-                    || now().getYear() != request.getDataPagamento().getYear())){
+                    && (DateNow.now().getMonth() != request.getDataPagamento().getMonth()
+                    || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
@@ -513,7 +514,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusMonths(1));
+        custo.setDataPagamento(DateNow.now().minusMonths(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
@@ -561,7 +562,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusYears(1));
+        custo.setDataPagamento(DateNow.now().minusYears(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
