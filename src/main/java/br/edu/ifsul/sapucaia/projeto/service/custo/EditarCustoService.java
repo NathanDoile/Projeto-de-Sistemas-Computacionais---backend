@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
@@ -72,7 +73,7 @@ public class EditarCustoService {
 
         for(Meta meta : metas){
             LocalDate dataPagamento = custo.getDataPagamento();
-            LocalDate hoje = now();
+            LocalDate hoje = DateNow.now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
 
             EnumMap<FormatoMeta, Boolean> condicaoParaRemocao = new EnumMap<>(FormatoMeta.class);
