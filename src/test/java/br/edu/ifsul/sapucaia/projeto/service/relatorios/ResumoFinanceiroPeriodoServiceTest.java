@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanc
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static java.time.LocalDate.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -59,19 +59,19 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         Usuario usuario = usuario();
 
-        PeriodoData periodoData = new PeriodoData(now(), now());
+        PeriodoData periodoData = new PeriodoData(DateNow.now(), DateNow.now());
 
         List<Custo> custos = usuario.getVeiculo().getCustos();
         double gastoTotal = custos
                 .stream()
-                .filter(custo -> custo.getDataPagamento().equals(now()))
+                .filter(custo -> custo.getDataPagamento().equals(DateNow.now()))
                 .mapToDouble(Custo::getValor)
                 .sum();
 
         List<ReceitaDiaria> receitas = usuario.getReceitasDiarias();
         double ganhoBruto = receitas
                 .stream()
-                .filter(custo -> custo.getDataReceita().equals(now()))
+                .filter(custo -> custo.getDataReceita().equals(DateNow.now()))
                 .mapToDouble(ReceitaDiaria::getValor)
                 .sum();
 
@@ -79,7 +79,7 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         Long id = usuario.getIdUsuario();
         String tipo = "dia";
-        String dataBase = now().toString();
+        String dataBase = DateNow.now().toString();
 
         when(periodoDataHelper.calcularData(tipo, dataBase)).thenReturn(periodoData);
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
@@ -116,7 +116,7 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         Long id = 5L;
         String tipo = "dia";
-        String dataBase = now().toString();
+        String dataBase = DateNow.now().toString();
 
         doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
 
@@ -140,7 +140,7 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         Long id = usuario.getIdUsuario();
         String tipo = "invalido";
-        String dataBase = now().toString();
+        String dataBase = DateNow.now().toString();
 
         doThrow(ResponseStatusException.class).when(validaTipoPeriodoValidator).porTipo(tipo);
 
