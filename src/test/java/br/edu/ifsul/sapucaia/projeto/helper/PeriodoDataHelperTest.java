@@ -24,12 +24,14 @@ class PeriodoDataHelperTest {
         String tipoI = "dia";
         String tipoII = "semana";
         String tipoIII = "mes";
+        String tipoIV = "ano";
 
         String dataBase = "2026-05-20";
 
         PeriodoData responseI = tested.calcularData(tipoI, null);
         PeriodoData responseII = tested.calcularData(tipoII, dataBase);
         PeriodoData responseIII = tested.calcularData(tipoIII, dataBase);
+        PeriodoData responseIV= tested.calcularData(tipoIV, dataBase);
 
         assertEquals(LocalDate.now(), responseI.dataInicio());
         assertEquals(LocalDate.now(), responseI.dataFim());
@@ -39,5 +41,8 @@ class PeriodoDataHelperTest {
 
         assertEquals(LocalDate.of(2026, 5, 1), responseIII.dataInicio());
         assertEquals(LocalDate.of(2026, 5, 31), responseIII.dataFim());
+
+        assertEquals(LocalDate.of(2026, 1, 1), responseIV.dataInicio());
+        assertEquals(LocalDate.of(2026, 12, 31), responseIV.dataFim());
     }
 }

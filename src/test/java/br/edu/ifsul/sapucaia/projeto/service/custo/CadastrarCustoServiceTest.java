@@ -1,6 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
@@ -77,7 +78,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -87,15 +88,10 @@ class CadastrarCustoServiceTest {
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, never()).save(any(Meta.class));
 
-        Custo custoResponse = custoCaptor.getValue();
-
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test
@@ -118,7 +114,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -127,8 +123,6 @@ class CadastrarCustoServiceTest {
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         verify(metaRepository, times(3)).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
-
-        Custo custoResponse = custoCaptor.getValue();
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
 
@@ -141,13 +135,10 @@ class CadastrarCustoServiceTest {
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test
@@ -171,7 +162,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -180,8 +171,6 @@ class CadastrarCustoServiceTest {
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         verify(metaRepository, times(2)).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
-
-        Custo custoResponse = custoCaptor.getValue();
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
 
@@ -194,13 +183,10 @@ class CadastrarCustoServiceTest {
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test
@@ -220,7 +206,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -235,8 +221,6 @@ class CadastrarCustoServiceTest {
         }
         verify(custoRepository).save(custoCaptor.capture());
 
-        Custo custoResponse = custoCaptor.getValue();
-
         List<Meta> metasResponse = metaCaptor.getAllValues();
 
         for(int i = 0; i < metasResponse.size(); i++){
@@ -248,13 +232,10 @@ class CadastrarCustoServiceTest {
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test
@@ -274,7 +255,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -283,8 +264,6 @@ class CadastrarCustoServiceTest {
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
-
-        Custo custoResponse = custoCaptor.getValue();
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
 
@@ -297,13 +276,10 @@ class CadastrarCustoServiceTest {
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test
@@ -323,7 +299,7 @@ class CadastrarCustoServiceTest {
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true))
                 .thenReturn(veiculoMock);
 
-        tested.cadastrar(request);
+        BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(validaVeiculoService).porId(request.getIdVeiculo());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
@@ -332,8 +308,6 @@ class CadastrarCustoServiceTest {
                 .findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
-
-        Custo custoResponse = custoCaptor.getValue();
 
         List<Meta> metasResponse = metaCaptor.getAllValues();
 
@@ -346,13 +320,10 @@ class CadastrarCustoServiceTest {
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
-        assertEquals(TipoCusto.deTexto(request.getTipo()), custoResponse.getTipo());
-        assertEquals(request.getValor(), custoResponse.getValor());
-        assertEquals(request.getDescricao(), custoResponse.getDescricao());
-        assertEquals(request.getDataVencimento(), custoResponse.getDataVencimento());
-        assertEquals(request.getDataPagamento(), custoResponse.getDataPagamento());
-        assertEquals(veiculoMock, custoResponse.getVeiculo());
-        assertTrue(custoResponse.isAtivo());
+        assertEquals(TipoCusto.deTexto(request.getTipo()), TipoCusto.deTexto(response.getTipo()));
+        assertEquals(request.getValor(), response.getValor());
+        assertEquals(request.getDescricao(), response.getDescricao());
+        assertEquals(request.getDataVencimento(), response.getDataVencimento());
     }
 
     @Test

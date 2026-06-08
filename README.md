@@ -211,7 +211,7 @@
                       "dataManutencao": "2026-04-02",
                       "descricao":"fiz uma manutencao",
                       "idVeiculo":1,
-                      "idCusto":1
+                      "valor":300
               }
             ```
           

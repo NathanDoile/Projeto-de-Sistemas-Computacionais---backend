@@ -33,6 +33,13 @@ public class PeriodoDataHelper {
             dataInicio = inicioSemana;
             dataFim = fimSemana;
         }
+        else if(tipo.equalsIgnoreCase("ano")){
+            LocalDate ininioAno = dataBaseDate.with(TemporalAdjusters.firstDayOfYear());
+            LocalDate fimAno = dataBaseDate.with(TemporalAdjusters.lastDayOfYear());
+
+            dataInicio = ininioAno;
+            dataFim = fimAno;
+        }
         else{
             LocalDate inicioMes = dataBaseDate.with(TemporalAdjusters.firstDayOfMonth());
             LocalDate fimMes = dataBaseDate.with(TemporalAdjusters.lastDayOfMonth());

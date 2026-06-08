@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.controller.request.manutencao;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class CadastrarManutencaoRequest {
     @NotNull(message = "O ID do veículo é obrigatório.")
     private Long idVeiculo;
 
-    @NotNull(message = "O ID do custo é obrigatório.")
-    private Long idCusto;
+    @NotNull(message = "O valor é obrigatório.")
+    @Positive(message = "O valor deve ser maior que zero.")
+    private double valor;
 }

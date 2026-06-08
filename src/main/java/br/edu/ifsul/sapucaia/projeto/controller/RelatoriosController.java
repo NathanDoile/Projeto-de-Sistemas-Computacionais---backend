@@ -6,8 +6,10 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanc
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,7 @@ public class RelatoriosController {
     private final ResumoFinanceiroPeriodoService resumoFinanceiroService;
     private final GastosPorCategoriaDoPeriodoService gastosPorCategoriaService;
     private final UltimasTransacoesService ultimasTransacoesService;
+    private final ExportarManutencoesService exportarManutencoesService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
     public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario){
@@ -52,5 +55,12 @@ public class RelatoriosController {
     @GetMapping("/ultimas-transacoes/{idUsuario}")
     public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
         return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
+    }
+
+    @GetMapping("/exportar/manutencoes")
+    public byte[] exportarManutencoes(@RequestParam Long idVeiculo,
+                                      @RequestParam String tipoPeriodo,
+                                      @RequestParam String dataReferencia) throws JRException, FileNotFoundException {
+        return exportarManutencoesService.exportar(idVeiculo, tipoPeriodo, dataReferencia);
     }
 }
