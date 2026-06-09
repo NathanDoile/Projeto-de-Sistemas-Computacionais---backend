@@ -68,7 +68,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreventiva = Manutencao.builder()
                 .idManutencao(1L)
                 .tipo(TipoManutencao.PREVENTIVA)
-                .dataManutencao(LocalDate.now().minusDays(10))
+                .dataManutencao(LocalDate.of(2026, 6, 1))
                 .descricao("Troca de óleo")
                 .isAtivo(true)
                 .custo(custoPreventiva)
@@ -77,7 +77,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoCorretiva = Manutencao.builder()
                 .idManutencao(2L)
                 .tipo(TipoManutencao.CORRETIVA)
-                .dataManutencao(LocalDate.now().minusDays(5))
+                .dataManutencao(LocalDate.of(2026, 6, 5))
                 .descricao("Reparo de freio")
                 .isAtivo(true)
                 .custo(custoCorretiva)
@@ -86,7 +86,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreditiva = Manutencao.builder()
                 .idManutencao(3L)
                 .tipo(TipoManutencao.PREDITIVA)
-                .dataManutencao(LocalDate.now().minusDays(2))
+                .dataManutencao(LocalDate.of(2026, 6, 8))
                 .descricao("Análise de vibração")
                 .isAtivo(true)
                 .custo(custoPreditiva)
@@ -135,17 +135,4 @@ class InformacoesManutencaoVeiculoServiceTest {
         verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
     }
 
-    @Test
-    @DisplayName("Não deve retornar as informações de manutenção se o veículo estiver inativo")
-    void naoDeveRetornarSeVeiculoEstiverInativo() {
-
-        Long idVeiculo = 1L;
-        
-        doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(idVeiculo);
-
-        assertThrows(ResponseStatusException.class, () -> tested.buscarInformacoesManutencao(idVeiculo));
-
-        verify(validaVeiculoService).porId(idVeiculo);
-        verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
-    }
 }

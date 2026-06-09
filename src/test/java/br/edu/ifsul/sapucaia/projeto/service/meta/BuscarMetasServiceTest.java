@@ -75,10 +75,11 @@ class BuscarMetasServiceTest {
     void naoDeveBuscarMetasIdUsuarioIncorreto(){
 
         Long idUsuario = 1L;
+        Pageable pageable = PageRequest.of(0, 10); 
 
         doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(idUsuario);
 
-        assertThrows(ResponseStatusException.class, () -> tested.buscar(idUsuario, PageRequest.of(0, 10)));
+        assertThrows(ResponseStatusException.class, () -> tested.buscar(idUsuario, pageable));
 
         verify(validaUsuarioService).porId(idUsuario);
         verify(metaRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class), any(Pageable.class));

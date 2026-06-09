@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.requireNonNull;
 
+import java.time.ZoneId;
+
 @Service
 @RequiredArgsConstructor
 public class EnviarEmailService {
@@ -58,7 +60,7 @@ public class EnviarEmailService {
         email.setMensagem(conteudo);
         email.setEmailDe(requireNonNull(environment.getProperty(PATH_ENVIRONMENT_EMAIL)));
         email.setEmailPara(emailPara);
-        email.setEnviadoEm(now());
+        email.setEnviadoEm(now(ZoneId.systemDefault()));
 
         Usuario usuario = usuarioRepository.findByEmailAndIsAtivo(emailPara, true)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado para o e-mail: " + emailPara));

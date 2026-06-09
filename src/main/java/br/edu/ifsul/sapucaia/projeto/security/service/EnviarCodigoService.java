@@ -17,8 +17,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequiredArgsConstructor
 public class EnviarCodigoService {
 
-    private final UsuarioRepository usuarioRepository;
+    private static final SecureRandom ALEATORIO = new SecureRandom();
+    private static final String CARACTERES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+    private final UsuarioRepository usuarioRepository;
     private final EnviarEmailService enviarEmailService;
 
     @Transactional
@@ -45,19 +47,14 @@ public class EnviarCodigoService {
     }
 
     private String gerarCodigo() {
-
-        SecureRandom random = new SecureRandom();
-
-        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            
         StringBuilder codigo = new StringBuilder(8);
 
         for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(caracteres.length());
-            codigo.append(caracteres.charAt(index));
+
+            int index = ALEATORIO.nextInt(CARACTERES.length());
+            codigo.append(CARACTERES.charAt(index));
         }
 
         return codigo.toString();
     }
-
 }

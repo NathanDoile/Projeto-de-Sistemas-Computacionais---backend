@@ -13,9 +13,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RequiredArgsConstructor
 public class ValidaCodigoValidator {
 
-    public static final String mensagemCodigoInvalido = "Código inválido.";
+    public static final String MSG_CODIGO_INVALIDO = "Código inválido.";
 
-    public static final String mensagemSemCodigo = "Nenhum código de redefinição de senha foi gerado para este usuário.";
+    public static final String MSG_SEM_CODIGO = "Nenhum código de redefinição de senha foi gerado para este usuário.";
 
     private final UsuarioRepository usuarioRepository;
 
@@ -23,7 +23,7 @@ public class ValidaCodigoValidator {
 
         if (usuario.getCodigoRedefinirSenha() == null) {
 
-            throw new ResponseStatusException(BAD_REQUEST, mensagemSemCodigo);
+            throw new ResponseStatusException(BAD_REQUEST, MSG_SEM_CODIGO);
 
         }
 
@@ -33,7 +33,7 @@ public class ValidaCodigoValidator {
 
             usuarioRepository.save(usuario);
 
-            throw new ResponseStatusException(BAD_REQUEST, mensagemCodigoInvalido);
+            throw new ResponseStatusException(BAD_REQUEST, MSG_CODIGO_INVALIDO);
             
         }
 
