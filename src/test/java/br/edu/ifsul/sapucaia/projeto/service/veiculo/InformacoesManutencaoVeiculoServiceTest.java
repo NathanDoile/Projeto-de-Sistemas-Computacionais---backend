@@ -109,7 +109,6 @@ class InformacoesManutencaoVeiculoServiceTest {
         InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao(idVeiculo);
 
         verify(validaVeiculoService).porId(idVeiculo);
-        verify(validaVeiculoService).estaAtivo(idVeiculo);
         verify(manutencaoRepository).findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
         verify(veiculoRepository).findByIdVeiculoAndIsAtivo(idVeiculo, true);
 
@@ -133,7 +132,6 @@ class InformacoesManutencaoVeiculoServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.buscarInformacoesManutencao(idVeiculo));
 
         verify(validaVeiculoService).porId(idVeiculo);
-        verify(validaVeiculoService, never()).estaAtivo(anyLong());
         verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
     }
 
@@ -142,12 +140,12 @@ class InformacoesManutencaoVeiculoServiceTest {
     void naoDeveRetornarSeVeiculoEstiverInativo() {
 
         Long idVeiculo = 1L;
-        doThrow(ResponseStatusException.class).when(validaVeiculoService).estaAtivo(idVeiculo);
+        
+        doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(idVeiculo);
 
         assertThrows(ResponseStatusException.class, () -> tested.buscarInformacoesManutencao(idVeiculo));
 
         verify(validaVeiculoService).porId(idVeiculo);
-        verify(validaVeiculoService).estaAtivo(idVeiculo);
         verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
     }
 }
