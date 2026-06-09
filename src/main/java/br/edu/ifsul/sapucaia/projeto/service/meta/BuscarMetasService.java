@@ -6,9 +6,9 @@ import br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,15 +18,12 @@ public class BuscarMetasService {
 
     private final MetaRepository metaRepository;
 
-    public List<BuscarMetaResponse> buscar(Long idUsuario) {
+    public Page<BuscarMetaResponse> buscar(Long idUsuario, Pageable pageable) {
 
         validaUsuarioService.porId(idUsuario);
 
-        List<Meta> metas = metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
+        Page<Meta> metas = metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true, pageable);
 
-        return metas
-                .stream()
-                .map(MetaMapper::toResponse)
-                .toList();
+        return metas.map(MetaMapper::toResponse);
     }
 }

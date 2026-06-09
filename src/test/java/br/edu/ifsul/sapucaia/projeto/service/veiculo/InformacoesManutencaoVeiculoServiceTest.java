@@ -5,7 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
-import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
+import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +16,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +35,9 @@ class InformacoesManutencaoVeiculoServiceTest {
 
     @Mock
     private VeiculoRepository veiculoRepository;
+
+    @Mock
+    private ManutencaoRepository manutencaoRepository;
 
     @Test
     @DisplayName("Deve retornar as informações de manutenção do veículo corretamente")
@@ -66,7 +68,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreventiva = Manutencao.builder()
                 .idManutencao(1L)
                 .tipo(TipoManutencao.PREVENTIVA)
-                .dataManutencao(DateNow.now().minusDays(10))
+                .dataManutencao(LocalDate.now().minusDays(10))
                 .descricao("Troca de óleo")
                 .isAtivo(true)
                 .custo(custoPreventiva)
@@ -75,7 +77,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoCorretiva = Manutencao.builder()
                 .idManutencao(2L)
                 .tipo(TipoManutencao.CORRETIVA)
-                .dataManutencao(DateNow.now().minusDays(5))
+                .dataManutencao(LocalDate.now().minusDays(5))
                 .descricao("Reparo de freio")
                 .isAtivo(true)
                 .custo(custoCorretiva)
@@ -84,7 +86,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreditiva = Manutencao.builder()
                 .idManutencao(3L)
                 .tipo(TipoManutencao.PREDITIVA)
-                .dataManutencao(DateNow.now().minusDays(2))
+                .dataManutencao(LocalDate.now().minusDays(2))
                 .descricao("Análise de vibração")
                 .isAtivo(true)
                 .custo(custoPreditiva)
@@ -100,12 +102,15 @@ class InformacoesManutencaoVeiculoServiceTest {
         veiculo.setCustos(List.of(custoPreventiva, custoCorretiva, custoPreditiva));
 
         Long idVeiculo = veiculo.getIdVeiculo();
+        when(manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true))
+                .thenReturn(List.of(manutencaoPreventiva, manutencaoCorretiva, manutencaoPreditiva));
         when(veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true)).thenReturn(veiculo);
 
         InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao(idVeiculo);
 
         verify(validaVeiculoService).porId(idVeiculo);
         verify(validaVeiculoService).estaAtivo(idVeiculo);
+        verify(manutencaoRepository).findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
         verify(veiculoRepository).findByIdVeiculoAndIsAtivo(idVeiculo, true);
 
         assertEquals(1, response.getTotalManutencoesPreventivas());
