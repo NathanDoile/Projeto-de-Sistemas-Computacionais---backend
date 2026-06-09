@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
@@ -68,7 +69,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreventiva = Manutencao.builder()
                 .idManutencao(1L)
                 .tipo(TipoManutencao.PREVENTIVA)
-                .dataManutencao(LocalDate.of(2026, 6, 1))
+                .dataManutencao(LocalDate.of(2026, Month.JUNE, 1))
                 .descricao("Troca de óleo")
                 .isAtivo(true)
                 .custo(custoPreventiva)
@@ -77,7 +78,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoCorretiva = Manutencao.builder()
                 .idManutencao(2L)
                 .tipo(TipoManutencao.CORRETIVA)
-                .dataManutencao(LocalDate.of(2026, 6, 5))
+                .dataManutencao(LocalDate.of(2026, Month.JUNE, 5))
                 .descricao("Reparo de freio")
                 .isAtivo(true)
                 .custo(custoCorretiva)
@@ -86,7 +87,7 @@ class InformacoesManutencaoVeiculoServiceTest {
         Manutencao manutencaoPreditiva = Manutencao.builder()
                 .idManutencao(3L)
                 .tipo(TipoManutencao.PREDITIVA)
-                .dataManutencao(LocalDate.of(2026, 6, 8))
+                .dataManutencao(LocalDate.of(2026, Month.JUNE, 8))
                 .descricao("Análise de vibração")
                 .isAtivo(true)
                 .custo(custoPreditiva)
