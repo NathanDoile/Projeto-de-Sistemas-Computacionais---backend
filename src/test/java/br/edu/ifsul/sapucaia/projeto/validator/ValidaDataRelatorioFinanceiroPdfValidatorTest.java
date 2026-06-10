@@ -23,15 +23,15 @@ class ValidaDataRelatorioFinanceiroPdfValidatorTest {
     @DisplayName("Não deve dar erro se a data de referência for menor ou igual a hoje")
     void naoDeveDarErroSeDataMenorOuIgualHoje() {
 
-        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(DateNow.now()));
-        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(DateNow.now().minusDays(1)));
+        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(LocalDate.now()));
+        assertDoesNotThrow(() -> tested.naoMaiorQueHoje(LocalDate.now().minusDays(1)));
     }
 
     @Test
     @DisplayName("Deve dar erro se a data de referência for maior que hoje")
     void deveDarErroSeDataMaiorQueHoje() {
 
-        LocalDate data = DateNow.now().plusDays(1);
+        LocalDate data = LocalDate.now().plusDays(1);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> tested.naoMaiorQueHoje(data));
 

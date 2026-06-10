@@ -66,7 +66,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuario.getIdUsuario(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(usuario.getIdUsuario(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
-        byte[] response = tested.gerarRelatorioFinanceiro(usuario.getIdUsuario(), dataReferencia, MENSAL);
+        byte[] response = tested.gerarRelatorioFinanceiro(usuario.getIdUsuario(), dataReferencia, periodo);
 
         verify(validaUsuarioService).porId(usuario.getIdUsuario());
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
