@@ -36,7 +36,7 @@ public class GerarRelatorioFinanceiroPdfService {
     private final CustoRepository custoRepository;
     private final VeiculoRepository veiculoRepository;
 
-    private static final String formatoData = "dd/MM/yyyy";
+    private static final String FORMATODATA = "dd/MM/yyyy";
 
     public byte[] gerarRelatorioFinanceiro(Long idUsuario, LocalDate dataReferencia, PeriodoRelatorioFinanceiro periodo){
         validaUsuarioService.porId(idUsuario);
@@ -90,7 +90,7 @@ public class GerarRelatorioFinanceiroPdfService {
                     .toList();
 
             adicionarLinhas(linhas,
-                    diaFinal.format(DateTimeFormatter.ofPattern(formatoData)),
+                    diaFinal.format(DateTimeFormatter.ofPattern(FORMATODATA)),
                     totalReceita, custosDia);
         }
 
@@ -168,8 +168,8 @@ public class GerarRelatorioFinanceiroPdfService {
         Map<String, Object> params = new HashMap<>();
         params.put("NOME_USUARIO", nomeUsuario);
         params.put("PERIODO", periodo.name());
-        params.put("DATA_INICIO", dataInicio.format(DateTimeFormatter.ofPattern(formatoData)));
-        params.put("DATA_FIM", dataFim.format(DateTimeFormatter.ofPattern(formatoData)));
+        params.put("DATA_INICIO", dataInicio.format(DateTimeFormatter.ofPattern(FORMATODATA)));
+        params.put("DATA_FIM", dataFim.format(DateTimeFormatter.ofPattern(FORMATODATA)));
         params.put("TOTAL_RECEITA", totalReceita);
         params.put("TOTAL_CUSTO", totalCusto);
         params.put("LUCRO_GERAL", totalReceita - totalCusto);
