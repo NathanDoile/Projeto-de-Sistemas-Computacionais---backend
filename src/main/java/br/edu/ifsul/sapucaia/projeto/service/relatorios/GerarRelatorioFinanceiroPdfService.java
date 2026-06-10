@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.InputStream;
 import java.time.DayOfWeek;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro.ANUAL;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,8 @@ public class GerarRelatorioFinanceiroPdfService {
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final CustoRepository custoRepository;
     private final VeiculoRepository veiculoRepository;
+
+    private static final String formatoData = "dd/MM/yyyy";
 
     public byte[] gerarRelatorioFinanceiro(Long idUsuario, LocalDate dataReferencia, PeriodoRelatorioFinanceiro periodo){
         validaUsuarioService.porId(idUsuario);
@@ -86,7 +90,7 @@ public class GerarRelatorioFinanceiroPdfService {
                     .toList();
 
             adicionarLinhas(linhas,
-                    diaFinal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    diaFinal.format(DateTimeFormatter.ofPattern(formatoData)),
                     totalReceita, custosDia);
         }
 
@@ -164,8 +168,8 @@ public class GerarRelatorioFinanceiroPdfService {
         Map<String, Object> params = new HashMap<>();
         params.put("NOME_USUARIO", nomeUsuario);
         params.put("PERIODO", periodo.name());
-        params.put("DATA_INICIO", dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        params.put("DATA_FIM", dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        params.put("DATA_INICIO", dataInicio.format(DateTimeFormatter.ofPattern(formatoData)));
+        params.put("DATA_FIM", dataFim.format(DateTimeFormatter.ofPattern(formatoData)));
         params.put("TOTAL_RECEITA", totalReceita);
         params.put("TOTAL_CUSTO", totalCusto);
         params.put("LUCRO_GERAL", totalReceita - totalCusto);
@@ -177,7 +181,7 @@ public class GerarRelatorioFinanceiroPdfService {
 
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
-            throw new RuntimeException("Erro ao gerar relatório financeiro", e);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Erro ao gerar relatório financeiro", e);
         }
     }
 }

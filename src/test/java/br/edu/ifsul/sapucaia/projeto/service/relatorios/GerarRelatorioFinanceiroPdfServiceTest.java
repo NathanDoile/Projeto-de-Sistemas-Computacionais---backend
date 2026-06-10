@@ -3,6 +3,7 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
@@ -57,7 +58,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         PeriodoRelatorioFinanceiro periodo = MENSAL;
 
-        LocalDate dataReferencia = LocalDate.now();
+        LocalDate dataReferencia = DateNow.now();
 
         LocalDate dataInicio = dataReferencia.withDayOfMonth(1);
         LocalDate dataFim = dataReferencia.withDayOfMonth(dataReferencia.lengthOfMonth());

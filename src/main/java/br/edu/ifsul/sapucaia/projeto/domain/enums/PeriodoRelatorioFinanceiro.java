@@ -1,6 +1,5 @@
 package br.edu.ifsul.sapucaia.projeto.domain.enums;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
