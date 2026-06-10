@@ -2,10 +2,11 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.PendenciasDoUsuarioResponse; // Import adicionado
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro;
-import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
+import br.edu.ifsul.sapucaia.projeto.service.relatorios.*; // Já engloba a nova service se estiver no mesmo pacote
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ public class RelatoriosController {
     private final UltimasTransacoesService ultimasTransacoesService;
     private final GerarRelatorioFinanceiroPdfService gerarRelatorioFinanceiroPdfService;
     private final ExportarManutencoesService exportarManutencoesService;
+    private final PendenciasDoUsuarioService pendenciasDoUsuarioService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
     public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario){
@@ -61,6 +63,11 @@ public class RelatoriosController {
     @GetMapping("/ultimas-transacoes/{idUsuario}")
     public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
         return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
+    }
+
+    @GetMapping("/pendencias/{idUsuario}")
+    public PendenciasDoUsuarioResponse getPendenciasDoUsuario(@PathVariable Long idUsuario) {
+        return pendenciasDoUsuarioService.buscarPendencias(idUsuario);
     }
 
     @GetMapping("/exportar/manutencoes")
