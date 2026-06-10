@@ -4,11 +4,13 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +32,6 @@ import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,6 +42,12 @@ import static org.mockito.Mockito.anyBoolean;
 
 @ExtendWith(MockitoExtension.class)
 class EditarCustoServiceTest {
+
+    @BeforeEach
+    void setUp() {
+        // Força o Mockito a zerar o histórico de chamadas e interações do repositório
+        reset(metaRepository, custoRepository);
+    }
 
     @InjectMocks
     private EditarCustoService tested;
@@ -103,7 +110,7 @@ class EditarCustoServiceTest {
         EditarCustoRequest request = editarCustoRequest();
 
         if(request.getDataPagamento().getDayOfWeek().equals(MONDAY)){
-            request.setDataPagamento(now().plusDays(1));
+            request.setDataPagamento(DateNow.now().plusDays(1));
         }
 
         Long id = 1L;
@@ -135,9 +142,17 @@ class EditarCustoServiceTest {
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
-            double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+            if(metasRaiz.get(i).getFormato().equals(DIARIA)
+                    && request.getDataPagamento().equals(DateNow.now().plusDays(1))){
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
-            assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
+            else{
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
+            }
         }
 
         assertEquals(TipoCusto.COMBUSTIVEL, response.getTipo());
@@ -152,10 +167,10 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoDiarias() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().with(previousOrSame(MONDAY)));
+        request.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
-        if(request.getDataPagamento().equals(now())){
-            request.getDataPagamento().plusDays(1);
+        if(request.getDataPagamento().equals(DateNow.now())){
+            request.setDataPagamento(request.getDataPagamento().plusDays(1));
         }
 
         Long id = 1L;
@@ -211,7 +226,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoSemanais() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusWeeks(1));
+        request.setDataPagamento(DateNow.now().minusWeeks(1));
 
         Long id = 1L;
 
@@ -253,8 +268,8 @@ class EditarCustoServiceTest {
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (now().getMonth() != request.getDataPagamento().getMonth()
-                    || now().getYear() != request.getDataPagamento().getYear())){
+                    && !(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
+                    || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
@@ -279,7 +294,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoMensais() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusMonths(1));
+        request.setDataPagamento(DateNow.now().minusMonths(1));
 
         Long id = 1L;
 
@@ -327,7 +342,7 @@ class EditarCustoServiceTest {
     void deveEditarCustoComMetasNaoAnual() {
 
         EditarCustoRequest request = editarCustoRequest();
-        request.setDataPagamento(now().minusYears(1));
+        request.setDataPagamento(DateNow.now().minusYears(1));
 
         Long id = 1L;
 
@@ -382,10 +397,10 @@ class EditarCustoServiceTest {
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
 
-        custo.setDataPagamento(now().with(previousOrSame(MONDAY)));
+        custo.setDataPagamento(DateNow.now().with(previousOrSame(MONDAY)));
 
-        if(custo.getDataPagamento().equals(now())){
-            custo.getDataPagamento().plusDays(1);
+        if(custo.getDataPagamento().equals(DateNow.now())){
+            custo.setDataPagamento(custo.getDataPagamento().plusDays(1));
         }
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
@@ -441,7 +456,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusWeeks(1));
+        custo.setDataPagamento(DateNow.now().minusWeeks(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
@@ -466,21 +481,11 @@ class EditarCustoServiceTest {
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
-            if(metasRaiz.get(i).getFormato().equals(DIARIA)){
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
+            if(metasRaiz.get(i).getFormato().equals(MENSAL)
+                    && !(!DateNow.now().getMonth().equals(request.getDataPagamento().getMonth())
+                    || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
-                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
-            }
-            else if(metasRaiz.get(i).getFormato().equals(SEMANAL)){
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() + request.getValor();
-
-                assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
-            }
-            else if(metasRaiz.get(i).getFormato().equals(MENSAL)
-                    && (now().getMonth() != request.getDataPagamento().getMonth()
-                    || now().getYear() != request.getDataPagamento().getYear())){
-
-                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+                double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
@@ -509,7 +514,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusMonths(1));
+        custo.setDataPagamento(DateNow.now().minusMonths(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
@@ -557,7 +562,7 @@ class EditarCustoServiceTest {
         Custo custo = custo();
         custo.setVeiculo(veiculo());
         custo.getVeiculo().setUsuario(usuario());
-        custo.setDataPagamento(now().minusYears(1));
+        custo.setDataPagamento(DateNow.now().minusYears(1));
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 

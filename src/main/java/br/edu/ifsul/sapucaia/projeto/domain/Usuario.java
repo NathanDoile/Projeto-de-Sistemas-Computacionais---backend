@@ -31,6 +31,10 @@ public class Usuario {
 
     private String telefone;
 
+    private String codigoRedefinirSenha;
+
+    private int tentativasRedefinirSenha;
+
     private boolean isAtivo;
 
     private boolean possuiVeiculo;

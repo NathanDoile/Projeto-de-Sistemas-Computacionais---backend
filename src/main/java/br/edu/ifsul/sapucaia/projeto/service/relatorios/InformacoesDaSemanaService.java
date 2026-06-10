@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesD
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.*;
 import br.edu.ifsul.sapucaia.projeto.service.validator.*;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class InformacoesDaSemanaService {
 
         Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
 
-        LocalDate hoje = LocalDate.now();
+        LocalDate hoje = DateNow.now();
         LocalDate inicioSemana = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicioSemana, hoje);

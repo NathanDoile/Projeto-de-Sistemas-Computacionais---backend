@@ -5,6 +5,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
@@ -23,7 +24,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.mapper.AdministradorMapper.toEntity;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 @Service
@@ -61,14 +61,14 @@ public class CadastrarReceitaDiariaService {
         for(Meta meta : metas){
 
             LocalDate dataDaReceita = receitaDiaria.getDataReceita();
-            LocalDate hoje = now();
+            LocalDate hoje = DateNow.now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
 
             EnumMap<FormatoMeta, Boolean> condicaoParaInsercao = new EnumMap<>(FormatoMeta.class);
 
             condicaoParaInsercao.put(DIARIA, dataDaReceita.equals(hoje));
             condicaoParaInsercao.put(SEMANAL, dataDaReceita.isAfter(inicioSemana) || dataDaReceita.equals(inicioSemana));
-            condicaoParaInsercao.put(MENSAL, dataDaReceita.getMonth() == hoje.getMonth() && dataDaReceita.getYear() == hoje.getYear());
+            condicaoParaInsercao.put(MENSAL, dataDaReceita.getMonth().equals(hoje.getMonth()) && dataDaReceita.getYear() == hoje.getYear());
 
             if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
                 double novoValorMeta = meta.getValorAtual() + receitaDiaria.getValor();

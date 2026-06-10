@@ -1,7 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.manutencao.CadastrarManutencaoRequest;
-import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
+import br.edu.ifsul.sapucaia.projeto.controller.response.manutencao.ManutencaoResponse;
+import br.edu.ifsul.sapucaia.projeto.mapper.ManutencaoMapper;
 import br.edu.ifsul.sapucaia.projeto.service.manutencao.CadastrarManutencaoService;
 import br.edu.ifsul.sapucaia.projeto.service.manutencao.ListarManutencaoService;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ public class ManutencaoController {
 
     private final ListarManutencaoService listarManutencaoService;
 
+
     @PostMapping
     @ResponseStatus(CREATED)
     public void cadastrar(
@@ -29,8 +31,13 @@ public class ManutencaoController {
         cadastrarManutencaoService.cadastrar(cadastrarManutencaoRequest);
     }
 
-    @GetMapping
-    public Page<Manutencao> listar(Pageable pageable) {
-        return listarManutencaoService.listar(pageable);
+    @GetMapping("/usuario/{idUsuario}")
+    public Page<ManutencaoResponse> listar(
+            @PathVariable Long idUsuario,
+            Pageable pageable
+    ) {
+        return listarManutencaoService
+                .listar(idUsuario, pageable)
+                .map(ManutencaoMapper::toManutencaoResponse);
     }
 }

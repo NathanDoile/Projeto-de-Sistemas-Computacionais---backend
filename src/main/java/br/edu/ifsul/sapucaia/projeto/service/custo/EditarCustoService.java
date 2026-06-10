@@ -4,6 +4,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.custo.EditarCustoRequest
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
@@ -21,7 +22,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.deTexto;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
 import static java.time.DayOfWeek.MONDAY;
-import static java.time.LocalDate.now;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 @Service
@@ -72,14 +72,14 @@ public class EditarCustoService {
 
         for(Meta meta : metas){
             LocalDate dataPagamento = custo.getDataPagamento();
-            LocalDate hoje = now();
+            LocalDate hoje = DateNow.now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
 
             EnumMap<FormatoMeta, Boolean> condicaoParaRemocao = new EnumMap<>(FormatoMeta.class);
 
             condicaoParaRemocao.put(DIARIA, dataPagamento.equals(hoje));
             condicaoParaRemocao.put(SEMANAL, dataPagamento.isAfter(inicioSemana) || dataPagamento.equals(inicioSemana));
-            condicaoParaRemocao.put(MENSAL, dataPagamento.getMonth() == hoje.getMonth() && dataPagamento.getYear() == hoje.getYear());
+            condicaoParaRemocao.put(MENSAL, dataPagamento.getMonth().equals(hoje.getMonth()) && dataPagamento.getYear() == hoje.getYear());
 
             double novoValorMeta = meta.getValorAtual();
 
@@ -91,7 +91,7 @@ public class EditarCustoService {
 
             condicaoParaInsercao.put(DIARIA, novaData.equals(hoje));
             condicaoParaInsercao.put(SEMANAL, novaData.isAfter(inicioSemana) || novaData.equals(inicioSemana));
-            condicaoParaInsercao.put(MENSAL, novaData.getMonth() == hoje.getMonth() && novaData.getYear() == hoje.getYear());
+            condicaoParaInsercao.put(MENSAL, novaData.getMonth().equals(hoje.getMonth()) && novaData.getYear() == hoje.getYear());
 
             if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
                 novoValorMeta = novoValorMeta + novoValor;

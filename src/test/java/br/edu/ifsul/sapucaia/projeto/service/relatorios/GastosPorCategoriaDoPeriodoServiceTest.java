@@ -24,6 +24,7 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.*;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static java.time.LocalDate.of;
+import static java.time.Month.MAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -55,7 +56,7 @@ class GastosPorCategoriaDoPeriodoServiceTest {
 
         Usuario usuario = usuario();
 
-        PeriodoData periodoData = new PeriodoData(of(2026, 5, 20), of(20, 5, 20));
+        PeriodoData periodoData = new PeriodoData(of(2026, MAY, 20), of(20, MAY, 20));
 
         List<Custo> custos = usuario.getVeiculo().getCustos();
 

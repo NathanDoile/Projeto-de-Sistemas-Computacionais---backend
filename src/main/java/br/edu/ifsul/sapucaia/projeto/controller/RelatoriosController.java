@@ -4,19 +4,11 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCat
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro;
 import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.coyote.BadRequestException;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -32,6 +24,7 @@ public class RelatoriosController {
     private final GastosPorCategoriaDoPeriodoService gastosPorCategoriaService;
     private final UltimasTransacoesService ultimasTransacoesService;
     private final GerarRelatorioFinanceiroPdfService gerarRelatorioFinanceiroPdfService;
+    private final ExportarManutencoesService exportarManutencoesService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
     public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario){
@@ -64,6 +57,13 @@ public class RelatoriosController {
     @GetMapping("/ultimas-transacoes/{idUsuario}")
     public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
         return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
+    }
+
+    @GetMapping("/exportar/manutencoes")
+    public byte[] exportarManutencoes(@RequestParam Long idVeiculo,
+                                      @RequestParam String tipoPeriodo,
+                                      @RequestParam String dataReferencia) throws JRException, FileNotFoundException {
+        return exportarManutencoesService.exportar(idVeiculo, tipoPeriodo, dataReferencia);
     }
 
     @GetMapping("/exportar/financeiro")

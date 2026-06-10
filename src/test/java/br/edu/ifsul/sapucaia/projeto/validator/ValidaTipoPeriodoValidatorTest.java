@@ -25,7 +25,7 @@ class ValidaTipoPeriodoValidatorTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.porTipo(tipo));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Tipo dde período inválido. Aceito apenas tipos: dia, semana, mes.", exception.getReason());
+        assertEquals("Tipo dde período inválido. Aceito apenas tipos: dia, semana, mes e ano.", exception.getReason());
     }
 
     @Test
@@ -35,9 +35,11 @@ class ValidaTipoPeriodoValidatorTest {
         String tipoI = "dia";
         String tipoII = "semana";
         String tipoIII = "mes";
+        String tipoIV = "ano";
 
         assertDoesNotThrow(() -> tested.porTipo(tipoI));
         assertDoesNotThrow(() -> tested.porTipo(tipoII));
         assertDoesNotThrow(() -> tested.porTipo(tipoIII));
+        assertDoesNotThrow(() -> tested.porTipo(tipoIV));
     }
 }

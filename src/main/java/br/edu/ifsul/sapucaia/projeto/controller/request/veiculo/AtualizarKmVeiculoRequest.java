@@ -8,9 +8,9 @@ import lombok.*;
 @Getter @Setter
 public class AtualizarKmVeiculoRequest {
 
-    @NotNull
+    @NotNull (message = "O ID do usuário é obrigatório.")
     private Long idUsuario;
 
-    @NotNull
+    @NotNull (message = "O novo valor do KM é obrigatório.")
     private int kmAtualizado;
 }

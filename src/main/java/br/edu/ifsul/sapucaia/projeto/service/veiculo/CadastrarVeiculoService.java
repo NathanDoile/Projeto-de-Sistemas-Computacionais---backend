@@ -6,7 +6,7 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ProximaRevisaoIAResp
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.CadastrarVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
-import br.edu.ifsul.sapucaia.projeto.exception.IAException;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
@@ -18,12 +18,9 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toEntity;
 import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toResponse;
-import static java.time.LocalDate.now;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +59,7 @@ public class CadastrarVeiculoService {
         validaUsuarioComVeiculoService.porUsuario(usuario);
 
         Veiculo veiculo = toEntity(cadastrarVeiculoRequest);
-        veiculo.setDataUltimaAtualizacaoKm(now());
+        veiculo.setDataUltimaAtualizacaoKm(DateNow.now());
 
         veiculo.setUsuario(usuario);
 

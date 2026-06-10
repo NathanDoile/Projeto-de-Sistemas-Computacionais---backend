@@ -7,7 +7,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
-import static java.time.LocalDate.now;
 import static java.time.LocalDate.parse;
 
 @Component
@@ -17,7 +16,7 @@ public class PeriodoDataHelper {
 
         LocalDate dataBaseDate = (dataBase != null)
                 ? parse(dataBase)
-                : now();
+                : DateNow.now();
 
         LocalDate dataInicio;
         LocalDate dataFim;
@@ -32,6 +31,13 @@ public class PeriodoDataHelper {
 
             dataInicio = inicioSemana;
             dataFim = fimSemana;
+        }
+        else if(tipo.equalsIgnoreCase("ano")){
+            LocalDate ininioAno = dataBaseDate.with(TemporalAdjusters.firstDayOfYear());
+            LocalDate fimAno = dataBaseDate.with(TemporalAdjusters.lastDayOfYear());
+
+            dataInicio = ininioAno;
+            dataFim = fimAno;
         }
         else{
             LocalDate inicioMes = dataBaseDate.with(TemporalAdjusters.firstDayOfMonth());

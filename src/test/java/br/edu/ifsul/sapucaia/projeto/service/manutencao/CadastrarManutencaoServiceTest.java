@@ -1,6 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.service.manutencao;
 
+import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.manutencao.CadastrarManutencaoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
@@ -11,11 +13,12 @@ import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoPossuiManutencaoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidadataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +45,7 @@ class CadastrarManutencaoServiceTest {
     private ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
 
     @Mock
-    private ValidadataManutencaoValidator validadataManutencaoValidator;
+    private ValidaDataManutencaoValidator validadataManutencaoValidator;
 
     @Mock
     private ValidaVeiculoService validaVeiculoService;
@@ -62,6 +65,9 @@ class CadastrarManutencaoServiceTest {
     @Mock
     private ValidaCustoPossuiManutencaoService validaCustoPossuiManutencaoService;
 
+    @Mock
+    private CadastrarCustoService cadastrarCustoService;
+
     @Captor
     private ArgumentCaptor<Manutencao> manutencaoCaptor;
 
@@ -77,23 +83,33 @@ class CadastrarManutencaoServiceTest {
 
         CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
         Long idVeiculo = request.getIdVeiculo();
-        Long idCusto = request.getIdCusto();
 
         Veiculo veiculo = VeiculoFactory.veiculo();
         veiculo.setManutencoes(new ArrayList<>());
         Custo custo = CustoFactory.custo();
         custo.setManutencao(null);
 
-        when(veiculoRepository.findById(idVeiculo)).thenReturn(Optional.of(veiculo));
-        when(custoRepository.findById(idCusto)).thenReturn(Optional.of(custo));
+        BuscarCustosEmAbertoResponse responseCusto = BuscarCustosEmAbertoResponse
+                .builder()
+                .idCusto(1L)
+                .descricao(request.getDescricao())
+                .dataVencimento(request.getDataManutencao())
+                .valor(request.getValor())
+                .tipo(request.getTipo())
+                .build();
+
+        when(cadastrarCustoService.cadastrar(any(CadastrarCustoRequest.class))).thenReturn(responseCusto);
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true)).thenReturn(veiculo);
+        when(custoRepository.findByIdCustoAndIsAtivo(responseCusto.getIdCusto(), true)).thenReturn(Optional.of(custo));
 
         tested.cadastrar(request);
 
         verify(validaTipoManutencaoValidator).tipoValido(request.getTipo());
         verify(validadataManutencaoValidator).dataMenorQueHoje(request.getDataManutencao());
         verify(validaVeiculoService).porId(idVeiculo);
-        verify(validaCustoService).porId(idCusto);
-        verify(validaCustoPossuiManutencaoService).porId(idCusto);
+        verify(cadastrarCustoService).cadastrar(any(CadastrarCustoRequest.class));
+        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(any(Long.class), eq(true));
+        verify(custoRepository).findByIdCustoAndIsAtivo(any(Long.class), eq(true));
         verify(manutencaoRepository).save(manutencaoCaptor.capture());
         verify(veiculoRepository).save(veiculoCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
@@ -164,27 +180,6 @@ class CadastrarManutencaoServiceTest {
         verify(validaVeiculoService, never()).porId(anyLong());
         verify(validaCustoService, never()).porId(anyLong());
         verify(validaCustoPossuiManutencaoService, never()).porId(anyLong());
-        verify(manutencaoRepository, never()).save(any(Manutencao.class));
-    }
-
-    @Test
-    @DisplayName("Não deve cadastrar a manutenção se o custo for inválido")
-    void naoDeveCadastrarManutencaoSeCustoForInvalido() {
-
-        CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
-
-        doThrow(ResponseStatusException.class)
-                .when(validaCustoService).porId(request.getIdCusto());
-
-        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
-
-        verify(validaTipoManutencaoValidator).tipoValido(request.getTipo());
-        verify(validadataManutencaoValidator).dataMenorQueHoje(request.getDataManutencao());
-        verify(validaVeiculoService).porId(request.getIdVeiculo());
-        verify(validaCustoService).porId(request.getIdCusto());
-        verify(validaCustoPossuiManutencaoService, never()).porId(anyLong());
-        verify(veiculoRepository, never()).findById(anyLong());
-        verify(custoRepository, never()).findById(anyLong());
         verify(manutencaoRepository, never()).save(any(Manutencao.class));
     }
 }

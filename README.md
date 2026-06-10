@@ -211,7 +211,7 @@
                       "dataManutencao": "2026-04-02",
                       "descricao":"fiz uma manutencao",
                       "idVeiculo":1,
-                      "idCusto":1
+                      "valor":300
               }
             ```
           
@@ -254,3 +254,8 @@
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de URL: `id`, é o identificador dogit usuário
   - `GET /ultimas-transacoes/{idUsuario}`
+
+- **Exportar Relatório de Manutenções**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de query: idVeiculo, tipoPeriodo(semana, mes e ano) e dataReferencia(Formato YYYY-MM-DD)
+  - `GET /exportar/manutencoes`

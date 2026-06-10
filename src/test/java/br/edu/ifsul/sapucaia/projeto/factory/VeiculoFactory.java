@@ -9,6 +9,7 @@ import java.util.List;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoVeiculo.CARRO;
 import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static java.time.LocalDate.of;
+import static java.time.Month.MAY;
 
 public class VeiculoFactory {
     public static Veiculo veiculo(){
@@ -16,7 +17,7 @@ public class VeiculoFactory {
                 .builder()
                 .idVeiculo(1L)
                 .modelo("Cronos")
-                .dataUltimaAtualizacaoKm(of(2026, 05, 02))
+                .dataUltimaAtualizacaoKm(of(2026, MAY, 2))
                 .marca("Fiat")
                 .placa("RLS3F42")
                 .tipo(CARRO)
