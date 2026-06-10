@@ -1,0 +1,139 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="Relatorio_Financeiro" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0c9ffede-2932-424e-a8d2-61059786ec1e">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<dataset name="LinhaDataset" uuid="0a9a076e-a4f3-47f4-9601-aae850856835">
+		<field name="label" class="java.lang.String"/>
+		<field name="receita" class="java.lang.Double"/>
+		<field name="tipoCusto" class="java.lang.String"/>
+		<field name="valorCusto" class="java.lang.Double"/>
+		<field name="lucro" class="java.lang.Double"/>
+	</dataset>
+	<parameter name="NOME_USUARIO" class="java.lang.String"/>
+	<parameter name="PERIODO" class="java.lang.String"/>
+	<parameter name="DATA_INICIO" class="java.lang.String"/>
+	<parameter name="DATA_FIM" class="java.lang.String"/>
+	<parameter name="TOTAL_RECEITA" class="java.lang.Double"/>
+	<parameter name="TOTAL_CUSTO" class="java.lang.Double"/>
+	<parameter name="LUCRO_GERAL" class="java.lang.Double"/>
+	<parameter name="LINHAS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<query language="sql"><![CDATA[]]></query>
+	<title height="72">
+		<element kind="frame" uuid="89999b1e-ff30-4427-8678-2600c68549f7" mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699">
+			<element kind="staticText" uuid="2bb8c3df-7f77-4dcc-b019-e4326b77e940" x="20" y="20" width="290" height="43" forecolor="#FFFFFF" fontSize="19.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[RELATÓRIO FINANCEIRO]]></text>
+			</element>
+			<element kind="textField" uuid="604a38ac-82ae-4fab-b0cd-6dbcf0874a24" x="321" y="13" width="245" height="30" forecolor="#FFFFFF" fontSize="12.0" vTextAlign="Middle">
+				<expression><![CDATA[$P{NOME_USUARIO}]]></expression>
+			</element>
+			<element kind="textField" uuid="a93ee8fe-6b66-404a-a628-f0d87b680535" x="320" y="45" width="255" height="30" forecolor="#FFFFFF" fontSize="12.0" hTextAlign="Left">
+				<expression><![CDATA["Período: " + $P{DATA_INICIO} + " à " + $P{DATA_FIM}]]></expression>
+			</element>
+		</element>
+	</title>
+	<columnHeader height="33">
+		<element kind="line" uuid="dae000bb-fe35-4cd1-909e-e55b52effe57" x="-20" y="32" width="595" height="1" forecolor="#666666"/>
+		<element kind="staticText" uuid="96d57c89-d747-49b4-902f-7415d4d9a1ae" mode="Opaque" x="0" y="0" width="100" height="30" forecolor="#006699" backcolor="#E6E6E6" fontSize="12.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[DATA/PERÍODO]]></text>
+		</element>
+		<element kind="staticText" uuid="9e5b4f55-cd77-4c60-b4ea-887a771617f7" mode="Opaque" x="100" y="0" width="80" height="30" forecolor="#006699" backcolor="#E6E6E6" fontSize="12.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[RECEITA]]></text>
+		</element>
+		<element kind="staticText" uuid="85813351-5b51-47a5-8e61-52f0262097a7" mode="Opaque" x="180" y="0" width="150" height="30" forecolor="#006699" backcolor="#E6E6E6" fontSize="12.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[TIPO DE CUSTO]]></text>
+		</element>
+		<element kind="staticText" uuid="dcc75192-c1e8-4bb7-9a01-10f2ba60d95e" mode="Opaque" x="330" y="0" width="100" height="30" forecolor="#006699" backcolor="#E6E6E6" fontSize="12.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[VALOR CUSTO]]></text>
+		</element>
+		<element kind="staticText" uuid="3bfc54ff-6474-4750-b533-379074d11df8" mode="Opaque" x="430" y="0" width="125" height="30" forecolor="#006699" backcolor="#E6E6E6" fontSize="12.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[LUCRO]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30">
+			<element kind="component" uuid="f32a9a98-8b15-4fe8-a571-988ecfd7d1ed" x="0" y="0" width="555" height="30">
+				<component kind="list">
+					<datasetRun uuid="d51794fb-5136-4d51-a381-054c1a1927ca" subDataset="LinhaDataset">
+						<dataSourceExpression><![CDATA[$P{LINHAS}]]></dataSourceExpression>
+					</datasetRun>
+					<contents height="30" width="555">
+						<element kind="rectangle" uuid="a1b2c3d4-0001-0001-0001-000000000011" mode="Opaque" x="0" y="0" width="535" height="30" backcolor="#EEF4FF">
+							<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></printWhenExpression>
+						</element>
+						<element kind="rectangle" uuid="a1b2c3d4-0001-0001-0001-000000000010" mode="Transparent" x="0" y="0" width="535" height="30" forecolor="#CCCCCC">
+							<pen lineColor="#000000"/>
+						</element>
+						<element kind="textField" uuid="a1b2c3d4-0001-0001-0001-000000000001" x="0" y="0" width="100" height="30" fontSize="11.0" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{label}]]></expression>
+						</element>
+						<element kind="textField" uuid="a1b2c3d4-0001-0001-0001-000000000002" x="100" y="0" width="80" height="30" fontSize="11.0" pattern="R$ #,##0.00" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{receita}]]></expression>
+						</element>
+						<element kind="textField" uuid="a1b2c3d4-0001-0001-0001-000000000003" x="180" y="0" width="150" height="30" fontSize="11.0" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{tipoCusto}]]></expression>
+						</element>
+						<element kind="textField" uuid="a1b2c3d4-0001-0001-0001-000000000004" x="330" y="0" width="100" height="30" fontSize="11.0" pattern="R$ #,##0.00" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{valorCusto}]]></expression>
+						</element>
+						<element kind="textField" uuid="a1b2c3d4-0001-0001-0001-000000000005" x="430" y="0" width="125" height="30" fontSize="11.0" pattern="R$ #,##0.00" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{lucro}]]></expression>
+						</element>
+					</contents>
+				</component>
+			</element>
+		</band>
+	</detail>
+	<columnFooter/>
+	<pageFooter height="17">
+		<element kind="textField" uuid="cd84f987-d5bd-4ff7-b2da-8a941dc3a6cc" mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" hTextAlign="Right">
+			<expression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></expression>
+		</element>
+		<element kind="textField" uuid="ffbc5b41-a294-4112-b29c-3f703dd6bff0" mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" evaluationTime="Report">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="4590d9a8-6ec0-4dcd-8ede-0120f07e588a" x="0" y="4" width="180" height="13">
+			<expression><![CDATA[new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new java.util.Locale("pt", "BR")).format(new java.util.Date())]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="30">
+		<element kind="staticText" uuid="3837bd58-bf96-4535-af27-79682a91dbff" x="0" y="0" width="100" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[TOTAL:]]></text>
+			<box>
+				<pen lineColor="#000000"/>
+				<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="4a45477d-cc11-4718-bf04-6fcb23cd44c3" x="100" y="0" width="80" height="30" pattern="R$ #,##0.00" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{TOTAL_RECEITA}]]></expression>
+			<box>
+				<pen lineColor="#000000"/>
+				<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="947f4ab2-eed9-44d1-8305-cb303f88fbd8" x="330" y="0" width="100" height="30" pattern="R$ #,##0.00" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{TOTAL_CUSTO}]]></expression>
+			<box>
+				<pen lineColor="#000000"/>
+				<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="32ab472d-2712-48fe-9445-fb7bd1f827b5" x="430" y="0" width="125" height="30" pattern="R$ #,##0.00" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{LUCRO_GERAL}]]></expression>
+			<box>
+				<pen lineColor="#000000"/>
+				<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+	</summary>
+</jasperReport>
