@@ -259,3 +259,8 @@
   - Precisa estar logado para utilizar esse path;
   - Parâmetros de query: idVeiculo, tipoPeriodo(semana, mes e ano) e dataReferencia(Formato YYYY-MM-DD)
   - `GET /exportar/manutencoes`
+
+- **Exportar Relatório Financeiro**
+  - Precisa estar logado para utilizar esse path;
+  - Parâmetros de query: idUsuario, dataReferencia(Formato YYYY-MM-DD) e periodo(semanal, mensal e anual)
+  - `GET /exportar/financeiro`
