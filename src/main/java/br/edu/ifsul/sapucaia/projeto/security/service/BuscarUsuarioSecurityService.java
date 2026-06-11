@@ -18,7 +18,8 @@ public class BuscarUsuarioSecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Usuario usuario = usuarioRepository.findByEmailAndIsAtivo(email, true).get();
+        Usuario usuario = usuarioRepository.findByEmailAndIsAtivo(email, true)
+                .orElseThrow(() -> new UsernameNotFoundException("Credenciais inválidas ou usuário inativo."));
 
         return new UsuarioSecurity(usuario);
 
