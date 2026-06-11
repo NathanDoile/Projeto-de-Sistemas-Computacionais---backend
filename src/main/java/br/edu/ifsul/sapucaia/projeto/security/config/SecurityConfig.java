@@ -42,7 +42,6 @@ public class SecurityConfig {
                 )
                 .httpBasic(httpBasic -> httpBasic
                         .authenticationEntryPoint((request, response, authException) -> {
-                                    authException.printStackTrace();
                                     response.setStatus(UNAUTHORIZED.value());
                                 }
                         )
