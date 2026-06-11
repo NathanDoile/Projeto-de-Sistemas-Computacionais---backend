@@ -1,5 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.validator;
 
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,7 +12,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ValidaDataRelatorioFinanceiroPdfValidator {
     public void naoMaiorQueHoje(LocalDate dataReferencia) {
 
-        if(dataReferencia.isAfter(LocalDate.now())){
+        if(dataReferencia.isAfter(DateNow.now())){
             throw new ResponseStatusException(BAD_REQUEST, "Data de referência não pode ser superior à hoje");
         }
     }

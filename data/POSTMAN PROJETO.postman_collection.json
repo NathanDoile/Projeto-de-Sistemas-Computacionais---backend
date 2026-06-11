@@ -1,826 +1,922 @@
 {
-	"info": {
-		"_postman_id": "62b13068-78d2-4b88-b56c-fe186a298273",
-		"name": "POSTMAN PROJETO",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "53222404",
-		"_collection_link": "https://felipehomem152-1572444.postman.co/workspace/Felipe-Martins's-Workspace~810495d8-17db-4f4e-8c26-134f31f06974/collection/53222404-62b13068-78d2-4b88-b56c-fe186a298273?action=share&source=collection_link&creator=53222404"
-	},
-	"item": [
-		{
-			"name": "Cadastrar Usuario",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando03@gmail.com\",\n    \"senha\": \"testando123\",\n    \"telefone\": \"51999999999\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Veiculo",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"marca\":\"VW\",\r\n    \"modelo\":\"ONIX\",\r\n    \"placa\":\"ABC1A23\",\r\n    \"tipo\":\"carro\",\r\n    \"ano\":2023,\r\n    \"cor\":\"azul\",\r\n    \"kmAtual\":23589,\r\n    \"idUsuario\":1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/veiculo",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"veiculo"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"a4Gj@j21\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/usuario/login-usuario",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						"login-usuario"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Receita Diaria",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"dataReceita\":\"2026-04-27\",\r\n    \"valor\":200,\r\n    \"idUsuario\":1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/receita-diaria",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"receita-diaria"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Meta",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"titulo\":\"Ingressos para show fim de semana\",\r\n    \"formato\":\"Semanal\",\r\n    \"valor\":300,\r\n    \"idUsuario\":1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/meta",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"meta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Custo",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"idVeiculo\":1,\r\n    \"tipo\":\"gasolina\",\r\n    \"valor\":500,\r\n    \"dataVencimento\":\"2026-06-21\",\r\n    \"dataPagamento\":\"2026-06-18\",\r\n    \"descricao\":\"Custo de gasolina\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/custo",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"custo"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Manutenção",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"tipo\":\"preventiva\",\r\n    \"dataManutencao\": \"2026-04-02\",\r\n    \"descricao\":\"fiz uma manutencao\",\r\n    \"idVeiculo\":1,\r\n    \"valor\":300\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/manutencao",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"manutencao"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Alterar Senha Usuario",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"senhaAtual\": \"testando123\",\n    \"novaSenha\": \"atualizandoSenha123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario/:{id}/alterar-senha",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						":{id}",
-						"alterar-senha"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar Perfil do Usuário",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"nome\": \"Novo Nome\",\r\n  \"email\": \"novo@email.com\",\r\n  \"telefone\": \"99999-9999\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario/{id}/editar-perfil",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						"{id}",
-						"editar-perfil"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar Notificações",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"notificacao\": \"VENCIMENTO\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario/notificacoes/:{id}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						"notificacoes",
-						":{id}"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "3"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar custo",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"idCusto\": 1,\r\n    \"tipo\": \"manutencao\",\r\n    \"valor\": 295.00,\r\n    \"dataVencimento\": \"2026-04-23\",\r\n    \"dataPagamento\": \"2026-04-15\",\r\n    \"descricao\": \"manutencao do carro\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/custo/editar",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"custo",
-						"editar"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualizar KM",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"idUsuario\":1,\r\n    \"kmAtualizado\": 45300\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/veiculo/atualizar-km",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"veiculo",
-						"atualizar-km"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Custos Em Aberto",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/custo/:{id}/em-aberto?page=0&size=2",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"custo",
-						":{id}",
-						"em-aberto"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "2"
-						}
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Retorna Dados Veiculo",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/veiculo/:{id}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"veiculo",
-						":{id}"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Informações da Semana",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/informacoes-semana/:{id}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"informacoes-semana",
-						":{id}"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar metas",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"idUsuario\":1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/meta",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"meta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Receita Semanal",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
-				},
-				"url": {
-					"raw": "localhost:8080/relatorios/receita-semana/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"receita-semana",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gasto do Mês",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/gasto-mes/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"gasto-mes",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Ganho Líquido do Mês",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/lucro-mes/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"lucro-mes",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Ganho Bruto do Mês",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/ganho-bruto-mes/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"ganho-bruto-mes",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gastos do Mês Por Categoria",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/gastos-categoria-mes/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"gastos-categoria-mes",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "IA",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8080/ia?message=Fiat Mobi Like 2023 1.0 fire flex 156000 km",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"ia"
-					],
-					"query": [
-						{
-							"key": "message",
-							"value": "Fiat Mobi Like 2023 1.0 fire flex 156000 km"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Últimas Transações",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/ultimas-transacoes/:{idUsuario}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"ultimas-transacoes",
-						":{idUsuario}"
-					],
-					"variable": [
-						{
-							"key": "{idUsuario}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Excluir Conta",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"senha\": \"senha123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						":{id}",
-						"excluir-conta"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Excluir meta",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/meta/:{id}",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"meta",
-						":{id}"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Informações de Manutenção do Veículo",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/veiculo/:{id}/informacoes-manutencao",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"veiculo",
-						":{id}",
-						"informacoes-manutencao"
-					],
-					"variable": [
-						{
-							"key": "{id}",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Exportar Relatório Manutenções",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/exportar/manutencoes?idVeiculo=1&tipoPeriodo=ano&dataReferencia=2026-06-07",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"exportar",
-						"manutencoes"
-					],
-					"query": [
-						{
-							"key": "idVeiculo",
-							"value": "1"
-						},
-						{
-							"key": "tipoPeriodo",
-							"value": "ano"
-						},
-						{
-							"key": "dataReferencia",
-							"value": "2026-06-07"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Exportar Relatório Financeiro",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/relatorios/exportar/financeiro?idUsuario=3&dataReferencia=2026-03-02&periodo=anual",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"relatorios",
-						"exportar",
-						"financeiro"
-					],
-					"query": [
-						{
-							"key": "idUsuario",
-							"value": "3"
-						},
-						{
-							"key": "dataReferencia",
-							"value": "2026-03-02"
-						},
-						{
-							"key": "periodo",
-							"value": "anual"
-						}
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "c395ac6e-de64-4033-b83c-769b87e237d7",
+    "name": "POSTMAN PROJETO",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29566159"
+  },
+  "item": [
+    {
+      "name": "Cadastrar Usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nome\": \"Primeiro Usuário\",\n    \"email\": \"testando03@gmail.com\",\n    \"senha\": \"testando123\",\n    \"telefone\": \"51999999999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Veiculo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"marca\":\"VW\",\r\n    \"modelo\":\"ONIX\",\r\n    \"placa\":\"ABC1A23\",\r\n    \"tipo\":\"carro\",\r\n    \"ano\":2023,\r\n    \"cor\":\"azul\",\r\n    \"kmAtual\":23589,\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/veiculo",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "beto@gmail.com",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "123",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/login",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Receita Diaria",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"dataReceita\":\"2026-04-27\",\r\n    \"valor\":200,\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/receita-diaria",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "receita-diaria"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Meta",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"titulo\":\"Ingressos para show fim de semana\",\r\n    \"formato\":\"Semanal\",\r\n    \"valor\":300,\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/meta",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "meta"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Custo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idVeiculo\":1,\r\n    \"tipo\":\"gasolina\",\r\n    \"valor\":500,\r\n    \"dataVencimento\":\"2026-06-21\",\r\n    \"dataPagamento\":\"2026-06-18\",\r\n    \"descricao\":\"Custo de gasolina\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/custo",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "custo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Manutenção",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"tipo\":\"preventiva\",\r\n    \"dataManutencao\": \"2026-04-02\",\r\n    \"descricao\":\"fiz uma manutencao\",\r\n    \"idVeiculo\":1,\r\n    \"valor\":300\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/manutencao",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "manutencao"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Enviar Código de Redefinição",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"usuario@email.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/security/enviar-codigo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "security",
+            "enviar-codigo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Alterar Senha Usuario",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"senhaAtual\": \"testando123\",\n    \"novaSenha\": \"atualizandoSenha123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/:{id}/alterar-senha",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            ":{id}",
+            "alterar-senha"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar Perfil do Usuário",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Novo Nome\",\r\n  \"email\": \"novo@email.com\",\r\n  \"telefone\": \"99999-9999\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/{id}/editar-perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            "{id}",
+            "editar-perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar Notificações",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"notificacao\": \"VENCIMENTO\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/notificacoes/:{id}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            "notificacoes",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar custo",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idCusto\": 1,\r\n    \"tipo\": \"manutencao\",\r\n    \"valor\": 295.00,\r\n    \"dataVencimento\": \"2026-04-23\",\r\n    \"dataPagamento\": \"2026-04-15\",\r\n    \"descricao\": \"manutencao do carro\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/custo/editar",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "custo",
+            "editar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar KM",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idUsuario\":1,\r\n    \"kmAtualizado\": 45300\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/veiculo/atualizar-km",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo",
+            "atualizar-km"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Redefinir Senha",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"usuario@email.com\",\n    \"codigo\": \"ABC12345\",\n    \"senha\": \"novaSenha@123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/security/redefinir-senha",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "security",
+            "redefinir-senha"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar Custos Em Aberto",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/custo/:{id}/em-aberto?page=0&size=2",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "custo",
+            ":{id}",
+            "em-aberto"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "2"
+            }
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Retorna Dados Veiculo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/veiculo/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Informações da Semana",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/informacoes-semana/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "informacoes-semana",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar metas",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idUsuario\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/meta",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "meta"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Receita Semanal",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
+        },
+        "url": {
+          "raw": "localhost:8080/relatorios/receita-semana/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "receita-semana",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gasto do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/gasto-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "gasto-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ganho Líquido do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/lucro-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "lucro-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ganho Bruto do Mês",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/ganho-bruto-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "ganho-bruto-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gastos do Mês Por Categoria",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/gastos-categoria-mes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "gastos-categoria-mes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "IA",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "localhost:8080/ia?message=Fiat Mobi Like 2023 1.0 fire flex 156000 km",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "ia"
+          ],
+          "query": [
+            {
+              "key": "message",
+              "value": "Fiat Mobi Like 2023 1.0 fire flex 156000 km"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Últimas Transações",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/ultimas-transacoes/:{idUsuario}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "ultimas-transacoes",
+            ":{idUsuario}"
+          ],
+          "variable": [
+            {
+              "key": "{idUsuario}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Informações de Manutenção do Veículo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/veiculo/:{id}/informacoes-manutencao",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "veiculo",
+            ":{id}",
+            "informacoes-manutencao"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Exportar Relatório Manutenções",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/exportar/manutencoes?idVeiculo=1&tipoPeriodo=ano&dataReferencia=2026-06-07",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "exportar",
+            "manutencoes"
+          ],
+          "query": [
+            {
+              "key": "idVeiculo",
+              "value": "1"
+            },
+            {
+              "key": "tipoPeriodo",
+              "value": "ano"
+            },
+            {
+              "key": "dataReferencia",
+              "value": "2026-06-07"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Exportar Relatório Financeiro",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/exportar/financeiro?idUsuario=3&dataReferencia=2026-03-02&periodo=anual",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "exportar",
+            "financeiro"
+          ],
+          "query": [
+            {
+              "key": "idUsuario",
+              "value": "3"
+            },
+            {
+              "key": "dataReferencia",
+              "value": "2026-03-02"
+            },
+            {
+              "key": "periodo",
+              "value": "anual"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Pendências do Usuário",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/pendencias/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "pendencias",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir Conta",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"senha\": \"senha123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "usuario",
+            ":{id}",
+            "excluir-conta"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir meta",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/meta/:{id}",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "meta",
+            ":{id}"
+          ],
+          "variable": [
+            {
+              "key": "{id}",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/logout",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }
