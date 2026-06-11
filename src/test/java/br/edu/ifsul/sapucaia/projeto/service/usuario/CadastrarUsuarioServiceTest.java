@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.cadastrarUsuarioRequest;
@@ -31,6 +32,9 @@ class CadastrarUsuarioServiceTest {
     @Mock
     private ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
@@ -39,10 +43,13 @@ class CadastrarUsuarioServiceTest {
     void CadastraUsuarioComValoresCorretos(){
         CadastrarUsuarioRequest request = cadastrarUsuarioRequest();
 
+        when(passwordEncoder.encode(request.getSenha())).thenReturn(request.getSenha());
+
         tested.cadastrarUsuario(request);
 
         verify(validaEmailUsuarioService).validaEmailUnico(request.getEmail());
         verify(validaTelefoneUsuarioService).validaTelefoneUnico(request.getTelefone());
+        verify(passwordEncoder).encode(request.getSenha());
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario usuarioResponse = usuarioCaptor.getValue();
