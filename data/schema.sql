@@ -15,6 +15,8 @@ CREATE TABLE usuario(
     notificacao_manutencao BOOLEAN NOT NULL,
     possui_veiculo BOOLEAN NOT NULL,
     is_ativo BOOLEAN NOT NULL,
+    codigo_redefinir_senha VARCHAR(100),
+    tentativas_redefinir_senha INTEGER,
     PRIMARY KEY(id_usuario));
 
 CREATE TABLE meta(

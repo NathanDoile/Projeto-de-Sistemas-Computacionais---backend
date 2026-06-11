@@ -8,6 +8,7 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.UsuarioMapper.toEntity;
@@ -23,6 +24,8 @@ public class CadastrarUsuarioService {
 
     private final ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public CadastrarUsuarioResponse cadastrarUsuario(CadastrarUsuarioRequest cadastrarUsuarioRequest){
         validaEmailUsuarioService.validaEmailUnico(cadastrarUsuarioRequest.getEmail());
@@ -32,6 +35,7 @@ public class CadastrarUsuarioService {
 
         usuario.setAtivo(true);
         usuario.setPossuiVeiculo(false);
+        usuario.setSenha(passwordEncoder.encode(cadastrarUsuarioRequest.getSenha()));
 
         usuarioRepository.save(usuario);
 

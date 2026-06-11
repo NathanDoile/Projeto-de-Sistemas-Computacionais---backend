@@ -1,9 +1,9 @@
 USE bd_projeto;
 
 INSERT INTO usuario(nome, email, senha, telefone, is_ativo, notificacao_vencimento, notificacao_manutencao, data_cadastro, possui_veiculo, tentativas_redefinir_senha)
-VALUES ('Adriano', 'adriano@gmail.com', 'a4Gj@j21', '00 00000-0000', TRUE, TRUE, TRUE, NOW(), TRUE, -1),
-       ('Beto', 'beto@gmail.com', 'dWu!87y8', '00 00000-0001', TRUE, TRUE, TRUE, NOW(), TRUE, -1),
-       ('Carla', 'carla@gmail.com', 'ac@g78Er', '00 00000-0002', TRUE, TRUE, TRUE, NOW(), TRUE, -1);
+VALUES ('Adriano', 'adriano@gmail.com', '$2a$10$9K6yV5VAbVFOCZHFaDJePegXE0tYqXDiGvih7qTCO2LbSqeh4z26O', '00 00000-0000', TRUE, TRUE, TRUE, NOW(), TRUE, -1),
+       ('Beto', 'beto@gmail.com', '$2a$10$9K6yV5VAbVFOCZHFaDJePegXE0tYqXDiGvih7qTCO2LbSqeh4z26O', '00 00000-0001', TRUE, TRUE, TRUE, NOW(), TRUE, -1),
+       ('Carla', 'carla@gmail.com', '$2a$10$9K6yV5VAbVFOCZHFaDJePegXE0tYqXDiGvih7qTCO2LbSqeh4z26O', '00 00000-0002', TRUE, TRUE, TRUE, NOW(), TRUE, -1);
 
 INSERT INTO veiculo(modelo, marca, ano, placa, cor, tipo, km_atual, id_usuario, is_ativo, data_ultima_atualizacao_km,intervalo_entre_manutencoes_km, intervalo_entre_manutencoes_meses, proxima_manutencao_Km, proxima_manutencao_data)
 VALUES ('Onix Plus', 'Chevrolet', 2022, 'BTA2E19', 'Prata', 'CARRO', 45200, 1, TRUE, NOW(), 5000, 6, 50200, date_add(NOW(), INTERVAL 6 MONTH)),

@@ -11,7 +11,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: projetodesistemas3a2026@gmail.com
-    password: edzx uhrd ypyz ihre
+    password: secrets.SENHA_EMAIL
     protocol: smtp
     properties:
       "[mail.smtp.auth]": true
@@ -22,4 +22,13 @@ spring:
 gemini:
   baseurl: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=%s
   api:
-    key: CHAVEAPI
+    key: secrets.CHAVE_API_GEMINI
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web.servlet: DEBUG
+    #org.springframework.security: DEBUG

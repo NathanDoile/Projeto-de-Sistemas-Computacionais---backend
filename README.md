@@ -3,6 +3,19 @@
 
 ## Funcionalidades
 
+### Rota Principal:
+
+- **Login do usuário**
+    - `POST /login`
+
+      ```Basic Auth
+        "email": "adriano@gmail.com",
+        "password": "123"
+      ```
+
+- **Logout do usuário**
+    - `POST /logout`
+
 ### Rota: `/usuario`
 
 - **Cria um usuário**
@@ -14,15 +27,6 @@
       "email": "testando0@gmail.com",
       "senha": "testando123",
       "telefone": "51999999999"
-    }
-    ```
-- **Login do usuário**
-  - `POST /login-usuario`
-
-    ```json
-    {
-      "email": "adriano@gmail.com",
-      "senha":"a4Gj@j21"
     }
     ```
 

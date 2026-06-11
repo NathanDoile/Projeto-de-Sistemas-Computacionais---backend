@@ -9,7 +9,7 @@ import lombok.*;
 @Getter @Setter
 public class CadastrarUsuarioRequest {
 
-    @NotBlank(message = "Campo nome é obrigatório")
+    @NotBlank(message = "é obrigatório")
     private String nome;
 
     @NotBlank(message = "Campo E-mail é obrigatório")
