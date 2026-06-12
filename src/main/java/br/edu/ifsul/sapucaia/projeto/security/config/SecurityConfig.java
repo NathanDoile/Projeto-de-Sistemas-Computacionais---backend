@@ -41,9 +41,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic
-                        .authenticationEntryPoint((request, response, authException) -> {
-                                    response.setStatus(UNAUTHORIZED.value());
-                                }
+                        .authenticationEntryPoint((request, response, authException) ->
+                                    response.setStatus(UNAUTHORIZED.value())
                         )
                 )
                 .logout(logout -> logout
