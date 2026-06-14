@@ -20,6 +20,12 @@ public class ValidaVeiculoService {
         }
     }
 
+    public void porIdUsuario(Long idUsuario){
+        if(!veiculoRepository.existsByUsuarioIdUsuarioAndIsAtivo(idUsuario, true)){
+            throw new ResponseStatusException(NOT_FOUND, "Usuário sem veículo.");
+        }
+    }
+
     public void jaExistePlaca(String placa) {
 
         if(veiculoRepository.existsByPlacaAndIsAtivo(placa, true)){

@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "c395ac6e-de64-4033-b83c-769b87e237d7",
+    "_postman_id": "0664b0b0-0d15-42cb-80e3-5059eaafb2c1",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "29566159"
+    "_exporter_id": "53222404",
+    "_collection_link": "https://go.postman.co/collection/53222404-0664b0b0-0d15-42cb-80e3-5059eaafb2c1?source=collection_link"
   },
   "item": [
     {
@@ -155,7 +156,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"idVeiculo\":1,\r\n    \"tipo\":\"gasolina\",\r\n    \"valor\":500,\r\n    \"dataVencimento\":\"2026-06-21\",\r\n    \"dataPagamento\":\"2026-06-18\",\r\n    \"descricao\":\"Custo de gasolina\"\r\n}",
+          "raw": "{\r\n    \"tipo\":\"Combustível\",\r\n    \"valor\":500,\r\n    \"dataVencimento\":\"2026-06-21\",\r\n    \"dataPagamento\":\"2026-06-18\",\r\n    \"descricao\":\"Custo de gasolina\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -505,7 +506,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"idUsuario\":1\r\n}",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"

@@ -3,6 +3,8 @@ package br.edu.ifsul.sapucaia.projeto.service.meta;
 import br.edu.ifsul.sapucaia.projeto.controller.response.meta.BuscarMetaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,7 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.MENSAL;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.CUSTO;
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,22 +43,27 @@ class BuscarMetasServiceTest {
     @Mock
     private MetaRepository metaRepository;
 
+    @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
     @Test
     @DisplayName("Deve buscar as metas corretamente")
     void deveBuscarMetasCorretamente(){
 
-        Long idUsuario = 1L;
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Meta> metas = List.of(meta(DIARIA, RECEITA), meta(MENSAL, CUSTO));
         Page<Meta> pageMetas = new PageImpl<>(metas, pageable, metas.size());
 
-        when(metaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true, pageable)).thenReturn(pageMetas);
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
-        Page<BuscarMetaResponse> response = tested.buscar(idUsuario, pageable);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(metaRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true, pageable)).thenReturn(pageMetas);
 
-        verify(validaUsuarioService).porId(idUsuario);
-        verify(metaRepository).findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true, pageable);
+        Page<BuscarMetaResponse> response = tested.buscar(pageable);
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(metaRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true, pageable);
 
         assertEquals(2, response.getTotalElements());
         assertEquals(1, response.getTotalPages());
@@ -74,14 +82,13 @@ class BuscarMetasServiceTest {
     @DisplayName("Não deve buscar as metas com id do usuario incorreto")
     void naoDeveBuscarMetasIdUsuarioIncorreto(){
 
-        Long idUsuario = 1L;
-        Pageable pageable = PageRequest.of(0, 10); 
+        Pageable pageable = PageRequest.of(0, 10);
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(idUsuario);
+        doThrow(ResponseStatusException.class).when(usuarioAutenticadoService).getUser();
 
-        assertThrows(ResponseStatusException.class, () -> tested.buscar(idUsuario, pageable));
+        assertThrows(ResponseStatusException.class, () -> tested.buscar(pageable));
 
-        verify(validaUsuarioService).porId(idUsuario);
+        verify(usuarioAutenticadoService).getUser();
         verify(metaRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class), any(Pageable.class));
     }
 }

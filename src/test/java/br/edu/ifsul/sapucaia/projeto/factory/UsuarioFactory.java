@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 
 import java.util.List;
 
@@ -94,6 +95,10 @@ public class UsuarioFactory {
                 .builder()
                 .notificacao("Vencimento")
                 .build();
+    }
+
+    public static UsuarioSecurity usuarioSecurity(){
+        return new UsuarioSecurity(usuario());
     }
 
 }

@@ -111,4 +111,34 @@ class ValidaVeiculoServiceTest {
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertEquals("ID do veículo não existe.", exception.getReason());
     }
+
+
+    @Test
+    @DisplayName("Não deve dar erro se usuário tiver um veículo")
+    void naoDeveDarErroUsuarioComVeiculo(){
+
+        Long idUsuario = 1L;
+
+        when(veiculoRepository.existsByUsuarioIdUsuarioAndIsAtivo(idUsuario, true))
+                .thenReturn(true);
+
+        assertDoesNotThrow(() -> tested.porIdUsuario(idUsuario));
+    }
+
+    @Test
+    @DisplayName("Deve dar erro se usuário não tiver veículo")
+    void deveDarErroUsuarioSemVeiculo(){
+
+        Long idUsuario = 1L;
+
+        when(veiculoRepository.existsByUsuarioIdUsuarioAndIsAtivo(idUsuario, true))
+                .thenReturn(false);
+
+        ResponseStatusException exception =
+                assertThrows(ResponseStatusException.class,
+                        () -> tested.porIdUsuario(idUsuario));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertEquals("Usuário sem veículo.", exception.getReason());
+    }
 }

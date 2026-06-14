@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -31,10 +32,10 @@ public class MetaController {
         cadastrarMetaService.cadastrar(cadastrarMetaRequest);
     }
 
-    @GetMapping("/{idUsuario}")
+    @GetMapping()
     @ResponseStatus(OK)
-    public Page<BuscarMetaResponse> buscarMetas(@PathVariable Long idUsuario, Pageable pageable){
-        return buscarMetasService.buscar(idUsuario, pageable);
+    public Page<BuscarMetaResponse> buscarMetas(Pageable pageable){
+        return buscarMetasService.buscar(pageable);
     }
 
     @DeleteMapping("/{id}")

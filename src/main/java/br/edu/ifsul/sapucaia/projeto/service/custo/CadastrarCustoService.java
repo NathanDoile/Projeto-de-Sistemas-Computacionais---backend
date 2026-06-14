@@ -10,6 +10,8 @@ import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
@@ -44,16 +46,20 @@ public class CadastrarCustoService {
 
     private final MetaRepository metaRepository;
 
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
+
     @Transactional
     public BuscarCustosEmAbertoResponse cadastrar(CadastrarCustoRequest request) {
 
-        validaVeiculoService.porId(request.getIdVeiculo());
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
+
+        validaVeiculoService.porIdUsuario(usuarioSecurity.getId());
         validaValorCustoValidator.isPositivo(request.getValor());
         validaTipoCustoValidator.tipoValido(request.getTipo());
 
         Custo custo = toEntity(request);
       
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(request.getIdVeiculo(), true);
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
 
         if(request.getDataPagamento() != null){
             salvarMetas(veiculo, custo);

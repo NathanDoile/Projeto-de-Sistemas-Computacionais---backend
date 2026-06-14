@@ -28,7 +28,6 @@ public class CustoFactory {
 
         return CadastrarCustoRequest
                 .builder()
-                .idVeiculo(1L)
                 .tipo("COMBUSTIVEL")
                 .valor(100.00)
                 .descricao("Custo de teste")
