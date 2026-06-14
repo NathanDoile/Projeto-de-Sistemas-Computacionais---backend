@@ -245,15 +245,17 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         Usuario usuario = usuario();
 
+        Long idUsuario = usuario.getIdUsuario();
+
         PeriodoRelatorioFinanceiro periodo = MENSAL;
 
         LocalDate dataReferencia = DateNow.now();
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(usuario.getIdUsuario());
+        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(idUsuario);
 
-        assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(usuario().getIdUsuario(), dataReferencia, periodo));
+        assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(idUsuario, dataReferencia, periodo));
 
-        verify(validaUsuarioService).porId(usuario.getIdUsuario());
+        verify(validaUsuarioService).porId(idUsuario);
         verify(validaDataRelatorioFinanceiroPdfValidator, never()).naoMaiorQueHoje(any(LocalDate.class));
         verify(veiculoRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), anyBoolean());
         verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
@@ -266,15 +268,17 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         Usuario usuario = usuario();
 
+        Long idUsuario = usuario.getIdUsuario();
+
         PeriodoRelatorioFinanceiro periodo = MENSAL;
 
         LocalDate dataReferencia = DateNow.now().plusDays(1);
 
         doThrow(ResponseStatusException.class).when(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
 
-        assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(usuario().getIdUsuario(), dataReferencia, periodo));
+        assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(idUsuario, dataReferencia, periodo));
 
-        verify(validaUsuarioService).porId(usuario.getIdUsuario());
+        verify(validaUsuarioService).porId(idUsuario);
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), anyBoolean());
         verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
