@@ -53,7 +53,7 @@ public class GerarRelatorioFinanceiroPdfService {
             dataInicio = dataReferencia.withDayOfMonth(1);
             dataFim = dataReferencia.withDayOfMonth(dataReferencia.lengthOfMonth());
         }
-        else if(periodo == ANUAL){
+        else{
             dataInicio = dataReferencia.withDayOfYear(1);
             dataFim = dataReferencia.withDayOfYear(dataReferencia.lengthOfYear());
         }
