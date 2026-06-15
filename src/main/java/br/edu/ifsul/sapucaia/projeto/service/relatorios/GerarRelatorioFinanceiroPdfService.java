@@ -42,8 +42,8 @@ public class GerarRelatorioFinanceiroPdfService {
         validaUsuarioService.porId(idUsuario);
         validaDataRelatorioFinanceiroPdfValidator.naoMaiorQueHoje(dataReferencia);
 
-        LocalDate dataInicio = dataReferencia;
-        LocalDate dataFim = dataReferencia;
+        LocalDate dataInicio;
+        LocalDate dataFim;
 
         if(periodo == SEMANAL){
             dataInicio = dataReferencia.with(DayOfWeek.MONDAY);
