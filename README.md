@@ -144,9 +144,7 @@
 
 - **Buscar metas**
     - Precisa estar logado para utilizar esse path
-    - `GET /{id}`
-    - Parâmetros de URL: `id`, é o identificador do usuario
-
+    - `GET /`
 
 - **Excluir meta**
     - Precisa estar logado para utilizar esse path
@@ -161,7 +159,6 @@
 
     ```json
     {
-      "idVeiculo": 1,
       "tipo": "gasolina",
       "valor": 500,
       "dataVencimento": "2026-06-21",

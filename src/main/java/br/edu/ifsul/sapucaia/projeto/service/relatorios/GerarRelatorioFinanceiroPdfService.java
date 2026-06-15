@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro.ANUAL;
+import static br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
@@ -45,19 +45,17 @@ public class GerarRelatorioFinanceiroPdfService {
         LocalDate dataInicio = dataReferencia;
         LocalDate dataFim = dataReferencia;
 
-        switch (periodo) {
-            case SEMANAL -> {
-                dataInicio = dataReferencia.with(DayOfWeek.MONDAY);
-                dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
-            }
-            case MENSAL -> {
-                dataInicio = dataReferencia.withDayOfMonth(1);
-                dataFim = dataReferencia.withDayOfMonth(dataReferencia.lengthOfMonth());
-            }
-            case ANUAL -> {
-                dataInicio = dataReferencia.withDayOfYear(1);
-                dataFim = dataReferencia.withDayOfYear(dataReferencia.lengthOfYear());
-            }
+        if(periodo == SEMANAL){
+            dataInicio = dataReferencia.with(DayOfWeek.MONDAY);
+            dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
+        }
+        else if(periodo == MENSAL){
+            dataInicio = dataReferencia.withDayOfMonth(1);
+            dataFim = dataReferencia.withDayOfMonth(dataReferencia.lengthOfMonth());
+        }
+        else if(periodo == ANUAL){
+            dataInicio = dataReferencia.withDayOfYear(1);
+            dataFim = dataReferencia.withDayOfYear(dataReferencia.lengthOfYear());
         }
 
         Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
@@ -159,7 +157,7 @@ public class GerarRelatorioFinanceiroPdfService {
                 .getResourceAsStream("/templates/financeiro/Relatorio_Financeiro.jasper");
 
         double totalReceita = linhas.stream()
-                .filter(l -> l.getReceita() != null)
+                .filter(    l -> l.getReceita() != null)
                 .mapToDouble(LinhaRelatorioFinanceiroResponse::getReceita).sum();
 
         double totalCusto = linhas.stream()
