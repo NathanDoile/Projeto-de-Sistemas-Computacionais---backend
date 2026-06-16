@@ -18,6 +18,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.cadastrarMetaReq
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,10 +59,12 @@ class CadastrarMetaServiceTest {
     @Captor
     private ArgumentCaptor<Meta> metaCaptor;
 
-    private void mockAuth() {
+    private void mockAuthBasic() {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         when(usuarioSecurity.getId()).thenReturn(1L);
+    }
 
+    private void mockUsuario() {
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(1L, true))
                 .thenReturn(Optional.of(usuario()));
     }
@@ -71,7 +75,8 @@ class CadastrarMetaServiceTest {
 
         CadastrarMetaRequest request = cadastrarMetaRequest();
 
-        mockAuth();
+        mockAuthBasic();
+        mockUsuario();
 
         doNothing().when(validaValorMetaValidator).isPositivo(request.getValor());
         doNothing().when(validaFormatoMetaValidator).formatoValido(request.getFormato());
@@ -100,17 +105,17 @@ class CadastrarMetaServiceTest {
         CadastrarMetaRequest request = cadastrarMetaRequest();
         request.setValor(0.0);
 
-        mockAuth();
+        mockAuthBasic();
 
-        doThrow(RuntimeException.class)
+        doThrow(ResponseStatusException.class)
                 .when(validaValorMetaValidator)
                 .isPositivo(request.getValor());
 
-        try {
-            tested.cadastrar(request);
-        } catch (Exception ignored) {}
+        assertThrows(ResponseStatusException.class,
+                () -> tested.cadastrar(request));
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verifyNoInteractions(validaFormatoMetaValidator);
         verify(metaRepository, never()).save(any());
     }
 
@@ -121,17 +126,16 @@ class CadastrarMetaServiceTest {
         CadastrarMetaRequest request = cadastrarMetaRequest();
         request.setFormato("semestral");
 
-        mockAuth();
+        mockAuthBasic();
 
         doNothing().when(validaValorMetaValidator).isPositivo(request.getValor());
 
-        doThrow(RuntimeException.class)
+        doThrow(ResponseStatusException.class)
                 .when(validaFormatoMetaValidator)
                 .formatoValido(request.getFormato());
 
-        try {
-            tested.cadastrar(request);
-        } catch (Exception ignored) {}
+        assertThrows(ResponseStatusException.class,
+                () -> tested.cadastrar(request));
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
