@@ -11,15 +11,18 @@ import lombok.*;
 @Setter
 public class CadastrarMetaRequest {
 
-    @NotBlank(message = "O título da meta é obrigatório.")
+    @NotBlank(message = "O título é obrigatório.")
     private String titulo;
 
-    @NotBlank(message = "O formato da meta é obrigatório.")
+    @NotBlank(message = "O formato é obrigatório.")
     private String formato;
 
-    @NotBlank(message = "O tipo da meta é obrigatório.")
+    @NotBlank(message = "O tipo é obrigatório.")
     private String tipo;
 
-    @NotNull(message = "O valor da meta é obrigatório.")
+    @NotNull(message = "O valor é obrigatório.")
     private Double valor;
+
+    //@NotNull(message = "O ID do usuário é obrigatório.")
+    private Long idUsuario;
 }

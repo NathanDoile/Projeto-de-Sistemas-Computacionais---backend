@@ -10,9 +10,12 @@ import java.time.LocalDate;
 @Getter @Setter
 public class CadastrarReceitaDiariaRequest {
 
-    @NotNull (message = "A data da receita é obrigatório.")
+    @NotNull (message = "A data da receita é obrigatória.")
     private LocalDate dataReceita;
 
-    @NotNull (message = "O valor da receita é obrigatório.")
+    @NotNull (message = "O valor da receita é obrigatória.")
     private Double valor;
+
+    @NotNull (message = "O ID do usuário é orbigatório.")
+    private Long idUsuario;
 }
