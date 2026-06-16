@@ -10,9 +10,9 @@ import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper.toEntity;
 
@@ -21,27 +21,23 @@ import static br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper.toEntity;
 public class CadastrarMetaService {
 
     private final ValidaUsuarioService validaUsuarioService;
-
     private final UsuarioRepository usuarioRepository;
-
     private final MetaRepository metaRepository;
-
     private final ValidaValorMetaValidator validaValorMetaValidator;
-
     private final ValidaFormatoMetaValidator validaFormatoMetaValidator;
-
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
-    public void cadastrar(CadastrarMetaRequest cadastrarMetaRequest) {
+    public void cadastrar(CadastrarMetaRequest request) {
+
+        validaValorMetaValidator.isPositivo(request.getValor());
+        validaFormatoMetaValidator.formatoValido(request.getFormato());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
         validaUsuarioService.porId(usuarioSecurity.getId());
-        validaValorMetaValidator.isPositivo(cadastrarMetaRequest.getValor());
-        validaFormatoMetaValidator.formatoValido(cadastrarMetaRequest.getFormato());
 
-        Meta meta = toEntity(cadastrarMetaRequest);
+        Meta meta = toEntity(request);
 
         Usuario usuario = usuarioRepository
                 .findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)

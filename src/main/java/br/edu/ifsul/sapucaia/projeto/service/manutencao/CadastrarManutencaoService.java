@@ -7,6 +7,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
+import br.edu.ifsul.sapucaia.projeto.mapper.ManutencaoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
@@ -14,55 +15,46 @@ import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import static br.edu.ifsul.sapucaia.projeto.mapper.ManutencaoMapper.toEntity;
 
 @Service
 @RequiredArgsConstructor
 public class CadastrarManutencaoService {
 
     private final ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
-
     private final ValidaDataManutencaoValidator validadataManutencaoValidator;
-
     private final ValidaVeiculoService validaVeiculoService;
-
     private final VeiculoRepository veiculoRepository;
-
     private final CustoRepository custoRepository;
-
     private final ManutencaoRepository manutencaoRepository;
-
     private final CadastrarCustoService cadastrarCustoService;
-
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
-    public void cadastrar(CadastrarManutencaoRequest cadastrarManutencaoRequest) {
+    public void cadastrar(CadastrarManutencaoRequest request) {
+
+        validaTipoManutencaoValidator.tipoValido(request.getTipo());
+        validadataManutencaoValidator.dataMenorQueHoje(request.getDataManutencao());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaTipoManutencaoValidator.tipoValido(cadastrarManutencaoRequest.getTipo());
-        validadataManutencaoValidator.dataMenorQueHoje(cadastrarManutencaoRequest.getDataManutencao());
         validaVeiculoService.porIdUsuario(usuarioSecurity.getId());
 
-        CadastrarCustoRequest cadastrarCustoRequest = CadastrarCustoRequest
-                .builder()
+        CadastrarCustoRequest custoRequest = CadastrarCustoRequest.builder()
                 .tipo(TipoCusto.MANUTENCAO.getDescricao())
-                .valor(cadastrarManutencaoRequest.getValor())
-                .dataPagamento(cadastrarManutencaoRequest.getDataManutencao())
-                .descricao(cadastrarManutencaoRequest.getDescricao())
+                .valor(request.getValor())
+                .dataPagamento(request.getDataManutencao())
+                .descricao(request.getDescricao())
                 .build();
 
         BuscarCustosEmAbertoResponse custoResponse =
-                cadastrarCustoService.cadastrar(cadastrarCustoRequest);
+                cadastrarCustoService.cadastrar(custoRequest);
 
-        Manutencao manutencao = toEntity(cadastrarManutencaoRequest);
+        Manutencao manutencao = ManutencaoMapper.toEntity(request);
 
         Veiculo veiculo = veiculoRepository
                 .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
@@ -78,11 +70,9 @@ public class CadastrarManutencaoService {
         manutencaoRepository.save(manutencao);
 
         veiculo.getManutencoes().add(manutencao);
-
         veiculoRepository.save(veiculo);
 
         custo.setManutencao(manutencao);
-
         custoRepository.save(custo);
     }
 }
