@@ -88,6 +88,7 @@ class CadastrarMetaServiceTest {
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
         verify(validaUsuarioService).porId(1L);
 
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(1L, true);
         verify(metaRepository).save(metaCaptor.capture());
 
         Meta meta = metaCaptor.getValue();
@@ -105,8 +106,6 @@ class CadastrarMetaServiceTest {
         CadastrarMetaRequest request = cadastrarMetaRequest();
         request.setValor(0.0);
 
-        mockAuthBasic();
-
         doThrow(ResponseStatusException.class)
                 .when(validaValorMetaValidator)
                 .isPositivo(request.getValor());
@@ -116,6 +115,7 @@ class CadastrarMetaServiceTest {
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
         verifyNoInteractions(validaFormatoMetaValidator);
+        verifyNoInteractions(usuarioAutenticadoService);
         verify(metaRepository, never()).save(any());
     }
 
@@ -125,8 +125,6 @@ class CadastrarMetaServiceTest {
 
         CadastrarMetaRequest request = cadastrarMetaRequest();
         request.setFormato("semestral");
-
-        mockAuthBasic();
 
         doNothing().when(validaValorMetaValidator).isPositivo(request.getValor());
 
@@ -139,6 +137,7 @@ class CadastrarMetaServiceTest {
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
+        verifyNoInteractions(usuarioAutenticadoService);
         verify(metaRepository, never()).save(any());
     }
 }
