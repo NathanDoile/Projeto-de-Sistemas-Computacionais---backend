@@ -1,10 +1,7 @@
 package br.edu.ifsul.sapucaia.projeto.service.receita_diaria;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.CadastrarReceitaDiariaRequest;
-import br.edu.ifsul.sapucaia.projeto.domain.Meta;
-import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
@@ -12,14 +9,12 @@ import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
@@ -38,16 +33,9 @@ class CadastrarReceitaDiariaServiceTest {
     @Mock private ReceitaDiariaRepository receitaDiariaRepository;
     @Mock private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
     @Mock private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
-    @Mock private MetaRepository metaRepository;
 
     @Mock private UsuarioAutenticadoService usuarioAutenticadoService;
     @Mock private UsuarioSecurity usuarioSecurity;
-
-    @Captor
-    private ArgumentCaptor<ReceitaDiaria> receitaCaptor;
-
-    @Captor
-    private ArgumentCaptor<Meta> metaCaptor;
 
     private void mockAuth(CadastrarReceitaDiariaRequest request) {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);

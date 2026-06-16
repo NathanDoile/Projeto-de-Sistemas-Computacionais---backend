@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.service.meta;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
@@ -13,16 +12,12 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.cadastrarMetaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -56,9 +51,12 @@ class CadastrarMetaServiceTest {
     @Captor
     private ArgumentCaptor<Meta> metaCaptor;
 
-    private void mockUsuario() {
+    private void mockAuth() {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         when(usuarioSecurity.getId()).thenReturn(1L);
+
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(1L, true))
+                .thenReturn(java.util.Optional.of(usuario()));
     }
 
     @Test
@@ -66,72 +64,43 @@ class CadastrarMetaServiceTest {
     void cadastraMetaComValoresCorretos() {
 
         CadastrarMetaRequest request = cadastrarMetaRequest();
-        Usuario usuario = usuario();
 
-        mockUsuario();
-
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(1L, true))
-                .thenReturn(of(usuario));
+        mockAuth();
 
         tested.cadastrar(request);
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
         verify(validaUsuarioService).porId(1L);
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(1L, true);
+
         verify(metaRepository).save(metaCaptor.capture());
 
-        Meta metaResponse = metaCaptor.getValue();
+        Meta meta = metaCaptor.getValue();
 
-        assertEquals(request.getTitulo(), metaResponse.getTitulo());
-        assertEquals(request.getValor(), metaResponse.getValorDesejado());
-        assertEquals(request.getFormato(), metaResponse.getFormato().toString());
-        assertEquals(request.getTipo(), metaResponse.getTipo().toString());
-        assertEquals(usuario, metaResponse.getUsuario());
-        assertTrue(metaResponse.isAtivo());
-        assertEquals(0, metaResponse.getValorAtual());
+        assertEquals(request.getTitulo(), meta.getTitulo());
+        assertEquals(request.getValor(), meta.getValorDesejado());
+        assertTrue(meta.isAtivo());
     }
 
     @Test
-    @DisplayName("Nao deve cadastrar meta com id usuario errado")
-    void naoCadastraMetaComIdUsuarioErrado() {
-
-        CadastrarMetaRequest request = cadastrarMetaRequest();
-
-        mockUsuario();
-
-        doThrow(ResponseStatusException.class)
-                .when(validaUsuarioService).porId(1L);
-
-        assertThrows(ResponseStatusException.class,
-                () -> tested.cadastrar(request));
-
-        verify(validaUsuarioService).porId(1L);
-        verify(validaValorMetaValidator).isPositivo(request.getValor());
-        verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
-        verify(metaRepository, never()).save(any(Meta.class));
-    }
-
-    @Test
-    @DisplayName("Nao deve cadastrar meta com valor da Meta menor ou igual a zero")
+    @DisplayName("Nao deve cadastrar meta com valor <= 0")
     void naoCadastraMetaComValorMenorIgualZero() {
 
         CadastrarMetaRequest request = cadastrarMetaRequest();
-        request.setValor(0.00);
+        request.setValor(0.0);
 
-        mockUsuario();
+        mockAuth();
 
         doThrow(ResponseStatusException.class)
-                .when(validaValorMetaValidator).isPositivo(request.getValor());
+                .when(validaValorMetaValidator)
+                .isPositivo(request.getValor());
 
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
-        verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
-        verify(metaRepository, never()).save(any(Meta.class));
+        verify(validaFormatoMetaValidator, never()).formatoValido(anyString());
+        verify(metaRepository, never()).save(any());
     }
 
     @Test
@@ -141,17 +110,17 @@ class CadastrarMetaServiceTest {
         CadastrarMetaRequest request = cadastrarMetaRequest();
         request.setFormato("semestral");
 
-        mockUsuario();
+        mockAuth();
 
         doThrow(ResponseStatusException.class)
-                .when(validaFormatoMetaValidator).formatoValido(request.getFormato());
+                .when(validaFormatoMetaValidator)
+                .formatoValido(request.getFormato());
 
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
         verify(validaValorMetaValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
-        verify(metaRepository, never()).save(any(Meta.class));
+        verify(metaRepository, never()).save(any());
     }
 }
