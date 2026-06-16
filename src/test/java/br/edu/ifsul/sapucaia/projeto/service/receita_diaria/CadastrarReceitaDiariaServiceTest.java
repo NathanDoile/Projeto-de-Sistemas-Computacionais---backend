@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.service.receita_diaria;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.CadastrarReceitaDiariaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
@@ -21,6 +22,8 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +38,7 @@ class CadastrarReceitaDiariaServiceTest {
     @Mock private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
     @Mock private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
     @Mock private UsuarioAutenticadoService usuarioAutenticadoService;
+    @Mock private MetaRepository metaRepository;
 
     private void mockAuth(CadastrarReceitaDiariaRequest request) {
 
