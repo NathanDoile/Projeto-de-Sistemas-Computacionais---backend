@@ -16,10 +16,10 @@ public class EditarCustoRequest {
     @NotNull(message = "O ID do custo é obrigatório.")
     private Long idCusto;
 
-    @NotBlank(message = "O tipo é obrigatório.")
+    @NotBlank(message = "O tipo do custo é obrigatório.")
     private String tipo;
 
-    @NotNull(message = "O valor é obrigatório.")
+    @NotNull(message = "O valor do custo é obrigatório.")
     private double valor;
 
     @NotNull(message = "A data de vencimento é obrigatória.")

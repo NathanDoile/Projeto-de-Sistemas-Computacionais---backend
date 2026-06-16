@@ -21,6 +21,7 @@ public class CadastrarCustoRequest {
     private String tipo;
 
     @NotNull(message = "O valor é obrigatório.")
+
     @Positive(message = "O valor deve ser maior que zero.")
     private double valor;
 

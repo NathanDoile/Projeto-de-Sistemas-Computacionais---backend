@@ -1,10 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
+import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import net.sf.jasperreports.engine.JRException;
@@ -45,36 +49,66 @@ class ExportarManutencoesServiceTest {
     @Mock
     private ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
 
+    @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
+    private VeiculoRepository veiculoRepository;
+
     @Test
     @DisplayName("Deve gerar o relatório corretamente")
-    void deveGerarRelatorioCorretamente(){
-
-        Long idVeiculo = 1L;
+    void deveGerarRelatorioCorretamente() {
 
         String tipoPeriodo = "ano";
 
         String dataReferencia = DateNow.now().toString();
 
-        PeriodoData periodoData = new PeriodoData(DateNow.now().with(TemporalAdjusters.firstDayOfYear()),
-                DateNow.now().with(TemporalAdjusters.lastDayOfYear()));
+        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
+
+        Veiculo veiculo = new Veiculo();
+        veiculo.setIdVeiculo(1L);
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioSecurity.getId()).thenReturn(1L);
+
+        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(1L, true))
+                .thenReturn(veiculo);
+
+        PeriodoData periodoData = new PeriodoData(
+                DateNow.now().with(TemporalAdjusters.firstDayOfYear()),
+                DateNow.now().with(TemporalAdjusters.lastDayOfYear())
+        );
 
         Manutencao manutencao = manutencao();
         manutencao.setCusto(custo());
 
         List<Manutencao> manutencoes = of(manutencao, manutencao);
 
-        when(periodoDataHelper.calcularData(tipoPeriodo, dataReferencia)).thenReturn(periodoData);
-        when(manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween
-                (idVeiculo, true, periodoData.dataInicio(), periodoData.dataFim())).thenReturn(manutencoes);
+        when(periodoDataHelper.calcularData(tipoPeriodo, dataReferencia))
+                .thenReturn(periodoData);
+
+        when(manutencaoRepository
+                .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
+                        1L,
+                        true,
+                        periodoData.dataInicio(),
+                        periodoData.dataFim()))
+                .thenReturn(manutencoes);
 
         try {
-            byte[] response = tested.exportar(idVeiculo, tipoPeriodo, dataReferencia);
 
-            verify(validaVeiculoService).porId(idVeiculo);
+            byte[] response = tested.exportar(tipoPeriodo, dataReferencia);
+
+            verify(validaVeiculoService).porIdUsuario(1L);
             verify(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
             verify(periodoDataHelper).calcularData(tipoPeriodo, dataReferencia);
-            verify(manutencaoRepository).findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween
-                    (idVeiculo, true, periodoData.dataInicio(), periodoData.dataFim());
+
+            verify(manutencaoRepository)
+                    .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
+                            1L,
+                            true,
+                            periodoData.dataInicio(),
+                            periodoData.dataFim());
 
             assertNotNull(response);
             assertTrue(response.length > 0);
@@ -86,45 +120,75 @@ class ExportarManutencoesServiceTest {
 
     @Test
     @DisplayName("Não deve gerar o relatório corretamente")
-    void naoDeveGerarRelatorioCorretamente(){
-
-        Long idVeiculo = 1L;
+    void naoDeveGerarRelatorioCorretamente() {
 
         String tipoPeriodo = "ano";
 
         String dataReferencia = DateNow.now().toString();
 
-        doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(idVeiculo);
+        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
 
-        assertThrows(ResponseStatusException.class, () -> tested.exportar(idVeiculo, tipoPeriodo, dataReferencia));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioSecurity.getId()).thenReturn(1L);
 
-        verify(validaVeiculoService).porId(idVeiculo);
-        verify(validaTipoPeriodoValidator, never()).porTipo(any(String.class));
-        verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(manutencaoRepository, never()).findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween
-                (any(Long.class), any(Boolean.class), any(LocalDate.class), any(LocalDate.class));
+        doThrow(ResponseStatusException.class)
+                .when(validaVeiculoService)
+                .porIdUsuario(1L);
 
+        assertThrows(
+                ResponseStatusException.class,
+                () -> tested.exportar(tipoPeriodo, dataReferencia)
+        );
+
+        verify(validaVeiculoService).porIdUsuario(1L);
+
+        verify(validaTipoPeriodoValidator, never())
+                .porTipo(any(String.class));
+
+        verify(periodoDataHelper, never())
+                .calcularData(any(String.class), any(String.class));
+
+        verify(manutencaoRepository, never())
+                .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
+                        any(Long.class),
+                        any(Boolean.class),
+                        any(LocalDate.class),
+                        any(LocalDate.class));
     }
 
     @Test
     @DisplayName("Não deve gerar o relatório corretamente se tipo inválido")
-    void naoDeveGerarRelatorioCorretamenteSeTipoInvalido(){
-
-        Long idVeiculo = 1L;
+    void naoDeveGerarRelatorioCorretamenteSeTipoInvalido() {
 
         String tipoPeriodo = "invalido";
 
         String dataReferencia = DateNow.now().toString();
 
-        doThrow(ResponseStatusException.class).when(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
+        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
 
-        assertThrows(ResponseStatusException.class, () -> tested.exportar(idVeiculo, tipoPeriodo, dataReferencia));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioSecurity.getId()).thenReturn(1L);
 
-        verify(validaVeiculoService).porId(idVeiculo);
+        doThrow(ResponseStatusException.class)
+                .when(validaTipoPeriodoValidator)
+                .porTipo(tipoPeriodo);
+
+        assertThrows(
+                ResponseStatusException.class,
+                () -> tested.exportar(tipoPeriodo, dataReferencia)
+        );
+
+        verify(validaVeiculoService).porIdUsuario(1L);
         verify(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
-        verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(manutencaoRepository, never()).findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween
-                (any(Long.class), any(Boolean.class), any(LocalDate.class), any(LocalDate.class));
 
+        verify(periodoDataHelper, never())
+                .calcularData(any(String.class), any(String.class));
+
+        verify(manutencaoRepository, never())
+                .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
+                        any(Long.class),
+                        any(Boolean.class),
+                        any(LocalDate.class),
+                        any(LocalDate.class));
     }
 }

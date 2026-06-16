@@ -2,11 +2,11 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.PendenciasDoUsuarioResponse; // Import adicionado
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.PendenciasDoUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.PeriodoRelatorioFinanceiro;
-import br.edu.ifsul.sapucaia.projeto.service.relatorios.*; // Já engloba a nova service se estiver no mesmo pacote
+import br.edu.ifsul.sapucaia.projeto.service.relatorios.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.HttpHeaders;
@@ -33,12 +33,12 @@ public class RelatoriosController {
     private final PendenciasDoUsuarioService pendenciasDoUsuarioService;
 
     @GetMapping("/informacoes-semana/{idUsuario}")
-    public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario){
+    public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario) {
         return informacoesDaSemanaService.buscarInformacoesDaSemana(idUsuario);
     }
 
     @GetMapping("/receita-semana/{idUsuario}")
-    public InformacoesDaSemanaResponse buscarReceitaDaSemana(@PathVariable Long idUsuario){
+    public InformacoesDaSemanaResponse buscarReceitaDaSemana(@PathVariable Long idUsuario) {
         return receitaSemanaService.buscarReceitaDaSemana(idUsuario);
     }
 
@@ -71,21 +71,33 @@ public class RelatoriosController {
     }
 
     @GetMapping("/exportar/manutencoes")
-    public byte[] exportarManutencoes(@RequestParam Long idVeiculo,
-                                      @RequestParam String tipoPeriodo,
-                                      @RequestParam String dataReferencia) throws JRException, FileNotFoundException {
-        return exportarManutencoesService.exportar(idVeiculo, tipoPeriodo, dataReferencia);
+    public byte[] exportarManutencoes(
+            @RequestParam String tipoPeriodo,
+            @RequestParam String dataReferencia)
+            throws JRException, FileNotFoundException {
+
+        return exportarManutencoesService.exportar(
+                tipoPeriodo,
+                dataReferencia
+        );
     }
 
     @GetMapping("/exportar/financeiro")
     public ResponseEntity<byte[]> gerarRelatorio(
             @RequestParam Long idUsuario,
             @RequestParam LocalDate dataReferencia,
-            @RequestParam String periodo){
+            @RequestParam String periodo) {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=relatorio_financeiro.pdf")
-                .body(gerarRelatorioFinanceiroPdfService.gerarRelatorioFinanceiro(idUsuario, dataReferencia, PeriodoRelatorioFinanceiro.deTexto(periodo)));
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=relatorio_financeiro.pdf")
+                .body(
+                        gerarRelatorioFinanceiroPdfService.gerarRelatorioFinanceiro(
+                                idUsuario,
+                                dataReferencia,
+                                PeriodoRelatorioFinanceiro.deTexto(periodo)
+                        )
+                );
     }
 }

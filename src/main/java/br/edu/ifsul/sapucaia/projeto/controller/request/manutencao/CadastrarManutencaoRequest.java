@@ -25,9 +25,6 @@ public class CadastrarManutencaoRequest {
     @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 
-    @NotNull(message = "O ID do veículo é obrigatório.")
-    private Long idVeiculo;
-
     @NotNull(message = "O valor é obrigatório.")
     @Positive(message = "O valor deve ser maior que zero.")
     private double valor;

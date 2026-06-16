@@ -10,9 +10,9 @@ import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoPossuiManutencaoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
@@ -32,41 +32,44 @@ public class CadastrarManutencaoService {
 
     private final ValidaVeiculoService validaVeiculoService;
 
-    private final ValidaCustoService validaCustoService;
-
     private final VeiculoRepository veiculoRepository;
 
     private final CustoRepository custoRepository;
 
     private final ManutencaoRepository manutencaoRepository;
 
-    private final ValidaCustoPossuiManutencaoService validaCustoPossuiManutencaoService;
-
     private final CadastrarCustoService cadastrarCustoService;
+
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
     public void cadastrar(CadastrarManutencaoRequest cadastrarManutencaoRequest) {
 
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
+
         validaTipoManutencaoValidator.tipoValido(cadastrarManutencaoRequest.getTipo());
         validadataManutencaoValidator.dataMenorQueHoje(cadastrarManutencaoRequest.getDataManutencao());
-        validaVeiculoService.porId(cadastrarManutencaoRequest.getIdVeiculo());
+        validaVeiculoService.porIdUsuario(usuarioSecurity.getId());
 
         CadastrarCustoRequest cadastrarCustoRequest = CadastrarCustoRequest
                 .builder()
-                .idVeiculo(cadastrarManutencaoRequest.getIdVeiculo())
                 .tipo(TipoCusto.MANUTENCAO.getDescricao())
                 .valor(cadastrarManutencaoRequest.getValor())
                 .dataPagamento(cadastrarManutencaoRequest.getDataManutencao())
                 .descricao(cadastrarManutencaoRequest.getDescricao())
                 .build();
 
-        BuscarCustosEmAbertoResponse custoResponse = cadastrarCustoService.cadastrar(cadastrarCustoRequest);
+        BuscarCustosEmAbertoResponse custoResponse =
+                cadastrarCustoService.cadastrar(cadastrarCustoRequest);
 
         Manutencao manutencao = toEntity(cadastrarManutencaoRequest);
 
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(cadastrarManutencaoRequest.getIdVeiculo(), true);
+        Veiculo veiculo = veiculoRepository
+                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
 
-        Custo custo = custoRepository.findByIdCustoAndIsAtivo(custoResponse.getIdCusto(), true).get();
+        Custo custo = custoRepository
+                .findByIdCustoAndIsAtivo(custoResponse.getIdCusto(), true)
+                .get();
 
         manutencao.setVeiculo(veiculo);
         manutencao.setAtivo(true);
@@ -81,6 +84,5 @@ public class CadastrarManutencaoService {
         custo.setManutencao(manutencao);
 
         custoRepository.save(custo);
-
     }
 }
