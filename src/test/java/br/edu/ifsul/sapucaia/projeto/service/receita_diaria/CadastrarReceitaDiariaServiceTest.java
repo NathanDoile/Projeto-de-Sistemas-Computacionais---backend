@@ -11,15 +11,16 @@ import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,13 +34,14 @@ class CadastrarReceitaDiariaServiceTest {
     @Mock private ReceitaDiariaRepository receitaDiariaRepository;
     @Mock private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
     @Mock private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
-
     @Mock private UsuarioAutenticadoService usuarioAutenticadoService;
-    @Mock private UsuarioSecurity usuarioSecurity;
 
     private void mockAuth(CadastrarReceitaDiariaRequest request) {
-        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(request.getIdUsuario());
+
+        UsuarioSecurity security = mock(UsuarioSecurity.class);
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(security);
+        when(security.getId()).thenReturn(request.getIdUsuario());
     }
 
     private void mockUser(Usuario usuario) {
@@ -62,9 +64,8 @@ class CadastrarReceitaDiariaServiceTest {
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
         verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
 
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(request.getIdUsuario(), true);
         verify(receitaDiariaRepository).save(any());
-
-        assertTrue(true);
     }
 
     @Test
