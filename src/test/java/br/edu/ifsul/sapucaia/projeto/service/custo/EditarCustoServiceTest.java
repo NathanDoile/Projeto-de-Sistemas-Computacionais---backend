@@ -7,6 +7,8 @@ import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
@@ -19,6 +21,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -37,15 +40,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyBoolean;
 
 @ExtendWith(MockitoExtension.class)
 class EditarCustoServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Força o Mockito a zerar o histórico de chamadas e interações do repositório
         reset(metaRepository, custoRepository);
     }
 
@@ -67,6 +67,9 @@ class EditarCustoServiceTest {
     @Mock
     private MetaRepository metaRepository;
 
+    @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
     @Captor
     private ArgumentCaptor<Custo> custoCaptor;
 
@@ -78,13 +81,16 @@ class EditarCustoServiceTest {
     void deveEditarCustoSemMetas() {
 
         EditarCustoRequest request = editarCustoRequest();
-
         Long id = 1L;
 
         Custo custo = custo();
+        custo.setVeiculo(veiculo());
         custo.setValor(request.getValor());
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(usuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -92,6 +98,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
 
         Custo response = custoCaptor.getValue();
@@ -123,7 +130,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -131,6 +141,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -183,7 +194,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -191,6 +205,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -238,7 +253,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -246,6 +264,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -306,7 +325,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -314,6 +336,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -354,7 +377,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -362,6 +388,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -407,7 +434,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -415,6 +445,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -462,7 +493,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -470,6 +504,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -520,7 +555,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -528,6 +566,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -568,7 +607,10 @@ class EditarCustoServiceTest {
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(custo.getVeiculo().getUsuario());
+
         when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editar(request);
 
@@ -576,6 +618,7 @@ class EditarCustoServiceTest {
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
+        verify(usuarioAutenticadoService).getUser();
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, times(3)).save(metaCaptor.capture());
 
@@ -597,6 +640,47 @@ class EditarCustoServiceTest {
         assertEquals(request.getDataVencimento(), response.getDataVencimento());
         assertEquals(request.getDataPagamento(), response.getDataPagamento());
         assertEquals(request.getDescricao(), response.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Deve disparar FORBIDDEN se o custo pertencer a outro veículo ou usuário")
+    void deveDispararForbiddenQuandoCustoNaoForDoUsuario() {
+        EditarCustoRequest request = editarCustoRequest();
+        Long id = 1L;
+
+        Custo custo = custo();
+        custo.setVeiculo(veiculo());
+        custo.getVeiculo().setIdVeiculo(999L);
+
+        UsuarioSecurity usuarioSecurity = new UsuarioSecurity(usuario());
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.of(custo));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.editar(request));
+
+        assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
+        assertEquals("Você não tem permissão para editar este custo.", exception.getReason());
+
+        verify(custoRepository, never()).save(any(Custo.class));
+        verify(metaRepository, never()).save(any(Meta.class));
+    }
+
+    @Test
+    @DisplayName("Deve disparar NOT_FOUND se o custo não for encontrado")
+    void deveDispararNotFoundQuandoCustoNaoExistir() {
+        EditarCustoRequest request = editarCustoRequest();
+        Long id = request.getIdCusto();
+
+        when(custoRepository.findByIdCustoAndIsAtivo(id, true)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.editar(request));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Custo não encontrado.", exception.getReason());
+
+        verify(usuarioAutenticadoService, never()).getUser();
+        verify(custoRepository, never()).save(any(Custo.class));
     }
 
     @Test
