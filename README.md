@@ -327,5 +327,4 @@
 
 - **Verificar pendências do usuário com o sistema**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /pendencias/{idUsuario}`
+  - `GET /pendencias`

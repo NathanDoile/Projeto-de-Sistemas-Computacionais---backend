@@ -1,10 +1,9 @@
 {
   "info": {
-    "_postman_id": "c5b917dd-d853-4f1b-a0ec-1fb2e8b06ae8",
+    "_postman_id": "5706687f-62e0-49a5-a8e4-ee56a473f28c",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53773873",
-    "_collection_link": "https://go.postman.co/collection/53773873-c5b917dd-d853-4f1b-a0ec-1fb2e8b06ae8?source=collection_link"
+    "_exporter_id": "29566159"
   },
   "item": [
     {
@@ -848,21 +847,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/relatorios/pendencias/:{id}",
+          "raw": "localhost:8080/relatorios/pendencias",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
             "relatorios",
-            "pendencias",
-            ":{id}"
-          ],
-          "variable": [
-            {
-              "key": "{id}",
-              "value": "1"
-            }
+            "pendencias"
           ]
         }
       },

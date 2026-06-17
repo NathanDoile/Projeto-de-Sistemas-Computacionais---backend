@@ -4,6 +4,8 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.PendenciasDo
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,13 @@ import java.time.LocalDate;
 public class PendenciasDoUsuarioService {
 
     private final VeiculoRepository veiculoRepository;
-    private final ValidaUsuarioService validaUsuarioService;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
-    public PendenciasDoUsuarioResponse buscarPendencias(Long idUsuario) {
-        
-        validaUsuarioService.porId(idUsuario);
+    public PendenciasDoUsuarioResponse buscarPendencias() {
 
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
+
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
 
         LocalDate dataAtual = DateNow.now();
 

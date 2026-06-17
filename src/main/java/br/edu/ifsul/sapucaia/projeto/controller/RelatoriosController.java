@@ -65,9 +65,9 @@ public class RelatoriosController {
         return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
     }
 
-    @GetMapping("/pendencias/{idUsuario}")
-    public PendenciasDoUsuarioResponse getPendenciasDoUsuario(@PathVariable Long idUsuario) {
-        return pendenciasDoUsuarioService.buscarPendencias(idUsuario);
+    @GetMapping("/pendencias")
+    public PendenciasDoUsuarioResponse getPendenciasDoUsuario() {
+        return pendenciasDoUsuarioService.buscarPendencias();
     }
 
     @GetMapping("/exportar/manutencoes")
