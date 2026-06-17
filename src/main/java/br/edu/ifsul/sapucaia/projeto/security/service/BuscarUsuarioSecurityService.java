@@ -21,6 +21,12 @@ public class BuscarUsuarioSecurityService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByEmailAndIsAtivo(email, true)
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciais inválidas ou usuário inativo."));
 
+        if(!usuario.isPossuiVeiculo()){
+            usuarioRepository.delete(usuario);
+
+            throw new UsernameNotFoundException("Credenciais inválidas ou usuário inativo.");
+        }
+
         return new UsuarioSecurity(usuario);
 
     }

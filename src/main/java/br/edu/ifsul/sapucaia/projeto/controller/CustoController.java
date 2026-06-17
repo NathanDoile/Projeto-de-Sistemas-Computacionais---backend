@@ -39,9 +39,9 @@ public class CustoController {
     }
 
 
-    @GetMapping("/{id}/em-aberto")
+    @GetMapping("/em-aberto")
     @ResponseStatus(OK)
-    public Page<BuscarCustosEmAbertoResponse> buscarCustosEmAberto(@PathVariable Long id, Pageable pageable){
-        return buscarCustosEmAbertoService.buscar(id, pageable);
+    public Page<BuscarCustosEmAbertoResponse> buscarCustosEmAberto(Pageable pageable){
+        return buscarCustosEmAbertoService.buscar(pageable);
     }
 }

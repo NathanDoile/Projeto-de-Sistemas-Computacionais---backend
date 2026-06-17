@@ -8,19 +8,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+@Getter
 public class UsuarioSecurity implements UserDetails {
 
-    @Getter
     private Long id;
     private String email;
     private String senha;
     private boolean ativo;
+    private Long idVeiculo;
 
     public UsuarioSecurity(Usuario usuario){
         this.id = usuario.getIdUsuario();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
         this.ativo = usuario.isAtivo();
+        this.idVeiculo = usuario.getVeiculo().getIdVeiculo();
     }
 
     @Override

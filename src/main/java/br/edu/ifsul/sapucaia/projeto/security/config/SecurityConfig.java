@@ -30,8 +30,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+                )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/**/publico").permitAll()
                         .requestMatchers(POST, "/usuario").permitAll()
                         .requestMatchers(POST, "/veiculo").permitAll()

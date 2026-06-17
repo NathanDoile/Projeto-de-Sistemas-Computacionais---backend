@@ -98,6 +98,7 @@ public class UsuarioFactory {
     }
 
     public static UsuarioSecurity usuarioSecurity(){
+
         return new UsuarioSecurity(usuario());
     }
 

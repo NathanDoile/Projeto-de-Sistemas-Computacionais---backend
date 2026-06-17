@@ -7,29 +7,32 @@ import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.mapper.CustoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class BuscarCustosEmAbertoService {
 
-    private final ValidaUsuarioService validaUsuarioService;
-
     private final CustoRepository custoRepository;
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
-    public Page<BuscarCustosEmAbertoResponse> buscar(Long id, Pageable pageable) {
+    private final VeiculoRepository veiculoRepository;
 
-        validaUsuarioService.porId(id);
+    public Page<BuscarCustosEmAbertoResponse> buscar(Pageable pageable) {
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(id, true).get();
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = usuario.getVeiculo();
+        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(usuarioSecurity.getId(), true);
 
         Page<Custo> custos = custoRepository.findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable);
 

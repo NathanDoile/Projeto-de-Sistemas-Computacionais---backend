@@ -31,13 +31,8 @@ public class ManutencaoController {
         cadastrarManutencaoService.cadastrar(cadastrarManutencaoRequest);
     }
 
-    @GetMapping("/usuario/{idUsuario}")
-    public Page<ManutencaoResponse> listar(
-            @PathVariable Long idUsuario,
-            Pageable pageable
-    ) {
-        return listarManutencaoService
-                .listar(idUsuario, pageable)
-                .map(ManutencaoMapper::toManutencaoResponse);
+    @GetMapping
+    public Page<ManutencaoResponse> listar(Pageable pageable) {
+        return listarManutencaoService.listar(pageable);
     }
 }
