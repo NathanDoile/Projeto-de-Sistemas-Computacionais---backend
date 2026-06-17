@@ -7,12 +7,16 @@ import br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.EnumMap;
@@ -37,6 +41,8 @@ public class EditarCustoService {
     private final ValidaTipoCustoValidator validaTipoCustoValidator;
 
     private final MetaRepository metaRepository;
+    
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
     public void editar(EditarCustoRequest editarCustoRequest) {
@@ -45,11 +51,16 @@ public class EditarCustoService {
         validaValorCustoValidator.isPositivo(editarCustoRequest.getValor());
         validaTipoCustoValidator.tipoValido(editarCustoRequest.getTipo());
 
-        Custo custo = custoRepository.findByIdCustoAndIsAtivo(
-                        editarCustoRequest.getIdCusto(), true)
-                .get();
+        Custo custo = custoRepository.findByIdCustoAndIsAtivo(editarCustoRequest.getIdCusto(), true)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Custo não encontrado."));
 
-        if(editarCustoRequest.getValor() != custo.getValor()){
+        UsuarioSecurity usuarioAutenticado = usuarioAutenticadoService.getUser();
+
+        if (!custo.getVeiculo().getIdVeiculo().equals(usuarioAutenticado.getIdVeiculo())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para editar este custo.");
+        }
+
+        if (editarCustoRequest.getValor() != custo.getValor()) {
             adicionarNovoValorNasMetas(custo, editarCustoRequest.getValor(), editarCustoRequest.getDataPagamento());
         }
 
@@ -63,14 +74,14 @@ public class EditarCustoService {
     }
 
     @Transactional
-    private void adicionarNovoValorNasMetas(Custo custo, double novoValor, LocalDate novaData){
+    private void adicionarNovoValorNasMetas(Custo custo, double novoValor, LocalDate novaData) {
 
         List<Meta> metas = custo.getVeiculo().getUsuario().getMetas()
                 .stream()
                 .filter(meta -> meta.getTipo().equals(CUSTO))
                 .toList();
 
-        for(Meta meta : metas){
+        for (Meta meta : metas) {
             LocalDate dataPagamento = custo.getDataPagamento();
             LocalDate hoje = DateNow.now();
             LocalDate inicioSemana = hoje.with(previousOrSame(MONDAY));
@@ -83,7 +94,7 @@ public class EditarCustoService {
 
             double novoValorMeta = meta.getValorAtual();
 
-            if(Boolean.TRUE.equals(condicaoParaRemocao.get(meta.getFormato()))){
+            if (Boolean.TRUE.equals(condicaoParaRemocao.get(meta.getFormato()))) {
                 novoValorMeta = meta.getValorAtual() - custo.getValor();
             }
 
@@ -93,7 +104,7 @@ public class EditarCustoService {
             condicaoParaInsercao.put(SEMANAL, novaData.isAfter(inicioSemana) || novaData.equals(inicioSemana));
             condicaoParaInsercao.put(MENSAL, novaData.getMonth().equals(hoje.getMonth()) && novaData.getYear() == hoje.getYear());
 
-            if(Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))){
+            if (Boolean.TRUE.equals(condicaoParaInsercao.get(meta.getFormato()))) {
                 novoValorMeta = novoValorMeta + novoValor;
             }
 
