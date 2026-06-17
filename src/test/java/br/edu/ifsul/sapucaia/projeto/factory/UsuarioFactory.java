@@ -1,9 +1,12 @@
 package br.edu.ifsul.sapucaia.projeto.factory;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
+import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
@@ -102,4 +105,17 @@ public class UsuarioFactory {
         return new UsuarioSecurity(usuario());
     }
 
+    public static LoginUsuarioResponse loginUsuarioResponse() {
+
+        return LoginUsuarioResponse
+                .builder()
+                .idUsuario(1L)
+                .nome("teste")
+                .email("teste@gmail.com")
+                .dataCadastro(DateNow.now())
+                .telefone("51999999999")
+                .notificacaoManutencao(true)
+                .notificacaoVencimento(true)
+                .build();
+    }
 }
