@@ -6,7 +6,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.FormatoMeta.*;
