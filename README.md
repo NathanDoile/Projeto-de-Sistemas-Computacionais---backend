@@ -101,6 +101,17 @@
     }
     ```
 
+- **Validar código de redefinição de senha**
+  - Não precisa estar logado para utilizar esse path
+  - `POST /validar-codigo`
+
+    ```json
+    {
+      "email": "usuario@email.com",
+      "codigo": "ABC12345"
+    }
+    ```
+
 - **Redefinir senha**
   - Não precisa estar logado para utilizar esse path
   - `PUT /redefinir-senha`

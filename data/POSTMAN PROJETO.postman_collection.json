@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "6adcd178-d94f-4294-b6a2-024d03da9508",
+    "_postman_id": "c5b917dd-d853-4f1b-a0ec-1fb2e8b06ae8",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "29566159"
+    "_exporter_id": "53773873",
+    "_collection_link": "https://go.postman.co/collection/53773873-c5b917dd-d853-4f1b-a0ec-1fb2e8b06ae8?source=collection_link"
   },
   "item": [
     {
@@ -221,6 +222,30 @@
           "path": [
             "security",
             "enviar-codigo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Validar Código de Redefinição",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"usuario@email.com\",\n    \"codigo\": \"ABC12345\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/security/validar-codigo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "security",
+            "validar-codigo"
           ]
         }
       },
@@ -810,7 +835,10 @@
       "name": "Listar Manutenções",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": ""
+        }
       },
       "response": []
     },
