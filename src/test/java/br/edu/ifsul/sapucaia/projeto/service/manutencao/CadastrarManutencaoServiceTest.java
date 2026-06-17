@@ -1,12 +1,10 @@
 package br.edu.ifsul.sapucaia.projeto.service.manutencao;
 
-import br.edu.ifsul.sapucaia.projeto.controller.request.custo.CadastrarCustoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.request.manutencao.CadastrarManutencaoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
-import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
 import br.edu.ifsul.sapucaia.projeto.factory.CustoFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.ManutencaoFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
@@ -16,8 +14,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoPossuiManutencaoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
