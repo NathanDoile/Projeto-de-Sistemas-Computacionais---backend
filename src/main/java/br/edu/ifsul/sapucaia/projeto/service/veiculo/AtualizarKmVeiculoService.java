@@ -2,6 +2,7 @@ package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.AtualizarKmVeiculoRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
+import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaKmAtualizadoVeiculoValidator;
@@ -30,6 +31,8 @@ public class AtualizarKmVeiculoService {
         validaKmAtualizadoVeiculoValidator.maiorQueAtual(atualizarKmVeiculoRequest.getKmAtualizado(), veiculo.getKmAtual());
 
         veiculo.setKmAtual(atualizarKmVeiculoRequest.getKmAtualizado());
+        veiculo.setDataUltimaAtualizacaoKm(DateNow.now());
+        veiculo.setProximaManutencaoData(DateNow.now().plusMonths(veiculo.getIntervaloEntreManutencoesMeses()));
 
         veiculoRepository.save(veiculo);
     }
