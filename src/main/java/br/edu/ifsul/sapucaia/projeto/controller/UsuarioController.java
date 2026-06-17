@@ -1,7 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
-import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.*;
 import jakarta.validation.Valid;
@@ -19,7 +18,6 @@ public class UsuarioController {
     private final CadastrarUsuarioService cadastrarUsuarioService;
     private final AlterarSenhaUsuarioService alterarSenhaUsuarioService;
     private final EditarPerfilUsuarioService editarPerfilUsuarioService;
-    private final LoginUsuarioService loginUsuarioService;
     private final ExcluirContaUsuarioService excluirContaUsuarioService;
     private final AlterarNotificacoesService alterarNotificacoesService;
 
@@ -39,12 +37,6 @@ public class UsuarioController {
     @ResponseStatus(OK)
     public void editarPerfilUsuario(@PathVariable Long id, @Valid @RequestBody EditarPerfilUsuarioRequest editarPerfilUsuarioRequest){
         editarPerfilUsuarioService.editarPerfilUsuario(id, editarPerfilUsuarioRequest);
-    }
-
-    @PostMapping("/login-usuario")
-    @ResponseStatus(OK)
-    public LoginUsuarioResponse loginUsuario(@Valid @RequestBody LoginUsuarioRequest loginUsuarioRequest){
-        return loginUsuarioService.loginUsuario(loginUsuarioRequest);
     }
 
     @DeleteMapping("/{id}/excluir-conta")
