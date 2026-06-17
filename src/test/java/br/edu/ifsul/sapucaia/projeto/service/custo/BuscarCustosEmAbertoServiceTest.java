@@ -2,16 +2,12 @@ package br.edu.ifsul.sapucaia.projeto.service.custo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.custo.BuscarCustosEmAbertoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.CustoFactory;
-import br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,18 +18,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BuscarCustosEmAbertoServiceTest {

@@ -2,8 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.security.service;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.LoginUsuarioResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service

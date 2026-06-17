@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.manutencao.CadastrarManutencaoRequest;
 import br.edu.ifsul.sapucaia.projeto.controller.response.manutencao.ManutencaoResponse;
-import br.edu.ifsul.sapucaia.projeto.mapper.ManutencaoMapper;
 import br.edu.ifsul.sapucaia.projeto.service.manutencao.CadastrarManutencaoService;
 import br.edu.ifsul.sapucaia.projeto.service.manutencao.ListarManutencaoService;
 import jakarta.validation.Valid;
