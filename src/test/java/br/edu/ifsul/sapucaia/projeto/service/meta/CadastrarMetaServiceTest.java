@@ -2,7 +2,6 @@ package br.edu.ifsul.sapucaia.projeto.service.meta;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.meta.CadastrarMetaRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Meta;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;

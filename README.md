@@ -258,6 +258,12 @@
               }
             ```
           
+- Lista as manutenções:
+  - Precisa estar logado para utilizar essa path;
+  - Parâmetros de URL: `page`, é qual página de custos quer buscar;
+  - Parâmetros de URL: `size`, é o tamanho da lista de custos que quer mostrar em cada página;
+    - `GET ?page=1$size=10`
+          
 ### Rota: `/relatorios`
 - **Informações de Semana**
   - Precisa estar logado para utilizar esse path;
