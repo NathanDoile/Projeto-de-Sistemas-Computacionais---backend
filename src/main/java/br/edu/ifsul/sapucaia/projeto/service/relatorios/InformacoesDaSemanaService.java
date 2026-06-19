@@ -3,13 +3,13 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
-import br.edu.ifsul.sapucaia.projeto.repository.*;
+import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
+import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
