@@ -4,8 +4,11 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesD
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.*;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,24 +21,26 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InformacoesDaSemanaService {
-    private final ValidaUsuarioService validaUsuarioService;
 
     private final CustoRepository custoRepository;
 
     private final ReceitaDiariaRepository receitaDiariaRepository;
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
-    public InformacoesDaSemanaResponse buscarInformacoesDaSemana(Long idUsuario){
-        validaUsuarioService.porId(idUsuario);
+    private final VeiculoRepository veiculoRepository;
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
+    public InformacoesDaSemanaResponse buscarInformacoesDaSemana(){
+
+        UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
+
+        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(usuario.getId(), true);
 
         LocalDate hoje = DateNow.now();
         LocalDate inicioSemana = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-        List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, inicioSemana, hoje);
-        List<Custo> custos = custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(usuario.getVeiculo().getIdVeiculo(), inicioSemana, hoje);
+        List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuario.getId(), inicioSemana, hoje);
+        List<Custo> custos = custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), inicioSemana, hoje);
 
         double ganhoBruto = receitas.stream()
                 .mapToDouble(ReceitaDiaria::getValor)
@@ -47,7 +52,7 @@ public class InformacoesDaSemanaService {
 
         double lucroLiquido = ganhoBruto - despesas;
 
-        double kmAtual = usuario.getVeiculo().getKmAtual();
+        double kmAtual = veiculo.getKmAtual();
 
         return InformacoesDaSemanaResponse.builder()
                 .ganhoBruto(ganhoBruto)

@@ -2,11 +2,10 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +22,11 @@ import static java.time.DayOfWeek.*;
 public class ReceitaSemanalService {
 
     private final ReceitaDiariaRepository receitaDiariaRepository;
-    private final ValidaUsuarioService validaUsuarioService;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
-    public InformacoesDaSemanaResponse buscarReceitaDaSemana(Long idUsuario) {
+    public InformacoesDaSemanaResponse buscarReceitaDaSemana() {
 
-        validaUsuarioService.porId(idUsuario);
-
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
+        UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
 
         LocalDate inicioSemana = DateNow.now()
                 .with(TemporalAdjusters.previousOrSame(MONDAY));
@@ -40,7 +36,7 @@ public class ReceitaSemanalService {
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(
-                        usuario.getIdUsuario(),
+                        usuario.getId(),
                         inicioSemana,
                         fimSemana
                 );

@@ -2,32 +2,29 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static java.time.DayOfWeek.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,16 +38,13 @@ class ReceitaSemanalServiceTest {
     private ReceitaDiariaRepository receitaDiariaRepository;
 
     @Mock
-    private ValidaUsuarioService validaUsuarioService;
-
-    @Mock
-    private UsuarioRepository usuarioRepository;
+    private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Test
     @DisplayName("Deve retornar a receita semanal corretamente")
     void deveRetornarReceitaSemanalCorretamente(){
 
-        Usuario usuario = usuario();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         List<ReceitaDiaria> receitas = new ArrayList<>();
 
@@ -65,19 +59,14 @@ class ReceitaSemanalServiceTest {
             receitas.add(receita);
         }
 
-        usuario.setReceitasDiarias(receitas);
-
-        Long id = usuario.getIdUsuario();
-
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
-        when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class)))
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(eq(usuarioSecurity.getId()), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(receitas);
 
-        InformacoesDaSemanaResponse response = tested.buscarReceitaDaSemana(id);
+        InformacoesDaSemanaResponse response = tested.buscarReceitaDaSemana();
 
-        verify(validaUsuarioService).porId(id);
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
-        verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class));
+        verify(usuarioAutenticadoService).getUser();
+        verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(eq(usuarioSecurity.getId()), any(LocalDate.class), any(LocalDate.class));
 
         double ganhoBrutoEsperado = receitas
                 .stream()
@@ -105,22 +94,5 @@ class ReceitaSemanalServiceTest {
         });
 
         assertEquals(ganhoBrutoEsperado, response.getGanhoBruto());
-    }
-
-    @Test
-    @DisplayName("Não deve retornar receita da semana se id do usuario incorreto")
-    void naoDeveRetornarReceitaSemanaSeIdUsuarioIncorreto(){
-
-        Usuario usuario = usuario();
-
-        Long id = usuario.getIdUsuario();
-
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
-
-        assertThrows(ResponseStatusException.class, () -> tested.buscarReceitaDaSemana(id));
-
-        verify(validaUsuarioService).porId(id);
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(id, true);
-        verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
     }
 }

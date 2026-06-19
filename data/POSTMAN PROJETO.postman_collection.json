@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "5706687f-62e0-49a5-a8e4-ee56a473f28c",
+    "_postman_id": "8debe8a0-533a-4383-85d1-874f73853af9",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "29566159"
@@ -492,21 +492,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/relatorios/informacoes-semana/:{id}",
+          "raw": "localhost:8080/relatorios/informacoes-semana",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
             "relatorios",
-            "informacoes-semana",
-            ":{id}"
-          ],
-          "variable": [
-            {
-              "key": "{id}",
-              "value": "1"
-            }
+            "informacoes-semana"
           ]
         }
       },
@@ -544,32 +537,18 @@
     },
     {
       "name": "Receita Semanal",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
       "request": {
         "method": "GET",
         "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
-        },
         "url": {
-          "raw": "localhost:8080/relatorios/receita-semana/:{idUsuario}",
+          "raw": "localhost:8080/relatorios/receita-semana",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
             "relatorios",
-            "receita-semana",
-            ":{idUsuario}"
-          ],
-          "variable": [
-            {
-              "key": "{idUsuario}",
-              "value": "1"
-            }
+            "receita-semana"
           ]
         }
       },
@@ -802,7 +781,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/relatorios/exportar/financeiro?idUsuario=3&dataReferencia=2026-03-02&periodo=anual",
+          "raw": "localhost:8080/relatorios/exportar/financeiro?dataReferencia=2026-03-02&periodo=anual",
           "host": [
             "localhost"
           ],
@@ -813,10 +792,6 @@
             "financeiro"
           ],
           "query": [
-            {
-              "key": "idUsuario",
-              "value": "3"
-            },
             {
               "key": "dataReferencia",
               "value": "2026-03-02"
@@ -836,7 +811,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": ""
+          "raw": "localhost:8080/manutencao",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "manutencao"
+          ]
         }
       },
       "response": []
@@ -934,6 +916,32 @@
           "port": "8080",
           "path": [
             "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Resumo Financeiro",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/resumo-financeiro?tipo=mes",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "resumo-financeiro"
+          ],
+          "query": [
+            {
+              "key": "tipo",
+              "value": "mes",
+              "type": "text"
+            }
           ]
         }
       },

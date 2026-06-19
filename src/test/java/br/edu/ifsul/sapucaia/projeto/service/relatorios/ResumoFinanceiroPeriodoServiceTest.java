@@ -4,13 +4,15 @@ import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanc
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
+import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +24,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
+import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -42,10 +45,10 @@ class ResumoFinanceiroPeriodoServiceTest {
     private CustoRepository custoRepository;
 
     @Mock
-    private ValidaUsuarioService validaUsuarioService;
+    private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private VeiculoRepository veiculoRepository;
 
     @Mock
     private ValidaTipoPeriodoValidator validaTipoPeriodoValidator;
@@ -57,18 +60,20 @@ class ResumoFinanceiroPeriodoServiceTest {
     @DisplayName("Deve retornar os dados corretamente")
     void deveRetornarOsDadosCorretamente(){
 
-        Usuario usuario = usuario();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
+        Veiculo veiculo = veiculo();
 
         PeriodoData periodoData = new PeriodoData(DateNow.now(), DateNow.now());
 
-        List<Custo> custos = usuario.getVeiculo().getCustos();
+        List<Custo> custos = veiculo.getCustos();
         double gastoTotal = custos
                 .stream()
                 .filter(custo -> custo.getDataPagamento().equals(DateNow.now()))
                 .mapToDouble(Custo::getValor)
                 .sum();
 
-        List<ReceitaDiaria> receitas = usuario.getReceitasDiarias();
+        List<ReceitaDiaria> receitas = usuario().getReceitasDiarias();
         double ganhoBruto = receitas
                 .stream()
                 .filter(custo -> custo.getDataReceita().equals(DateNow.now()))
@@ -77,59 +82,38 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         double ganhoLiquido = ganhoBruto - gastoTotal;
 
-        Long id = usuario.getIdUsuario();
+        Long id = usuarioSecurity.getId();
         String tipo = "dia";
         String dataBase = DateNow.now().toString();
 
         when(periodoDataHelper.calcularData(tipo, dataBase)).thenReturn(periodoData);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(veiculoRepository.findByIdVeiculoAndIsAtivo(veiculo.getIdVeiculo(), true)).thenReturn(veiculo);
         when(receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(id, periodoData.dataInicio(), periodoData.dataFim()))
                 .thenReturn(receitas);
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(
-                usuario.getVeiculo().getIdVeiculo(),
+                veiculo.getIdVeiculo(),
                 periodoData.dataInicio(),
                 periodoData.dataFim())).thenReturn(custos);
 
-        ResumoFinanceiroPeriodoResponse response = tested.calcularPorPeriodo(id, tipo, dataBase);
+        ResumoFinanceiroPeriodoResponse response = tested.calcularPorPeriodo(tipo, dataBase);
 
-        verify(validaUsuarioService).porId(id);
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper).calcularData(tipo, dataBase);
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(usuarioSecurity.getIdVeiculo(), true);
         verify(receitaDiariaRepository)
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(id, periodoData.dataInicio(), periodoData.dataFim());
         verify(custoRepository)
                 .findByVeiculoIdVeiculoAndDataPagamentoBetween(
-                        usuario.getVeiculo().getIdVeiculo(),
+                        veiculo.getIdVeiculo(),
                         periodoData.dataInicio(),
                         periodoData.dataFim());
 
         assertEquals(ganhoBruto, response.getGanhoBruto());
         assertEquals(ganhoLiquido, response.getLucroLiquido());
         assertEquals(gastoTotal, response.getGastoTotal());
-    }
-
-    @Test
-    @DisplayName("Não deve retornar os dados se id do usuario invalido")
-    void naoDeveRetornarDadosSeIdUsuarioInvalido(){
-
-        Long id = 5L;
-        String tipo = "dia";
-        String dataBase = DateNow.now().toString();
-
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
-
-        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(id, tipo, dataBase));
-
-        verify(validaUsuarioService).porId(id);
-        verify(validaTipoPeriodoValidator, never()).porTipo(any(String.class));
-        verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
-        verify(receitaDiariaRepository, never())
-                .findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
-        verify(custoRepository, never())
-                .findByVeiculoIdVeiculoAndDataPagamentoBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
     }
 
     @Test
@@ -144,12 +128,12 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         doThrow(ResponseStatusException.class).when(validaTipoPeriodoValidator).porTipo(tipo);
 
-        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(id, tipo, dataBase));
+        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(tipo, dataBase));
 
-        verify(validaUsuarioService).porId(id);
+        verify(usuarioAutenticadoService, never()).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
+        verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(any(Long.class), any(Boolean.class));
         verify(receitaDiariaRepository, never())
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
         verify(custoRepository, never())
