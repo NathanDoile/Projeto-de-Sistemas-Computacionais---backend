@@ -120,9 +120,6 @@ class ResumoFinanceiroPeriodoServiceTest {
     @DisplayName("Não deve retornar os dados se tipo invalido")
     void naoDeveRetornarDadosSeTipoInvalido(){
 
-        Usuario usuario = usuario();
-
-        Long id = usuario.getIdUsuario();
         String tipo = "invalido";
         String dataBase = DateNow.now().toString();
 
