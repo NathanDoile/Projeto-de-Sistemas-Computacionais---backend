@@ -32,23 +32,22 @@ public class RelatoriosController {
     private final ExportarManutencoesService exportarManutencoesService;
     private final PendenciasDoUsuarioService pendenciasDoUsuarioService;
 
-    @GetMapping("/informacoes-semana/{idUsuario}")
-    public InformacoesDaSemanaResponse getInformacoesSemana(@PathVariable Long idUsuario) {
-        return informacoesDaSemanaService.buscarInformacoesDaSemana(idUsuario);
+    @GetMapping("/informacoes-semana")
+    public InformacoesDaSemanaResponse getInformacoesSemana() {
+        return informacoesDaSemanaService.buscarInformacoesDaSemana();
     }
 
-    @GetMapping("/receita-semana/{idUsuario}")
-    public InformacoesDaSemanaResponse buscarReceitaDaSemana(@PathVariable Long idUsuario) {
-        return receitaSemanaService.buscarReceitaDaSemana(idUsuario);
+    @GetMapping("/receita-semana")
+    public InformacoesDaSemanaResponse buscarReceitaDaSemana() {
+        return receitaSemanaService.buscarReceitaDaSemana();
     }
 
-    @GetMapping("/resumo-financeiro/{idUsuario}")
+    @GetMapping("/resumo-financeiro")
     public ResumoFinanceiroPeriodoResponse getResumoFinanceiro(
-            @PathVariable Long idUsuario,
             @RequestParam String tipo,
             @RequestParam(required = false) String dataBase
     ) {
-        return resumoFinanceiroService.calcularPorPeriodo(idUsuario, tipo, dataBase);
+        return resumoFinanceiroService.calcularPorPeriodo(tipo, dataBase);
     }
 
     @GetMapping("/gastos-categoria")
@@ -83,7 +82,6 @@ public class RelatoriosController {
 
     @GetMapping("/exportar/financeiro")
     public ResponseEntity<byte[]> gerarRelatorio(
-            @RequestParam Long idUsuario,
             @RequestParam LocalDate dataReferencia,
             @RequestParam String periodo) {
 
@@ -93,7 +91,6 @@ public class RelatoriosController {
                         "attachment; filename=relatorio_financeiro.pdf")
                 .body(
                         gerarRelatorioFinanceiroPdfService.gerarRelatorioFinanceiro(
-                                idUsuario,
                                 dataReferencia,
                                 PeriodoRelatorioFinanceiro.deTexto(periodo)
                         )

@@ -276,19 +276,16 @@
 ### Rota: `/relatorios`
 - **Informações de Semana**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /informacoes-semana/{id}`
+  - `GET /informacoes-semana`
 
 - **Receita da Semana**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `GET /receita-semana/{idUsuario}`
+  - `GET /receita-semana`
 
 - **Resumo Financeiro**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
   - Parâmetros de query: tipo (dia | semana | mes) e data (opcional, formato YYYY-MM-DD)
-  - `GET /resumo-financeiro/{idUsuario}`  
+  - `GET /resumo-financeiro`  
 
 - **Gasto por categoria**
   - Precisa estar logado para utilizar esse path;
@@ -306,7 +303,7 @@
 
 - **Exportar Relatório Financeiro**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de query: idUsuario, dataReferencia(Formato YYYY-MM-DD) e periodo(semanal, mensal e anual)
+  - Parâmetros de query: dataReferencia(Formato YYYY-MM-DD) e periodo(semanal, mensal e anual)
   - `GET /exportar/financeiro`
 
 - **Verificar pendências do usuário com o sistema**

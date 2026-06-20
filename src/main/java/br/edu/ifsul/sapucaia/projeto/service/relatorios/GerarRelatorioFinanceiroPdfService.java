@@ -9,7 +9,8 @@ import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataRelatorioFinanceiroPdfValidator;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
@@ -30,16 +31,16 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RequiredArgsConstructor
 public class GerarRelatorioFinanceiroPdfService {
 
-    private final ValidaUsuarioService validaUsuarioService;
     private final ValidaDataRelatorioFinanceiroPdfValidator validaDataRelatorioFinanceiroPdfValidator;
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final CustoRepository custoRepository;
     private final VeiculoRepository veiculoRepository;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     private static final String FORMATODATA = "dd/MM/yyyy";
 
-    public byte[] gerarRelatorioFinanceiro(Long idUsuario, LocalDate dataReferencia, PeriodoRelatorioFinanceiro periodo){
-        validaUsuarioService.porId(idUsuario);
+    public byte[] gerarRelatorioFinanceiro(LocalDate dataReferencia, PeriodoRelatorioFinanceiro periodo){
+
         validaDataRelatorioFinanceiroPdfValidator.naoMaiorQueHoje(dataReferencia);
 
         LocalDate dataInicio;
@@ -58,10 +59,12 @@ public class GerarRelatorioFinanceiroPdfService {
             dataFim = dataReferencia.withDayOfYear(dataReferencia.lengthOfYear());
         }
 
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
+
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository
-                .findByUsuarioIdUsuarioAndDataReceitaBetween(idUsuario, dataInicio, dataFim);
+                .findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
 
         List<Custo> custos = custoRepository
                 .findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
