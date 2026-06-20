@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Getter
 @Builder
-public class GastosPorCategoriaDoMesResponse {
+public class GastosPorCategoriaResponse {
 
     private double manutencao;
 

@@ -14,7 +14,7 @@ public class ValidaTipoPeriodoValidator {
                 && !tipo.equalsIgnoreCase("semana")
                 && !tipo.equalsIgnoreCase("mes")
                 && !tipo.equalsIgnoreCase("ano")){
-            throw new ResponseStatusException(BAD_REQUEST, "Tipo dde período inválido. Aceito apenas tipos: dia, semana, mes e ano.");
+            throw new ResponseStatusException(BAD_REQUEST, "Tipo de período inválido. Aceito apenas tipos: dia, semana, mes e ano.");
         }
     }
 }

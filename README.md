@@ -220,13 +220,11 @@
 
 - **Retornar dados do veículo**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do veículo
-  - `GET /{id}`
+  - `GET`
 
 - **Obter informações de manutenção do veículo**
   - Precisa estar logado para utilizar esse path
-  - Parâmetros de URL: `id`, é o identificador do veículo
-  - `GET /{id}/informacoes-manutencao`
+  - `GET /informacoes-manutencao`
 
     Retorna:
     ```json
@@ -292,28 +290,14 @@
   - Parâmetros de query: tipo (dia | semana | mes) e data (opcional, formato YYYY-MM-DD)
   - `GET /resumo-financeiro/{idUsuario}`  
 
-- **Gasto por categoria(dia)**
+- **Gasto por categoria**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - Parâmetros de query: data (formato YYYY-MM-DD)
-  - `GET /gastos-categoria-dia/{idUsuario}`
-   
-- **Gasto por categoria(semana)**
-  - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - Parâmetros de query: data (opcional, formato YYYY-MM-DD)
-  - `GET /gastos-categoria-semana/{idUsuario}`
-    git
-- **Gasto por categoria(mês)**
-  - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - Parâmetros de query: data (opcional, formato YYYY-MM-DD)
-  - `GET /gastos-categoria-mes/{idUsuario}`
+  - Parâmetros de query: tipo (dia | semana | mes | ano) e dataBase (formato YYYY-MM-DD)
+  - `GET /gastos-categoria-dia`
 
 - **Últimas transações**
   - Precisa estar logado para utilizar esse path;
-  - Parâmetros de URL: `id`, é o identificador dogit usuário
-  - `GET /ultimas-transacoes/{idUsuario}`
+  - `GET /ultimas-transacoes`
 
 - **Exportar Relatório de Manutenções**
   - Precisa estar logado para utilizar esse path;

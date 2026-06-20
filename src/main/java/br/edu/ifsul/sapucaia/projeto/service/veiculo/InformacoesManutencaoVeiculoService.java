@@ -6,6 +6,8 @@ import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao.*;
 @RequiredArgsConstructor
 public class InformacoesManutencaoVeiculoService {
 
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
+
     private final ValidaVeiculoService validaVeiculoService;
 
     private final VeiculoRepository veiculoRepository;
@@ -24,13 +28,13 @@ public class InformacoesManutencaoVeiculoService {
     private final ManutencaoRepository manutencaoRepository;
 
     @Transactional
-    public InformacoesManutencaoVeiculoResponse buscarInformacoesManutencao(Long idVeiculo) {
+    public InformacoesManutencaoVeiculoResponse buscarInformacoesManutencao() {
 
-        validaVeiculoService.porId(idVeiculo);
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        List<Manutencao> manutencoes = manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
+        List<Manutencao> manutencoes = manutencaoRepository.findAllByVeiculoIdVeiculo(usuarioSecurity.getIdVeiculo());
 
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo());
 
         List<Manutencao> manutencoesPreventivas = manutencoes
                 .stream()

@@ -12,4 +12,6 @@ public interface ReceitaDiariaRepository extends JpaRepository<ReceitaDiaria, Lo
 
     List<ReceitaDiaria> findByUsuarioIdUsuarioAndDataReceitaBetween(Long idUsuario, LocalDate inicioSemana, LocalDate hoje);
 
+    List<ReceitaDiaria> findByUsuarioIdUsuario(Long idUsuario);
+
 }

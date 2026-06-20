@@ -7,22 +7,22 @@ import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +32,7 @@ class InformacoesManutencaoVeiculoServiceTest {
     private InformacoesManutencaoVeiculoService tested;
 
     @Mock
-    private ValidaVeiculoService validaVeiculoService;
+    private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Mock
     private VeiculoRepository veiculoRepository;
@@ -44,7 +44,9 @@ class InformacoesManutencaoVeiculoServiceTest {
     @DisplayName("Deve retornar as informações de manutenção do veículo corretamente")
     void deveRetornarInformacoesManutencaoVeiculo() {
 
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
         Veiculo veiculo = veiculo();
+        veiculo.setIdVeiculo(usuarioSecurity.getIdVeiculo());
         veiculo.setManutencoes(List.of());
         veiculo.setCustos(List.of());
 
@@ -103,15 +105,16 @@ class InformacoesManutencaoVeiculoServiceTest {
         veiculo.setCustos(List.of(custoPreventiva, custoCorretiva, custoPreditiva));
 
         Long idVeiculo = veiculo.getIdVeiculo();
-        when(manutencaoRepository.findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true))
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(manutencaoRepository.findAllByVeiculoIdVeiculo(idVeiculo))
                 .thenReturn(List.of(manutencaoPreventiva, manutencaoCorretiva, manutencaoPreditiva));
-        when(veiculoRepository.findByIdVeiculoAndIsAtivo(idVeiculo, true)).thenReturn(veiculo);
+        when(veiculoRepository.findByIdVeiculo(idVeiculo)).thenReturn(veiculo);
 
-        InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao(idVeiculo);
+        InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao();
 
-        verify(validaVeiculoService).porId(idVeiculo);
-        verify(manutencaoRepository).findAllByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
-        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(idVeiculo, true);
+        verify(usuarioAutenticadoService).getUser();
+        verify(manutencaoRepository).findAllByVeiculoIdVeiculo(idVeiculo);
+        verify(veiculoRepository).findByIdVeiculo(idVeiculo);
 
         assertEquals(1, response.getTotalManutencoesPreventivas());
         assertEquals(1, response.getTotalManutencoesCorretivas());
@@ -122,18 +125,4 @@ class InformacoesManutencaoVeiculoServiceTest {
         assertEquals(186.67, response.getMediaPrecoManutencao(), 0.01);
         assertEquals(560.0 / veiculo.getKmAtual(), response.getValorCustoPorKmRodado(), 0.000001);
     }
-
-    @Test
-    @DisplayName("Não deve retornar as informações de manutenção se o veículo não existir")
-    void naoDeveRetornarSeVeiculoNaoExistir() {
-
-        Long idVeiculo = 1L;
-        doThrow(ResponseStatusException.class).when(validaVeiculoService).porId(idVeiculo);
-
-        assertThrows(ResponseStatusException.class, () -> tested.buscarInformacoesManutencao(idVeiculo));
-
-        verify(validaVeiculoService).porId(idVeiculo);
-        verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(anyLong(), anyBoolean());
-    }
-
 }

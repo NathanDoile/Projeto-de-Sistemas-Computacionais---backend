@@ -12,7 +12,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,9 +52,6 @@ class CadastrarCustoServiceTest {
     private CadastrarCustoService tested;
 
     @Mock
-    private ValidaVeiculoService validaVeiculoService;
-
-    @Mock
     private VeiculoRepository veiculoRepository;
 
     @Mock
@@ -91,17 +87,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(custoRepository).save(custoCaptor.capture());
         verify(metaRepository, never()).save(any(Meta.class));
 
@@ -131,17 +126,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getDayOfWeek().equals(MONDAY)){
             verify(metaRepository, times(2)).save(metaCaptor.capture());
         }
@@ -188,17 +182,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getDayOfWeek().equals(MONDAY)){
             verify(metaRepository, times(3)).save(metaCaptor.capture());
         }
@@ -241,17 +234,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth()) && DateNow.now().getYear() == request.getDataPagamento().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
@@ -294,17 +286,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
 
@@ -342,17 +333,16 @@ class CadastrarCustoServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo()))
                 .thenReturn(veiculoMock);
 
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository)
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(custoRepository).save(custoCaptor.capture());
 
@@ -371,32 +361,6 @@ class CadastrarCustoServiceTest {
         assertEquals(request.getValor(), response.getValor());
         assertEquals(request.getDescricao(), response.getDescricao());
         assertEquals(request.getDataVencimento(), response.getDataVencimento());
-    }
-
-    @Test
-    @DisplayName("Nao deve cadastrar custo com usuário sem Veiculo")
-    void naoCadastraCustoComUsuarioSemVeiculo(){
-
-        CadastrarCustoRequest request = cadastrarCustoRequest();
-
-        UsuarioSecurity usuarioSecurity = usuarioSecurity();
-
-        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-
-        doThrow(ResponseStatusException.class)
-                .when(validaVeiculoService)
-                .porIdUsuario(usuarioSecurity.getId());
-
-        assertThrows(ResponseStatusException.class,
-                () -> tested.cadastrar(request));
-
-        verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
-        verify(validaValorCustoValidator, never()).isPositivo(any(Double.class));
-        verify(validaTipoCustoValidator, never()).tipoValido(any(String.class));
-        verify(veiculoRepository, never())
-                .findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
-        verify(custoRepository, never()).save(any(Custo.class));
     }
 
     @Test
@@ -424,11 +388,10 @@ class CadastrarCustoServiceTest {
                 () -> tested.cadastrar(request));
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator, never()).tipoValido(any(String.class));
         verify(veiculoRepository, never())
-                .findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
+                .findByIdVeiculo(any(Long.class));
         verify(custoRepository, never()).save(any(Custo.class));
     }
 
@@ -457,11 +420,10 @@ class CadastrarCustoServiceTest {
                 () -> tested.cadastrar(request));
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaValorCustoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(veiculoRepository, never())
-                .findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
+                .findByIdVeiculo(any(Long.class));
         verify(custoRepository, never()).save(any(Custo.class));
     }
 }

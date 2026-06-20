@@ -1,12 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.helper.PeriodoDataHelper;
 import br.edu.ifsul.sapucaia.projeto.helper.record.PeriodoData;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoPeriodoValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +25,7 @@ import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoCusto.*;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static java.time.LocalDate.of;
 import static java.time.Month.MAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +40,9 @@ class GastosPorCategoriaDoPeriodoServiceTest {
 
     @Mock
     private ValidaUsuarioService validaUsuarioService;
+
+    @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Mock
     private CustoRepository custoRepository;
@@ -54,29 +60,31 @@ class GastosPorCategoriaDoPeriodoServiceTest {
     @DisplayName("Deve retornar os gastos por categoria corretamente")
     void deveRetornarGastosCategoriaCorretamente(){
 
-        Usuario usuario = usuario();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         PeriodoData periodoData = new PeriodoData(of(2026, MAY, 20), of(20, MAY, 20));
 
+        Usuario usuario = usuario();
+        usuario.setIdUsuario(usuarioSecurity.getId());
+
         List<Custo> custos = usuario.getVeiculo().getCustos();
 
-        Long id = usuario.getIdUsuario();
         String tipo = "dia";
         String dataBase = "2026-05-20";
 
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         when(periodoDataHelper.calcularData(tipo, dataBase)).thenReturn(periodoData);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
         when(custoRepository
                 .findByVeiculoIdVeiculoAndDataPagamentoBetween(
-                        usuario.getVeiculo().getIdVeiculo(), periodoData.dataInicio(), periodoData.dataFim()))
+                        usuarioSecurity.getIdVeiculo(), periodoData.dataInicio(), periodoData.dataFim()))
                 .thenReturn(custos);
 
-        GastosPorCategoriaDoMesResponse response = tested.calcularPorPeriodo(id, tipo, dataBase);
+        GastosPorCategoriaResponse response = tested.calcularPorPeriodo(tipo, dataBase);
 
-        verify(validaUsuarioService).porId(id);
+
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper).calcularData(tipo, dataBase);
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(
                 usuario.getVeiculo().getIdVeiculo(), periodoData.dataInicio(), periodoData.dataFim());
 
@@ -118,45 +126,22 @@ class GastosPorCategoriaDoPeriodoServiceTest {
     }
 
     @Test
-    @DisplayName("Não deve retornar os gastos por categoria se id do usuario incorreto")
-    void naoDeveRetornarGastosCategoriaSeIdUsuarioIncorreto(){
-
-        Usuario usuario = usuario();
-
-        Long id = usuario.getIdUsuario();
-        String tipo = "dia";
-        String dataBase = "2026-05-20";
-
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
-
-        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(id, tipo, dataBase));
-
-        verify(validaUsuarioService).porId(id);
-        verify(validaTipoPeriodoValidator, never()).porTipo(any(String.class));
-        verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
-        verify(custoRepository, never()).findByVeiculoIdVeiculoAndDataPagamentoBetween(
-                any(Long.class), any(LocalDate.class), any(LocalDate.class));
-    }
-
-    @Test
     @DisplayName("Não deve retornar os gastos por categoria se tipo inválido")
     void naoDeveRetornarGastosCategoriaSeTipoInvalido(){
 
-        Usuario usuario = usuario();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
-        Long id = usuario.getIdUsuario();
         String tipo = "dia";
         String dataBase = "2026-05-20";
 
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         doThrow(ResponseStatusException.class).when(validaTipoPeriodoValidator).porTipo(tipo);
 
-        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(id, tipo, dataBase));
+        assertThrows(ResponseStatusException.class, () -> tested.calcularPorPeriodo(tipo, dataBase));
 
-        verify(validaUsuarioService).porId(id);
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
         verify(custoRepository, never()).findByVeiculoIdVeiculoAndDataPagamentoBetween(
                 any(Long.class), any(LocalDate.class), any(LocalDate.class));
     }

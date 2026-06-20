@@ -51,13 +51,13 @@ class DeletarMetaServiceTest {
         Meta meta = meta(DIARIA, RECEITA);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(metaRepository.findByUsuarioIdUsuarioAndUsuarioIsAtivoAndIdMetaAndIsAtivo(usuarioSecurity.getId(), true, id, true)).thenReturn(meta);
+        when(metaRepository.findByUsuarioIdUsuarioAndIdMetaAndIsAtivo(usuarioSecurity.getId(), id, true)).thenReturn(meta);
 
         tested.deletar(id);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validarMetaService).porId(id);
-        verify(metaRepository).findByUsuarioIdUsuarioAndUsuarioIsAtivoAndIdMetaAndIsAtivo(usuarioSecurity.getId(), true, id, true);
+        verify(metaRepository).findByUsuarioIdUsuarioAndIdMetaAndIsAtivo(usuarioSecurity.getId(), id, true);
         verify(metaRepository).save(metaCaptor.capture());
 
         Meta response = metaCaptor.getValue();
@@ -78,7 +78,7 @@ class DeletarMetaServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.deletar(id));
 
         verify(validarMetaService).porId(id);
-        verify(metaRepository, never()).findByUsuarioIdUsuarioAndUsuarioIsAtivoAndIdMetaAndIsAtivo(any(Long.class), any(Boolean.class), any(Long.class), any(Boolean.class));
+        verify(metaRepository, never()).findByUsuarioIdUsuarioAndIdMetaAndIsAtivo(any(Long.class), any(Long.class), any(Boolean.class));
         verify(metaRepository, never()).save(any(Meta.class));
     }
 }

@@ -35,16 +35,16 @@ public class VeiculoController {
          return cadastrarVeiculoService.cadastrar(cadastrarVeiculoRequest);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping()
     @ResponseStatus(OK)
-    public RetornaDadosVeiculoResponse retornaDadosVeiculo(@PathVariable Long id){
-        return retornaDadosVeiculoService.dadosVeiculo(id);
+    public RetornaDadosVeiculoResponse retornaDadosVeiculo(){
+        return retornaDadosVeiculoService.dadosVeiculo();
     }
 
-    @GetMapping("/{id}/informacoes-manutencao")
+    @GetMapping("/informacoes-manutencao")
     @ResponseStatus(OK)
-    public InformacoesManutencaoVeiculoResponse informacoesManutencao(@PathVariable Long id) {
-        return informacoesManutencaoVeiculoService.buscarInformacoesManutencao(id);
+    public InformacoesManutencaoVeiculoResponse informacoesManutencao() {
+        return informacoesManutencaoVeiculoService.buscarInformacoesManutencao();
     }
 
     @PutMapping("/atualizar-km")

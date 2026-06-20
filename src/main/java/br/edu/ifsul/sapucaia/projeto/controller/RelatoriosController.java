@@ -1,6 +1,6 @@
 package br.edu.ifsul.sapucaia.projeto.controller;
 
-import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaDoMesResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.GastosPorCategoriaResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.InformacoesDaSemanaResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.PendenciasDoUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.ResumoFinanceiroPeriodoResponse;
@@ -51,18 +51,17 @@ public class RelatoriosController {
         return resumoFinanceiroService.calcularPorPeriodo(idUsuario, tipo, dataBase);
     }
 
-    @GetMapping("/gastos-categoria/{idUsuario}")
-    public GastosPorCategoriaDoMesResponse getGastosPorCategoria(
-            @PathVariable Long idUsuario,
+    @GetMapping("/gastos-categoria")
+    public GastosPorCategoriaResponse getGastosPorCategoria(
             @RequestParam String tipo,
             @RequestParam String dataBase
     ) {
-        return gastosPorCategoriaService.calcularPorPeriodo(idUsuario, tipo, dataBase);
+        return gastosPorCategoriaService.calcularPorPeriodo(tipo, dataBase);
     }
 
-    @GetMapping("/ultimas-transacoes/{idUsuario}")
-    public List<UltimasTransacoesResponse> getUltimasTransacoes(@PathVariable Long idUsuario) {
-        return ultimasTransacoesService.buscarUltimasTransacoes(idUsuario);
+    @GetMapping("/ultimas-transacoes")
+    public List<UltimasTransacoesResponse> getUltimasTransacoes() {
+        return ultimasTransacoesService.buscarUltimasTransacoes();
     }
 
     @GetMapping("/pendencias")

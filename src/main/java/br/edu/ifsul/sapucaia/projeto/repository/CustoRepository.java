@@ -18,6 +18,8 @@ public interface CustoRepository extends JpaRepository<Custo, Long> {
 
     Optional<Custo> findByIdCustoAndIsAtivo(Long idCusto, boolean isAtivo);
 
+    List<Custo> findByVeiculoIdVeiculo(Long idVeiculo);
+
     List<Custo> findByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean isAtivo);
 
     List<Custo> findByVeiculoIdVeiculoAndDataPagamentoBetween(Long idVeiculo, LocalDate inicioSemana, LocalDate hoje);

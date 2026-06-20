@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @Setter
 public class CadastrarCustoRequest {
 
-    //@NotNull(message = "O ID do veículo é obrigatório.")
-    private Long idVeiculo;
-
     @NotBlank(message = "O tipo é obrigatório.")
     private String tipo;
 

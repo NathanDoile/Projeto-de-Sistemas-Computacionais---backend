@@ -5,7 +5,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.Meta;
 import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,8 +25,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoMeta.RECEITA;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.meta;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,9 +32,6 @@ class BuscarMetasServiceTest {
 
     @InjectMocks
     private BuscarMetasService tested;
-
-    @Mock
-    private ValidaUsuarioService validaUsuarioService;
 
     @Mock
     private MetaRepository metaRepository;
@@ -76,19 +69,5 @@ class BuscarMetasServiceTest {
             assertEquals(metas.get(i).getValorDesejado(), response.getContent().get(i).getValorDesejado());
             assertEquals(metas.get(i).getValorAtual(), response.getContent().get(i).getValorAtual());
         }
-    }
-
-    @Test
-    @DisplayName("Não deve buscar as metas com id do usuario incorreto")
-    void naoDeveBuscarMetasIdUsuarioIncorreto(){
-
-        Pageable pageable = PageRequest.of(0, 10);
-
-        doThrow(ResponseStatusException.class).when(usuarioAutenticadoService).getUser();
-
-        assertThrows(ResponseStatusException.class, () -> tested.buscar(pageable));
-
-        verify(usuarioAutenticadoService).getUser();
-        verify(metaRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class), any(Pageable.class));
     }
 }

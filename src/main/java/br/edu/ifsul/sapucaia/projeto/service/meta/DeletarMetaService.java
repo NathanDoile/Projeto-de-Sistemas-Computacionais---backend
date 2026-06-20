@@ -26,7 +26,7 @@ public class DeletarMetaService {
 
         validarMetaService.porId(id);
 
-        Meta meta = metaRepository.findByUsuarioIdUsuarioAndUsuarioIsAtivoAndIdMetaAndIsAtivo(usuarioSecurity.getId(), true, id, true);
+        Meta meta = metaRepository.findByUsuarioIdUsuarioAndIdMetaAndIsAtivo(usuarioSecurity.getId(), id, true);
 
         meta.setAtivo(false);
 

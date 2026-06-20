@@ -21,5 +21,7 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
     );
 
     List<Manutencao> findAllByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean b);
+
+    List<Manutencao> findAllByVeiculoIdVeiculo(Long idVeiculo);
     
 }

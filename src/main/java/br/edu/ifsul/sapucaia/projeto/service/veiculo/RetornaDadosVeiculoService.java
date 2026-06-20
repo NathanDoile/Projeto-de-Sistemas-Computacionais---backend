@@ -3,7 +3,8 @@ package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 import br.edu.ifsul.sapucaia.projeto.controller.response.veiculo.RetornaDadosVeiculoResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +14,15 @@ import static br.edu.ifsul.sapucaia.projeto.mapper.VeiculoMapper.toDadosVeiculoR
 @Service
 @RequiredArgsConstructor
 public class RetornaDadosVeiculoService {
-    private final ValidaVeiculoService validaVeiculoService;
+
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     private final VeiculoRepository veiculoRepository;
 
-    public RetornaDadosVeiculoResponse dadosVeiculo(Long id){
-        validaVeiculoService.porId(id);
+    public RetornaDadosVeiculoResponse dadosVeiculo(){
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaVeiculoService.estaAtivo(id);
-
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(id, true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo());
 
         return toDadosVeiculoResponse(veiculo);
     }

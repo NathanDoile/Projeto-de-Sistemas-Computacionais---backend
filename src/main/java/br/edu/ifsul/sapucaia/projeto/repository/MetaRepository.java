@@ -14,5 +14,5 @@ public interface MetaRepository extends JpaRepository<Meta, Long> {
 
     Meta findByIdMetaAndIsAtivo(Long id, boolean b);
 
-    Meta findByUsuarioIdUsuarioAndUsuarioIsAtivoAndIdMetaAndIsAtivo(Long idUsuario, boolean b, Long id, boolean bo);
+    Meta findByUsuarioIdUsuarioAndIdMetaAndIsAtivo(Long idUsuario, Long id, boolean b);
 }

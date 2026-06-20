@@ -2,11 +2,10 @@ package br.edu.ifsul.sapucaia.projeto.service.relatorios;
 import br.edu.ifsul.sapucaia.projeto.controller.response.relatorios.UltimasTransacoesResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Custo;
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
-import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -18,21 +17,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UltimasTransacoesService {
 
-    private final ValidaUsuarioService validaUsuarioService;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
     private final CustoRepository custoRepository;
     private final ReceitaDiariaRepository receitaDiariaRepository;
-    private final UsuarioRepository usuarioRepository;
 
-    public List<UltimasTransacoesResponse> buscarUltimasTransacoes(Long idUsuario) {
-        
-        validaUsuarioService.porId(idUsuario);
+    public List<UltimasTransacoesResponse> buscarUltimasTransacoes() {
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
-        Long idVeiculo = usuario.getVeiculo().getIdVeiculo();
+        UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        List<Custo> custos = custoRepository.findByVeiculoIdVeiculoAndIsAtivo(idVeiculo, true);
+        List<Custo> custos = custoRepository.findByVeiculoIdVeiculo(usuarioSecurity.getIdVeiculo());
 
-        List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuarioAndIsAtivo(idUsuario, true);
+        List<ReceitaDiaria> receitas = receitaDiariaRepository.findByUsuarioIdUsuario(usuarioSecurity.getId());
 
         List<UltimasTransacoesResponse> transacoes = new ArrayList<>();
 

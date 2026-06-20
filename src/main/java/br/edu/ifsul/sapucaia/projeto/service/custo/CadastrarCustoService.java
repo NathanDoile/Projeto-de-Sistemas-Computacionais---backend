@@ -34,8 +34,6 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 @Service
 public class CadastrarCustoService {
 
-    private final ValidaVeiculoService validaVeiculoService;
-
     private final VeiculoRepository veiculoRepository;
 
     private final CustoRepository custoRepository;
@@ -53,13 +51,12 @@ public class CadastrarCustoService {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaVeiculoService.porIdUsuario(usuarioSecurity.getId());
         validaValorCustoValidator.isPositivo(request.getValor());
         validaTipoCustoValidator.tipoValido(request.getTipo());
 
         Custo custo = toEntity(request);
       
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo());
 
         if(request.getDataPagamento() != null){
             salvarMetas(veiculo, custo);
