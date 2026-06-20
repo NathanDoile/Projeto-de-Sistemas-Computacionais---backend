@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "eacb3f5e-f10b-4a18-8350-88937cc679b0",
+    "_postman_id": "77bf0d63-6853-4497-8a44-cf9fe00961dd",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "53222404",
-    "_collection_link": "https://go.postman.co/collection/53222404-eacb3f5e-f10b-4a18-8350-88937cc679b0?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/53222404-77bf0d63-6853-4497-8a44-cf9fe00961dd?source=collection_link"
   },
   "item": [
     {
@@ -486,21 +486,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/relatorios/informacoes-semana/:{id}",
+          "raw": "localhost:8080/relatorios/informacoes-semana",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
             "relatorios",
-            "informacoes-semana",
-            ":{id}"
-          ],
-          "variable": [
-            {
-              "key": "{id}",
-              "value": "1"
-            }
+            "informacoes-semana"
           ]
         }
       },
@@ -538,32 +531,18 @@
     },
     {
       "name": "Receita Semanal",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
       "request": {
         "method": "GET",
         "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"email\": \"adriano@gmail.com\",\r\n    \"senha\":\"aGj@j21\",\r\n}"
-        },
         "url": {
-          "raw": "localhost:8080/relatorios/receita-semana/:{idUsuario}",
+          "raw": "localhost:8080/relatorios/receita-semana",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
             "relatorios",
-            "receita-semana",
-            ":{idUsuario}"
-          ],
-          "variable": [
-            {
-              "key": "{idUsuario}",
-              "value": "1"
-            }
+            "receita-semana"
           ]
         }
       },
@@ -587,11 +566,13 @@
           "query": [
             {
               "key": "tipo",
-              "value": "semana"
+              "value": "semana",
+              "type": "text"
             },
             {
               "key": "dataBase",
-              "value": "2026-03-20"
+              "value": "2026-03-20",
+              "type": "text"
             }
           ]
         }
@@ -707,7 +688,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:8080/relatorios/exportar/financeiro?idUsuario=3&dataReferencia=2026-03-02&periodo=anual",
+          "raw": "localhost:8080/relatorios/exportar/financeiro?dataReferencia=2026-03-02&periodo=anual",
           "host": [
             "localhost"
           ],
@@ -718,10 +699,6 @@
             "financeiro"
           ],
           "query": [
-            {
-              "key": "idUsuario",
-              "value": "3"
-            },
             {
               "key": "dataReferencia",
               "value": "2026-03-02"
@@ -741,7 +718,14 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": ""
+          "raw": "localhost:8080/manutencao",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "manutencao"
+          ]
         }
       },
       "response": []
@@ -839,6 +823,32 @@
           "port": "8080",
           "path": [
             "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Resumo Financeiro",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/relatorios/resumo-financeiro?tipo=mes",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "relatorios",
+            "resumo-financeiro"
+          ],
+          "query": [
+            {
+              "key": "tipo",
+              "value": "mes",
+              "type": "text"
+            }
           ]
         }
       },
