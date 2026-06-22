@@ -3,6 +3,8 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.AlterarNotificacoesRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoNotificacaoValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +33,9 @@ class AlterarNotificacoesServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
     private ValidaUsuarioService validaUsuarioService;
 
     @Mock
@@ -42,131 +47,157 @@ class AlterarNotificacoesServiceTest {
     @Test
     @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção e estiver ativada")
     void deveAlterarEstadoNotificacaoManutencaoAtivada(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
 
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
+
         Usuario usuario = usuario();
-        Long id = usuario.getIdUsuario();
 
-        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+        Long id = usuarioLogado.getId();
 
-        tested.alterarNotificacoes(id, request);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
 
-        verify(validaUsuarioService).porId(id);
+        tested.alterarNotificacoes(request);
+
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(id, response.getIdUsuario());
+        assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
         assertFalse(response.isNotificacaoManutencao());
     }
 
     @Test
     @DisplayName("Deve alterar estado da notificação se for notificação de Manutenção e estiver desativada")
     void deveAlterarEstadoNotificacaoManutencaoDesativada(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
+
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
 
         Usuario usuario = usuario();
         usuario.setNotificacaoManutencao(false);
-        Long id = usuario.getIdUsuario();
 
-        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+        Long id = usuarioLogado.getId();
 
-        tested.alterarNotificacoes(id, request);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
 
-        verify(validaUsuarioService).porId(id);
+        tested.alterarNotificacoes(request);
+
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(id, response.getIdUsuario());
+        assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
         assertTrue(response.isNotificacaoManutencao());
     }
 
     @Test
     @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento e estiver ativada")
     void deveAlterarEstadoNotificacaoVencimentoAtivada(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoVencimentoRequest();
 
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
+
         Usuario usuario = usuario();
-        Long id = usuario.getIdUsuario();
 
-        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+        Long id = usuarioLogado.getId();
 
-        tested.alterarNotificacoes(id, request);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
 
-        verify(validaUsuarioService).porId(id);
+        tested.alterarNotificacoes(request);
+
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(id, response.getIdUsuario());
+        assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
         assertFalse(response.isNotificacaoVencimento());
     }
 
     @Test
     @DisplayName("Deve alterar estado da notificação se for notificação de Vencimento e estiver desativada")
     void deveAlterarEstadoNotificacaoVencimentoDesativada(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoVencimentoRequest();
+
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
 
         Usuario usuario = usuario();
         usuario.setNotificacaoVencimento(false);
-        Long id = usuario.getIdUsuario();
 
-        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+        Long id = usuarioLogado.getId();
 
-        tested.alterarNotificacoes(id, request);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
 
-        verify(validaUsuarioService).porId(id);
+        tested.alterarNotificacoes(request);
+
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findById(id);
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(id, response.getIdUsuario());
+        assertEquals(usuario.getIdUsuario(), response.getIdUsuario());
         assertTrue(response.isNotificacaoVencimento());
     }
 
     @Test
     @DisplayName("Não deve alterar estado da notificação se usuário não encontrado")
     void naoDeveAlterarEstadoNotificacaoUsuarioInvalido(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
 
-        Usuario usuario = usuario();
-        Long id = usuario.getIdUsuario();
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
+        Long id = usuarioLogado.getId();
 
-        assertThrows(ResponseStatusException.class, () -> tested.alterarNotificacoes(id, request));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.empty());
 
-        verify(validaUsuarioService).porId(id);
-        verify(validaTipoNotificacaoValidator, never()).tipoValido(request.getNotificacao());
-        verify(usuarioRepository, never()).findById(id);
-        verify(usuarioRepository, never()).save(usuarioCaptor.capture());
+        assertThrows(ResponseStatusException.class, () -> tested.alterarNotificacoes(request));
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
     @Test
     @DisplayName("Não deve alterar estado da notificação se tipo de notificação for invalido")
     void naoDeveAlterarEstadoNotificacaoInvalida(){
+
         AlterarNotificacoesRequest request = alterarNotificacaoManutencaoRequest();
         request.setNotificacao("Errada");
 
-        Usuario usuario = usuario();
-        Long id = usuario.getIdUsuario();
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
 
+        Long id = usuarioLogado.getId();
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
         doThrow(ResponseStatusException.class).when(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
 
-        assertThrows(ResponseStatusException.class, () -> tested.alterarNotificacoes(id, request));
+        assertThrows(ResponseStatusException.class, () -> tested.alterarNotificacoes(request));
 
-        verify(validaUsuarioService).porId(id);
+        verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository, never()).findById(id);
-        verify(usuarioRepository, never()).save(usuarioCaptor.capture());
+        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }
