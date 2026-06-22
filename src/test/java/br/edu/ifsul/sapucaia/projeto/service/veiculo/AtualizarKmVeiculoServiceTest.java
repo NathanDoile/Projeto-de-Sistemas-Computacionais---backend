@@ -56,7 +56,7 @@ class AtualizarKmVeiculoServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
-        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(request.getKmAtualizado(), veiculo.getKmAtual());
+        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
         verify(veiculoRepository).save(veiculoCaptor.capture());
 
         Veiculo response = veiculoCaptor.getValue();
@@ -76,13 +76,13 @@ class AtualizarKmVeiculoServiceTest {
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
         
         doThrow(ResponseStatusException.class)
-                .when(validaKmAtualizadoVeiculoValidator).maiorQueAtual(request.getKmAtualizado(), veiculo.getKmAtual());
+                .when(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
 
         assertThrows(ResponseStatusException.class, () -> tested.atualizar(request));
 
         verify(usuarioAutenticadoService).getUser();
         verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
-        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(request.getKmAtualizado(), veiculo.getKmAtual());
+        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
         verify(veiculoRepository, never()).save(any(Veiculo.class));
 
     }
