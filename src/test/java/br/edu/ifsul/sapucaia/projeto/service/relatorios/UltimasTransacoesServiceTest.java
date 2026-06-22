@@ -18,7 +18,6 @@ import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.receitaDiaria;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

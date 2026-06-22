@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class InformacoesManutencaoVeiculoServiceTest {
+class   InformacoesManutencaoVeiculoServiceTest {
 
     @InjectMocks
     private InformacoesManutencaoVeiculoService tested;
@@ -124,5 +124,38 @@ class InformacoesManutencaoVeiculoServiceTest {
         assertEquals(60.0, response.getValorTotalPreditivas());
         assertEquals(186.67, response.getMediaPrecoManutencao(), 0.01);
         assertEquals(560.0 / veiculo.getKmAtual(), response.getValorCustoPorKmRodado(), 0.000001);
+    }
+
+    @Test
+    @DisplayName("Deve retornar informação zerada quando não tiver manutenção, custos e o kmAtual for zero")
+    void deveRetornarZeradoQuandoKmZeroeSemCustos() {
+
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+        Veiculo veiculo = veiculo();
+        veiculo.setIdVeiculo(usuarioSecurity.getIdVeiculo());
+        veiculo.setManutencoes(null);
+        veiculo.setCustos(null);
+        veiculo.setKmAtual(0);
+
+        Long idVeiculo = veiculo.getIdVeiculo();
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(manutencaoRepository.findAllByVeiculoIdVeiculo(idVeiculo))
+                .thenReturn(List.of());
+        when(veiculoRepository.findByIdVeiculo(idVeiculo)).thenReturn(veiculo);
+
+        InformacoesManutencaoVeiculoResponse response = tested.buscarInformacoesManutencao();
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(manutencaoRepository).findAllByVeiculoIdVeiculo(idVeiculo);
+        verify(veiculoRepository).findByIdVeiculo(idVeiculo);
+
+        assertEquals(0, response.getTotalManutencoesPreventivas());
+        assertEquals(0, response.getTotalManutencoesCorretivas());
+        assertEquals(0, response.getTotalManutencoesPreditivas());
+        assertEquals(0.0, response.getValorTotalPreventivas());
+        assertEquals(0.0, response.getValorTotalCorretivas());
+        assertEquals(0.0, response.getValorTotalPreditivas());
+        assertEquals(0.0, response.getMediaPrecoManutencao());
+        assertEquals(0.0, response.getValorCustoPorKmRodado());
     }
 }

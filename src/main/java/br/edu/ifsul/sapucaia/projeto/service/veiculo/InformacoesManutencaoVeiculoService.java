@@ -8,7 +8,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,6 @@ import static br.edu.ifsul.sapucaia.projeto.domain.enums.TipoManutencao.*;
 public class InformacoesManutencaoVeiculoService {
 
     private final UsuarioAutenticadoService usuarioAutenticadoService;
-
-    private final ValidaVeiculoService validaVeiculoService;
 
     private final VeiculoRepository veiculoRepository;
 
@@ -74,7 +71,9 @@ public class InformacoesManutencaoVeiculoService {
 
         int manutencoesComCusto = manutencoes.size();
 
-        double mediaPrecoManutencao = somaValoresManutencao / manutencoesComCusto;
+        double mediaPrecoManutencao = manutencoesComCusto > 0
+                ? somaValoresManutencao / manutencoesComCusto
+                : 0.00;
 
         double totalCustos = veiculo.getCustos() == null ? 0.00 :
                 veiculo.getCustos()
