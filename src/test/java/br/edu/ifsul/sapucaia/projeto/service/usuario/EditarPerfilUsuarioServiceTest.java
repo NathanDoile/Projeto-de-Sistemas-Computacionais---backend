@@ -72,8 +72,6 @@ class EditarPerfilUsuarioServiceTest {
 
         tested.editarPerfilUsuario(request);
 
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(ID, true);
-
         verify(validaEmailUsuarioService)
                 .validaEmailUnicoParaEdicao(request.getEmail(), ID);
 
@@ -181,6 +179,8 @@ class EditarPerfilUsuarioServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.editarPerfilUsuario(request));
 
+        verifyNoInteractions(validaEmailUsuarioService);
+        verifyNoInteractions(validaTelefoneUsuarioService);
         verify(usuarioRepository, never()).save(any());
     }
 
@@ -199,7 +199,11 @@ class EditarPerfilUsuarioServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.editarPerfilUsuario(request));
 
-        verify(usuarioRepository, never()).save(any());
+        verify(validaEmailUsuarioService)
+                .validaEmailUnicoParaEdicao(request.getEmail(), ID);
+
+        verifyNoInteractions(validaTelefoneUsuarioService);
+        verifyNoInteractions(usuarioRepository);
     }
 
     @Test
@@ -217,6 +221,10 @@ class EditarPerfilUsuarioServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.editarPerfilUsuario(request));
 
-        verify(usuarioRepository, never()).save(any());
+        verify(validaTelefoneUsuarioService)
+                .validaTelefoneUnicoParaEdicao(request.getTelefone(), ID);
+
+        verifyNoInteractions(validaEmailUsuarioService);
+        verifyNoInteractions(usuarioRepository);
     }
 }
