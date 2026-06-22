@@ -26,7 +26,6 @@ public class ManutencaoFactory {
                 .tipo(TipoManutencao.PREVENTIVA.getDescricao())
                 .dataManutencao(DateNow.now().minusDays(1))
                 .descricao("Revisão de teste")
-                .idVeiculo(1L)
                 .valor(200)
                 .build();
     }

@@ -13,7 +13,6 @@ public class ReceitaDiariaFactory {
         return CadastrarReceitaDiariaRequest
                 .builder()
                 .dataReceita(DateNow.now())
-                .idUsuario(usuario().getIdUsuario())
                 .valor(200.00)
                 .build();
     }
