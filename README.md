@@ -306,6 +306,6 @@
   - Parâmetros de query: dataReferencia(Formato YYYY-MM-DD) e periodo(semanal, mensal e anual)
   - `GET /exportar/financeiro`
 
-- **Verificar pendências do usuário com o sistema**
+- **Verificar pendência do usuário com o sistema**
   - Precisa estar logado para utilizar esse path;
   - `GET /pendencias`
