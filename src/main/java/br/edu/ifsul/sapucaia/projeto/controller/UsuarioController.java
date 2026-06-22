@@ -33,16 +33,20 @@ public class UsuarioController {
         alterarSenhaUsuarioService.alterarSenhaUsuario(id, alterarSenhaUsuarioRequest);
     }
 
-    @PutMapping("/{id}/editar-perfil")
+    @PutMapping("/editar-perfil")
     @ResponseStatus(OK)
-    public void editarPerfilUsuario(@PathVariable Long id, @Valid @RequestBody EditarPerfilUsuarioRequest editarPerfilUsuarioRequest){
-        editarPerfilUsuarioService.editarPerfilUsuario(id, editarPerfilUsuarioRequest);
+    public void editarPerfilUsuario(
+            @Valid @RequestBody EditarPerfilUsuarioRequest request
+    ) {
+        editarPerfilUsuarioService.editarPerfilUsuario(request);
     }
 
-    @DeleteMapping("/{id}/excluir-conta")
+    @DeleteMapping("/excluir-conta")
     @ResponseStatus(OK)
-    public void excluirConta(@PathVariable Long id, @Valid @RequestBody ExcluirContaUsuarioRequest excluirContaUsuarioRequest){
-        excluirContaUsuarioService.excluirConta(id, excluirContaUsuarioRequest);
+    public void excluirConta(
+            @Valid @RequestBody ExcluirContaUsuarioRequest request
+    ) {
+        excluirContaUsuarioService.excluirConta(request);
     }
 
     @PutMapping("/notificacoes/{id}")
