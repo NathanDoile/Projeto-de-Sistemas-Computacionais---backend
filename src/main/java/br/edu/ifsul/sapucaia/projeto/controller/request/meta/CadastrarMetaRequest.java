@@ -22,7 +22,4 @@ public class CadastrarMetaRequest {
 
     @NotNull(message = "O valor é obrigatório.")
     private Double valor;
-
-    //@NotNull(message = "O ID do usuário é obrigatório.")
-    private Long idUsuario;
 }

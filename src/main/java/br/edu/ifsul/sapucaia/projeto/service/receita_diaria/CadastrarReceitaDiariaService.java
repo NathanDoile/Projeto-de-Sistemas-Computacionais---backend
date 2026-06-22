@@ -11,7 +11,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import jakarta.transaction.Transactional;
@@ -32,8 +31,6 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 @RequiredArgsConstructor
 public class CadastrarReceitaDiariaService {
 
-    private final ValidaUsuarioService validaUsuarioService;
-
     private final UsuarioRepository usuarioRepository;
 
     private final ReceitaDiariaRepository receitaDiariaRepository;
@@ -51,7 +48,6 @@ public class CadastrarReceitaDiariaService {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaUsuarioService.porId(usuarioSecurity.getId());
         validaValorReceitaDiariaValidator.isPositivo(cadastrarReceitaDiariaRequest.getValor());
         validaDataReceitaDiariaValidator.naoMaiorQueHoje(cadastrarReceitaDiariaRequest.getDataReceita());
 

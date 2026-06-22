@@ -7,7 +7,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
 import jakarta.transaction.Transactional;
@@ -20,7 +19,6 @@ import static br.edu.ifsul.sapucaia.projeto.mapper.MetaMapper.toEntity;
 @RequiredArgsConstructor
 public class CadastrarMetaService {
 
-    private final ValidaUsuarioService validaUsuarioService;
     private final UsuarioRepository usuarioRepository;
     private final MetaRepository metaRepository;
     private final ValidaValorMetaValidator validaValorMetaValidator;
@@ -34,8 +32,6 @@ public class CadastrarMetaService {
         validaFormatoMetaValidator.formatoValido(request.getFormato());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
-
-        validaUsuarioService.porId(usuarioSecurity.getId());
 
         Meta meta = toEntity(request);
 

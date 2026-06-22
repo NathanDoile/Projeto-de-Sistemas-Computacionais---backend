@@ -15,7 +15,4 @@ public class CadastrarReceitaDiariaRequest {
 
     @NotNull (message = "O valor da receita é obrigatória.")
     private Double valor;
-
-    //@NotNull (message = "O ID do usuário é orbigatório.")
-    private Long idUsuario;
 }

@@ -7,7 +7,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import org.junit.jupiter.api.Test;
@@ -21,9 +20,9 @@ import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,68 +31,55 @@ class CadastrarReceitaDiariaServiceTest {
     @InjectMocks
     private CadastrarReceitaDiariaService tested;
 
-    @Mock private ValidaUsuarioService validaUsuarioService;
-    @Mock private UsuarioRepository usuarioRepository;
-    @Mock private ReceitaDiariaRepository receitaDiariaRepository;
-    @Mock private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
-    @Mock private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
-    @Mock private UsuarioAutenticadoService usuarioAutenticadoService;
-    @Mock private MetaRepository metaRepository;
+    @Mock
+    private UsuarioRepository usuarioRepository;
 
-    private void mockAuth(CadastrarReceitaDiariaRequest request) {
+    @Mock
+    private ReceitaDiariaRepository receitaDiariaRepository;
 
-        UsuarioSecurity security = mock(UsuarioSecurity.class);
+    @Mock
+    private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
 
-        when(usuarioAutenticadoService.getUser()).thenReturn(security);
-        when(security.getId()).thenReturn(request.getIdUsuario());
-    }
+    @Mock
+    private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
 
-    private void mockUser(Usuario usuario) {
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(anyLong(), eq(true)))
-                .thenReturn(Optional.of(usuario));
-    }
+    @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
+    private MetaRepository metaRepository;
 
     @Test
     void deveCadastrarReceitaDiariaCorretamente() {
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
         Usuario usuario = usuario();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
-        mockAuth(request);
-        mockUser(usuario);
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(
+                usuarioSecurity.getId(), true))
+                .thenReturn(Optional.of(usuario));
 
         tested.cadastrar(request);
 
-        verify(validaUsuarioService).porId(request.getIdUsuario());
-        verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaValorReceitaDiariaValidator)
+                .isPositivo(request.getValor());
 
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(request.getIdUsuario(), true);
+        verify(validaDataReceitaDiariaValidator)
+                .naoMaiorQueHoje(request.getDataReceita());
+
+        verify(usuarioRepository)
+                .findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+
         verify(receitaDiariaRepository).save(any());
-    }
-
-    @Test
-    void naoDeveCadastrarSeUsuarioIncorreto() {
-
-        CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-
-        mockAuth(request);
-
-        doThrow(ResponseStatusException.class)
-                .when(validaUsuarioService).porId(request.getIdUsuario());
-
-        assertThrows(ResponseStatusException.class,
-                () -> tested.cadastrar(request));
-
-        verify(receitaDiariaRepository, never()).save(any());
     }
 
     @Test
     void naoDeveCadastrarSeValorInvalido() {
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-
-        mockAuth(request);
 
         doThrow(ResponseStatusException.class)
                 .when(validaValorReceitaDiariaValidator)
@@ -102,6 +88,7 @@ class CadastrarReceitaDiariaServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
+        verify(usuarioAutenticadoService, never()).getUser();
         verify(receitaDiariaRepository, never()).save(any());
     }
 
@@ -110,8 +97,6 @@ class CadastrarReceitaDiariaServiceTest {
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
-        mockAuth(request);
-
         doThrow(ResponseStatusException.class)
                 .when(validaDataReceitaDiariaValidator)
                 .naoMaiorQueHoje(request.getDataReceita());
@@ -119,6 +104,7 @@ class CadastrarReceitaDiariaServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
+        verify(usuarioAutenticadoService, never()).getUser();
         verify(receitaDiariaRepository, never()).save(any());
     }
 }
