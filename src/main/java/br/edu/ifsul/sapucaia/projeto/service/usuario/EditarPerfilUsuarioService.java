@@ -7,7 +7,6 @@ import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaEmailUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -16,43 +15,41 @@ import lombok.RequiredArgsConstructor;
 public class EditarPerfilUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    private final ValidaUsuarioService validaUsuarioService;
-
     private final ValidaEmailUsuarioService validaEmailUsuarioService;
-
     private final ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
 
     @Transactional
-    public void editarPerfilUsuario(Long idUsuario, EditarPerfilUsuarioRequest editarPerfilUsuarioRequest) {
-        validaUsuarioService.porId(idUsuario);
+    public void editarPerfilUsuario(Long idUsuario, EditarPerfilUsuarioRequest request) {
 
-        if (editarPerfilUsuarioRequest.getEmail() != null) {
-            validaEmailUsuarioService.validaEmailUnicoParaEdicao(editarPerfilUsuarioRequest.getEmail(), idUsuario);
+        if (request.getEmail() != null) {
+            validaEmailUsuarioService.validaEmailUnicoParaEdicao(request.getEmail(), idUsuario);
         }
 
-        if (editarPerfilUsuarioRequest.getTelefone() != null) {
-            validaTelefoneUsuarioService.validaTelefoneUnicoParaEdicao(editarPerfilUsuarioRequest.getTelefone(), idUsuario);
+        if (request.getTelefone() != null) {
+            validaTelefoneUsuarioService.validaTelefoneUnicoParaEdicao(request.getTelefone(), idUsuario);
         }
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true).get();
+        Usuario usuario = usuarioRepository
+                .findByIdUsuarioAndIsAtivo(idUsuario, true)
+                .orElseThrow();
 
-        atualizaUsuario(usuario, editarPerfilUsuarioRequest);
+        atualizaUsuario(usuario, request);
 
         usuarioRepository.save(usuario);
-
     }
 
-    private void atualizaUsuario(Usuario usuario, EditarPerfilUsuarioRequest editarPerfilUsuarioRequest) {
-        if (editarPerfilUsuarioRequest.getNome() != null) {
-            usuario.setNome(editarPerfilUsuarioRequest.getNome());
+    private void atualizaUsuario(Usuario usuario, EditarPerfilUsuarioRequest request) {
+
+        if (request.getNome() != null) {
+            usuario.setNome(request.getNome());
         }
-        if (editarPerfilUsuarioRequest.getEmail() != null) {
-            usuario.setEmail(editarPerfilUsuarioRequest.getEmail());
+
+        if (request.getEmail() != null) {
+            usuario.setEmail(request.getEmail());
         }
-        if (editarPerfilUsuarioRequest.getTelefone() != null) {
-            usuario.setTelefone(editarPerfilUsuarioRequest.getTelefone());
+
+        if (request.getTelefone() != null) {
+            usuario.setTelefone(request.getTelefone());
         }
     }
-    
 }

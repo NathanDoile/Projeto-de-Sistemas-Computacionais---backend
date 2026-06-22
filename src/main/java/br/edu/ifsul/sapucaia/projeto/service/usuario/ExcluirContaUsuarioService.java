@@ -4,7 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsua
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaCorretaService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,19 +13,16 @@ import org.springframework.stereotype.Service;
 public class ExcluirContaUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    private final ValidaUsuarioService validaUsuarioService;
-
     private final ValidaSenhaCorretaService validaSenhaCorretaService;
 
     @Transactional
     public void excluirConta(Long idUsuario, ExcluirContaUsuarioRequest request) {
 
-        validaUsuarioService.porId(idUsuario);
         validaSenhaCorretaService.porIDESenha(idUsuario, request.getSenha());
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(idUsuario, true)
-                .get();
+        Usuario usuario = usuarioRepository
+                .findByIdUsuarioAndIsAtivo(idUsuario, true)
+                .orElseThrow();
 
         usuario.setAtivo(false);
 
