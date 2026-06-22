@@ -111,6 +111,8 @@ class EditarPerfilUsuarioServiceTest {
 
         verify(validaTelefoneUsuarioService)
                 .validaTelefoneUnicoParaEdicao(request.getTelefone(), ID);
+
+        verify(usuarioRepository).save(any());
     }
 
     @Test
@@ -135,6 +137,8 @@ class EditarPerfilUsuarioServiceTest {
 
         verify(validaTelefoneUsuarioService, never())
                 .validaTelefoneUnicoParaEdicao(any(), anyLong());
+
+        verify(usuarioRepository).save(any());
     }
 
     @Test
@@ -159,6 +163,8 @@ class EditarPerfilUsuarioServiceTest {
 
         verify(validaTelefoneUsuarioService, never())
                 .validaTelefoneUnicoParaEdicao(any(), anyLong());
+
+        verify(usuarioRepository).save(any());
     }
 
     @Test
