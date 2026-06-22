@@ -31,23 +31,12 @@ class CadastrarReceitaDiariaServiceTest {
     @InjectMocks
     private CadastrarReceitaDiariaService tested;
 
-    @Mock
-    private UsuarioRepository usuarioRepository;
-
-    @Mock
-    private ReceitaDiariaRepository receitaDiariaRepository;
-
-    @Mock
-    private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
-
-    @Mock
-    private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
-
-    @Mock
-    private UsuarioAutenticadoService usuarioAutenticadoService;
-
-    @Mock
-    private MetaRepository metaRepository;
+    @Mock private UsuarioRepository usuarioRepository;
+    @Mock private ReceitaDiariaRepository receitaDiariaRepository;
+    @Mock private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
+    @Mock private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
+    @Mock private UsuarioAutenticadoService usuarioAutenticadoService;
+    @Mock private MetaRepository metaRepository;
 
     @Test
     void deveCadastrarReceitaDiariaCorretamente() {
@@ -63,6 +52,8 @@ class CadastrarReceitaDiariaServiceTest {
                 .thenReturn(Optional.of(usuario));
 
         tested.cadastrar(request);
+
+        verify(usuarioAutenticadoService).getUser();
 
         verify(validaValorReceitaDiariaValidator)
                 .isPositivo(request.getValor());
@@ -88,7 +79,7 @@ class CadastrarReceitaDiariaServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
-        verify(usuarioAutenticadoService, never()).getUser();
+        verify(usuarioAutenticadoService).getUser();
         verify(receitaDiariaRepository, never()).save(any());
     }
 
@@ -104,7 +95,7 @@ class CadastrarReceitaDiariaServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
-        verify(usuarioAutenticadoService, never()).getUser();
+        verify(usuarioAutenticadoService).getUser();
         verify(receitaDiariaRepository, never()).save(any());
     }
 }
