@@ -3,8 +3,9 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaCorretaService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,11 @@ import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.excluirContaUsuarioRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,74 +37,85 @@ class ExcluirContaUsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Mock
-    private ValidaUsuarioService validaUsuarioService;
+    private ValidaSenhaCorretaService validaSenhaCorretaService;
 
     @Mock
-    private ValidaSenhaCorretaService validaSenhaCorretaService;
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
+    private UsuarioSecurity usuarioSecurity;
 
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
-    @Test
-    @DisplayName("Deve excluir o usuario corretamente")
-    void deveExcluirUsuarioCorretamente(){
+    private final Long ID = 1L;
 
-        Long id = 1L;
+    private void mockAuth() {
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioSecurity.getId()).thenReturn(ID);
+    }
+
+    @Test
+    @DisplayName("Deve excluir usuario corretamente")
+    void deveExcluirUsuarioCorretamente() {
+
+        mockAuth();
 
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
-
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
+                .thenReturn(Optional.of(usuario));
 
-        tested.excluirConta(id, request);
+        tested.excluirConta(request);
 
-        verify(validaUsuarioService).porId(id);
-        verify(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
-        verify(usuarioRepository).save(usuarioCaptor.capture());
+        verify(validaSenhaCorretaService)
+                .porIDESenha(ID, request.getSenha());
+
+        verify(usuarioRepository)
+                .findByIdUsuarioAndIsAtivo(ID, true);
+
+        verify(usuarioRepository)
+                .save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(request.getSenha(), response.getSenha());
-        assertEquals(id, response.getIdUsuario());
+        assertEquals(ID, response.getIdUsuario());
         assertFalse(response.isAtivo());
     }
 
     @Test
-    @DisplayName("Não deve excluir o usuario com id errado")
-    void naoDeveExcluirUsuarioIdErrado(){
+    @DisplayName("Não deve excluir usuario com senha errada")
+    void naoDeveExcluirUsuarioSenhaErrada() {
 
-        Long id = 1L;
+        mockAuth();
 
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
 
-        doThrow(ResponseStatusException.class).when(validaUsuarioService).porId(id);
+        doThrow(ResponseStatusException.class)
+                .when(validaSenhaCorretaService)
+                .porIDESenha(ID, request.getSenha());
 
-        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(id, request));
+        assertThrows(ResponseStatusException.class,
+                () -> tested.excluirConta(request));
 
-        verify(validaUsuarioService).porId(id);
-        verify(validaSenhaCorretaService, never()).porIDESenha(id, request.getSenha());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
-        verify(usuarioRepository, never()).save(any(Usuario.class));
+        verify(usuarioRepository, never()).save(any());
     }
 
     @Test
-    @DisplayName("Não deve excluir o usuario com senha errada")
-    void naoDeveExcluirUsuarioSenhaErrada(){
+    @DisplayName("Não deve excluir usuario se não existir")
+    void naoDeveExcluirUsuarioIdErrado() {
 
-        Long id = 1L;
+        mockAuth();
 
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
-        request.setSenha("Senhaerrada");
 
-        doThrow(ResponseStatusException.class).when(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
+                .thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(id, request));
+        assertThrows(ResponseStatusException.class,
+                () -> tested.excluirConta(request));
 
-        verify(validaUsuarioService).porId(id);
-        verify(validaSenhaCorretaService).porIDESenha(id, request.getSenha());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(any(Long.class), any(Boolean.class));
-        verify(usuarioRepository, never()).save(any(Usuario.class));
+        verify(usuarioRepository, never()).save(any());
     }
 }
