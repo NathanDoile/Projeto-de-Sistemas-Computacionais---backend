@@ -27,6 +27,7 @@ import java.util.List;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.CustoFactory.custo;
 import static br.edu.ifsul.sapucaia.projeto.factory.ManutencaoFactory.manutencao;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static java.util.List.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -60,18 +61,17 @@ class ExportarManutencoesServiceTest {
     void deveGerarRelatorioCorretamente() {
 
         String tipoPeriodo = "ano";
-
         String dataReferencia = DateNow.now().toString();
 
-        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         Veiculo veiculo = new Veiculo();
         veiculo.setIdVeiculo(1L);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(1L);
 
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(1L, true))
+        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(
+                usuarioSecurity.getId(), true))
                 .thenReturn(veiculo);
 
         PeriodoData periodoData = new PeriodoData(
@@ -99,7 +99,7 @@ class ExportarManutencoesServiceTest {
 
             byte[] response = tested.exportar(tipoPeriodo, dataReferencia);
 
-            verify(validaVeiculoService).porIdUsuario(1L);
+            verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
             verify(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
             verify(periodoDataHelper).calcularData(tipoPeriodo, dataReferencia);
 
@@ -123,35 +123,33 @@ class ExportarManutencoesServiceTest {
     void naoDeveGerarRelatorioCorretamente() {
 
         String tipoPeriodo = "ano";
-
         String dataReferencia = DateNow.now().toString();
 
-        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(1L);
 
         doThrow(ResponseStatusException.class)
                 .when(validaVeiculoService)
-                .porIdUsuario(1L);
+                .porIdUsuario(usuarioSecurity.getId());
 
         assertThrows(
                 ResponseStatusException.class,
                 () -> tested.exportar(tipoPeriodo, dataReferencia)
         );
 
-        verify(validaVeiculoService).porIdUsuario(1L);
+        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
 
         verify(validaTipoPeriodoValidator, never())
-                .porTipo(any(String.class));
+                .porTipo(anyString());
 
         verify(periodoDataHelper, never())
-                .calcularData(any(String.class), any(String.class));
+                .calcularData(anyString(), anyString());
 
         verify(manutencaoRepository, never())
                 .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
-                        any(Long.class),
-                        any(Boolean.class),
+                        anyLong(),
+                        anyBoolean(),
                         any(LocalDate.class),
                         any(LocalDate.class));
     }
@@ -161,13 +159,11 @@ class ExportarManutencoesServiceTest {
     void naoDeveGerarRelatorioCorretamenteSeTipoInvalido() {
 
         String tipoPeriodo = "invalido";
-
         String dataReferencia = DateNow.now().toString();
 
-        UsuarioSecurity usuarioSecurity = mock(UsuarioSecurity.class);
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(1L);
 
         doThrow(ResponseStatusException.class)
                 .when(validaTipoPeriodoValidator)
@@ -178,16 +174,16 @@ class ExportarManutencoesServiceTest {
                 () -> tested.exportar(tipoPeriodo, dataReferencia)
         );
 
-        verify(validaVeiculoService).porIdUsuario(1L);
+        verify(validaVeiculoService).porIdUsuario(usuarioSecurity.getId());
         verify(validaTipoPeriodoValidator).porTipo(tipoPeriodo);
 
         verify(periodoDataHelper, never())
-                .calcularData(any(String.class), any(String.class));
+                .calcularData(anyString(), anyString());
 
         verify(manutencaoRepository, never())
                 .findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(
-                        any(Long.class),
-                        any(Boolean.class),
+                        anyLong(),
+                        anyBoolean(),
                         any(LocalDate.class),
                         any(LocalDate.class));
     }

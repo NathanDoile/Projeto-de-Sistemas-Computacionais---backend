@@ -7,6 +7,7 @@ import br.edu.ifsul.sapucaia.projeto.domain.Manutencao;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.factory.CustoFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.ManutencaoFactory;
+import br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory;
 import br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.CustoRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
@@ -14,7 +15,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -47,9 +47,6 @@ class CadastrarManutencaoServiceTest {
     private ValidaDataManutencaoValidator validadataManutencaoValidator;
 
     @Mock
-    private ValidaVeiculoService validaVeiculoService;
-
-    @Mock
     private VeiculoRepository veiculoRepository;
 
     @Mock
@@ -64,9 +61,6 @@ class CadastrarManutencaoServiceTest {
     @Mock
     private UsuarioAutenticadoService usuarioAutenticadoService;
 
-    @Mock
-    private UsuarioSecurity usuarioSecurity;
-
     @Captor
     private ArgumentCaptor<Manutencao> manutencaoCaptor;
 
@@ -76,16 +70,14 @@ class CadastrarManutencaoServiceTest {
     @Captor
     private ArgumentCaptor<Custo> custoCaptor;
 
-    private void mockUsuario() {
-        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(1L);
-    }
-
     @Test
     @DisplayName("Deve cadastrar a manutenção corretamente")
     void deveCadastrarManutencaoCorretamente() {
 
-        mockUsuario();
+        UsuarioSecurity usuarioSecurity = UsuarioFactory.usuarioSecurity();
+
+        when(usuarioAutenticadoService.getUser())
+                .thenReturn(usuarioSecurity);
 
         CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
 
@@ -118,23 +110,6 @@ class CadastrarManutencaoServiceTest {
     }
 
     @Test
-    @DisplayName("Não deve cadastrar a manutenção se o veículo for inválido")
-    void naoDeveCadastrarManutencaoSeVeiculoForInvalido() {
-
-        mockUsuario();
-
-        CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
-
-        doThrow(ResponseStatusException.class)
-                .when(validaVeiculoService)
-                .porIdUsuario(1L);
-
-        assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
-
-        verify(manutencaoRepository, never()).save(any());
-    }
-
-    @Test
     @DisplayName("Não deve cadastrar a manutenção se o tipo for inválido")
     void naoDeveCadastrarManutencaoSeTipoForInvalido() {
 
@@ -146,6 +121,7 @@ class CadastrarManutencaoServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
 
+        verify(usuarioAutenticadoService, never()).getUser();
         verify(manutencaoRepository, never()).save(any());
     }
 
@@ -161,6 +137,7 @@ class CadastrarManutencaoServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
 
+        verify(usuarioAutenticadoService, never()).getUser();
         verify(manutencaoRepository, never()).save(any());
     }
 }

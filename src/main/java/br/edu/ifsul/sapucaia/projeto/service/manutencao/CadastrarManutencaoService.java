@@ -14,7 +14,6 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import jakarta.transaction.Transactional;
@@ -27,7 +26,6 @@ public class CadastrarManutencaoService {
 
     private final ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
     private final ValidaDataManutencaoValidator validadataManutencaoValidator;
-    private final ValidaVeiculoService validaVeiculoService;
     private final VeiculoRepository veiculoRepository;
     private final CustoRepository custoRepository;
     private final ManutencaoRepository manutencaoRepository;
@@ -41,8 +39,6 @@ public class CadastrarManutencaoService {
         validadataManutencaoValidator.dataMenorQueHoje(request.getDataManutencao());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
-
-        validaVeiculoService.porIdUsuario(usuarioSecurity.getId());
 
         CadastrarCustoRequest custoRequest = CadastrarCustoRequest.builder()
                 .tipo(TipoCusto.MANUTENCAO.getDescricao())

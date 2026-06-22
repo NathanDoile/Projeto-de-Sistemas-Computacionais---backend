@@ -19,7 +19,6 @@ public class MetaFactory {
                 .valor(200.00)
                 .formato(SEMANAL.toString())
                 .tipo(RECEITA.toString())
-                .idUsuario(1L)
                 .build();
     }
 
