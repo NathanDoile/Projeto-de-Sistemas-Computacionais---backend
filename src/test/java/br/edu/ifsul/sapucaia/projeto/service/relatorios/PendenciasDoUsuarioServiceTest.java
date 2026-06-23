@@ -44,7 +44,7 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(8));
         veiculo.setKmAtual(10000);
         veiculo.setProximaManutencaoKm(10000);
-        veiculo.setProximaManutencaoData(LocalDate.now().minusDays(1));
+        veiculo.setProximaManutencaoData(LocalDate.now().minusDays(3));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
@@ -71,7 +71,7 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(5));
         veiculo.setKmAtual(9000);
         veiculo.setProximaManutencaoKm(10000);
-        veiculo.setProximaManutencaoData(LocalDate.now().plusDays(5));
+        veiculo.setProximaManutencaoData(LocalDate.now().plusDays(7));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
