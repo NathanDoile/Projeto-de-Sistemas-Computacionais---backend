@@ -4,7 +4,8 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.AtualizarKmVeicu
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
+import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
+import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaKmAtualizadoVeiculoValidator;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -17,16 +18,16 @@ public class AtualizarKmVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
-    private final ValidaUsuarioService validaUsuarioService;
+    private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     private final ValidaKmAtualizadoVeiculoValidator validaKmAtualizadoVeiculoValidator;
 
     @Transactional
     public void atualizar(@Valid AtualizarKmVeiculoRequest atualizarKmVeiculoRequest) {
 
-        validaUsuarioService.porId(atualizarKmVeiculoRequest.getIdUsuario());
+        UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(atualizarKmVeiculoRequest.getIdUsuario(), true);
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
 
         validaKmAtualizadoVeiculoValidator.maiorQueAtual(atualizarKmVeiculoRequest.getKmAtualizado(), veiculo.getKmAtual());
 

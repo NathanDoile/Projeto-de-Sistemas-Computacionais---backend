@@ -27,10 +27,10 @@ public class UsuarioController {
         return cadastrarUsuarioService.cadastrarUsuario(cadastrarUsuarioRequest);
     }
 
-    @PutMapping("/{id}/alterar-senha")
+    @PutMapping("/alterar-senha")
     @ResponseStatus(OK)
-    public void alterarSenhaUsuario(@PathVariable Long id, @Valid @RequestBody AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
-        alterarSenhaUsuarioService.alterarSenhaUsuario(id, alterarSenhaUsuarioRequest);
+    public void alterarSenhaUsuario(@Valid @RequestBody AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
+        alterarSenhaUsuarioService.alterarSenhaUsuario(alterarSenhaUsuarioRequest);
     }
 
     @PutMapping("/editar-perfil")
@@ -49,9 +49,9 @@ public class UsuarioController {
         excluirContaUsuarioService.excluirConta(request);
     }
 
-    @PutMapping("/notificacoes/{id}")
+    @PutMapping("/notificacoes")
     @ResponseStatus(OK)
-    public void alterarNotificacoes(@PathVariable Long id, @Valid @RequestBody AlterarNotificacoesRequest request){
-        alterarNotificacoesService.alterarNotificacoes(id, request);
+    public void alterarNotificacoes(@Valid @RequestBody AlterarNotificacoesRequest request){
+        alterarNotificacoesService.alterarNotificacoes(request);
     }
 }

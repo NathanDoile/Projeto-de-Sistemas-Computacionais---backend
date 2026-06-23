@@ -47,7 +47,6 @@ public class VeiculoFactory {
 
         return AtualizarKmVeiculoRequest
                 .builder()
-                .idUsuario(1L)
                 .kmAtualizado(79300)
                 .build();
     }
