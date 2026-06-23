@@ -188,8 +188,6 @@ class AlterarNotificacoesServiceTest {
 
         UsuarioSecurity usuarioLogado = usuarioSecurity();
 
-        Long id = usuarioLogado.getId();
-
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
         doThrow(ResponseStatusException.class).when(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
 

@@ -49,6 +49,9 @@ class AtualizarKmVeiculoServiceTest {
         UsuarioSecurity usuario = usuarioSecurity();
         Veiculo veiculo = veiculo();
 
+        int kmAtualizado = (int) request.getKmAtualizado();
+        int kmAtual = (int) veiculo.getKmAtual();
+
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
 
@@ -56,7 +59,7 @@ class AtualizarKmVeiculoServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
-        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
+        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(veiculoRepository).save(veiculoCaptor.capture());
 
         Veiculo response = veiculoCaptor.getValue();
@@ -72,17 +75,20 @@ class AtualizarKmVeiculoServiceTest {
         UsuarioSecurity usuario = usuarioSecurity();
         Veiculo veiculo = veiculo();
 
+        int kmAtualizado = (int) request.getKmAtualizado();
+        int kmAtual = (int) veiculo.getKmAtual();
+
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
         
         doThrow(ResponseStatusException.class)
-                .when(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
+                .when(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
 
         assertThrows(ResponseStatusException.class, () -> tested.atualizar(request));
 
         verify(usuarioAutenticadoService).getUser();
         verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
-        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(anyInt(), anyInt());
+        verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(veiculoRepository, never()).save(any(Veiculo.class));
 
     }
