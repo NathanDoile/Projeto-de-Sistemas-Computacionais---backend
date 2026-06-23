@@ -43,7 +43,7 @@ class PendenciasDoUsuarioServiceTest {
         Veiculo veiculo = veiculo();
         veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(10));
         veiculo.setKmAtual(8000);
-        veiculo.setProximaManutencaoKm(75000);
+        veiculo.setProximaManutencaoKm(7500);
         veiculo.setProximaManutencaoData(LocalDate.now().minusDays(5));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
