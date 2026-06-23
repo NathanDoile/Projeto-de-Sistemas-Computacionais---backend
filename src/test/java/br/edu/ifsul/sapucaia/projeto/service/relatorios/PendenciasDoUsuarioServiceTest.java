@@ -41,10 +41,10 @@ class PendenciasDoUsuarioServiceTest {
         Long id = usuarioLogado.getId();
 
         Veiculo veiculo = veiculo();
-        veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(8));
-        veiculo.setKmAtual(10000);
-        veiculo.setProximaManutencaoKm(10000);
-        veiculo.setProximaManutencaoData(LocalDate.now().minusDays(3));
+        veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(10));
+        veiculo.setKmAtual(8000);
+        veiculo.setProximaManutencaoKm(75000);
+        veiculo.setProximaManutencaoData(LocalDate.now().minusDays(5));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
