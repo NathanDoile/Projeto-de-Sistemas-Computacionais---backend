@@ -48,9 +48,7 @@ public class CadastrarReceitaDiariaService {
 
         ReceitaDiaria receitaDiaria = toEntity(request);
 
-        Usuario usuario = usuarioRepository
-                .findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)
-                .orElseThrow();
+        Usuario usuario = usuarioRepository.findById(usuarioSecurity.getId()).get();
 
         List<Meta> metas = usuario.getMetas()
                 .stream()

@@ -4,8 +4,6 @@ import br.edu.ifsul.sapucaia.projeto.controller.request.receita_diaria.Cadastrar
 import br.edu.ifsul.sapucaia.projeto.domain.ReceitaDiaria;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-
 public class ReceitaDiariaFactory {
 
     public static CadastrarReceitaDiariaRequest cadastrarReceitaDiariaRequest() {
