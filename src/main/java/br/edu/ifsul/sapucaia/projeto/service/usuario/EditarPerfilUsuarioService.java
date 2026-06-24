@@ -10,9 +10,6 @@ import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaTelefoneUsuarioServ
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +25,7 @@ public class EditarPerfilUsuarioService {
 
         UsuarioSecurity usuarioLogado = usuarioAutenticadoService.getUser();
 
-        Usuario usuario = usuarioRepository
-                .findByIdUsuarioAndIsAtivo(usuarioLogado.getId(), true)
-                .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Usuário não encontrado")
-                );
+        Usuario usuario = usuarioRepository.findById(usuarioLogado.getId()).get();
 
         if (request.getEmail() != null) {
             validaEmailUsuarioService.validaEmailUnicoParaEdicao(

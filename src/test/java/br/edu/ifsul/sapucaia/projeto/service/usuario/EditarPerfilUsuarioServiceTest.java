@@ -19,11 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.editarPerfilUsuarioRequest;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,137 +34,171 @@ class EditarPerfilUsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Mock
+    private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
     private ValidaEmailUsuarioService validaEmailUsuarioService;
 
     @Mock
     private ValidaTelefoneUsuarioService validaTelefoneUsuarioService;
 
-    @Mock
-    private UsuarioAutenticadoService usuarioAutenticadoService;
-
-    @Mock
-    private UsuarioSecurity usuarioSecurity;
-
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
-    private final Long ID = 1L;
-
-    private void mockAuth() {
-        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioSecurity.getId()).thenReturn(ID);
-    }
-
     @Test
     @DisplayName("Deve editar perfil com os dados corretos")
-    void deveEditarPerfilComDadosCorretos() {
-
-        mockAuth();
+    void deveEditarPerfilComDadosCorretos(){
 
         EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
-                .thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editarPerfilUsuario(request);
 
-        verify(validaEmailUsuarioService)
-                .validaEmailUnicoParaEdicao(request.getEmail(), ID);
-
-        verify(validaTelefoneUsuarioService)
-                .validaTelefoneUnicoParaEdicao(request.getTelefone(), ID);
-
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
         verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(request.getEmail(), response.getEmail());
+        assertEquals(request.getNome(), response.getNome());
+        assertEquals(request.getTelefone(), response.getTelefone());
     }
 
     @Test
     @DisplayName("Deve editar perfil com apenas telefone")
-    void deveEditarPerfilComApenasTelefone() {
-
-        mockAuth();
+    void deveEditarPerfilComApenasTelefone(){
 
         EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
         request.setEmail(null);
         request.setNome(null);
 
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
-                .thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editarPerfilUsuario(request);
 
-        verify(validaEmailUsuarioService, never())
-                .validaEmailUnicoParaEdicao(any(), anyLong());
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService, never()).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository).save(usuarioCaptor.capture());
 
-        verify(validaTelefoneUsuarioService)
-                .validaTelefoneUnicoParaEdicao(request.getTelefone(), ID);
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(usuario.getEmail(), response.getEmail());
+        assertEquals(usuario.getNome(), response.getNome());
+        assertEquals(request.getTelefone(), response.getTelefone());
     }
 
     @Test
-    @DisplayName("Deve editar perfil com apenas email")
-    void deveEditarPerfilComApenasEmail() {
-
-        mockAuth();
+    @DisplayName("Deve editar perfil com apenas Email")
+    void deveEditarPerfilComApenasEmail(){
 
         EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
         request.setTelefone(null);
         request.setNome(null);
 
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
         Usuario usuario = usuario();
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
-                .thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         tested.editarPerfilUsuario(request);
 
-        verify(validaEmailUsuarioService)
-                .validaEmailUnicoParaEdicao(request.getEmail(), ID);
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService, never()).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository).save(usuarioCaptor.capture());
 
-        verify(validaTelefoneUsuarioService, never())
-                .validaTelefoneUnicoParaEdicao(any(), anyLong());
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(request.getEmail(), response.getEmail());
+        assertEquals(usuario.getNome(), response.getNome());
+        assertEquals(usuario.getTelefone(), response.getTelefone());
     }
 
     @Test
-    @DisplayName("Nao deve editar quando email for invalido")
-    void naoDeveEditarPerfilComEmailErrado() {
-
-        mockAuth();
+    @DisplayName("Deve editar perfil com apenas nome")
+    void deveEditarPerfilComApenasNome(){
 
         EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
+        request.setTelefone(null);
+        request.setEmail(null);
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
-                .thenReturn(Optional.of(usuario()));
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
-        doThrow(ResponseStatusException.class)
-                .when(validaEmailUsuarioService)
-                .validaEmailUnicoParaEdicao(request.getEmail(), ID);
+        Usuario usuario = usuario();
 
-        assertThrows(ResponseStatusException.class,
-                () -> tested.editarPerfilUsuario(request));
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
-        verify(usuarioRepository, never()).save(any());
+        tested.editarPerfilUsuario(request);
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService, never()).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService, never()).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository).save(usuarioCaptor.capture());
+
+        Usuario response = usuarioCaptor.getValue();
+
+        assertEquals(usuario.getEmail(), response.getEmail());
+        assertEquals(request.getNome(), response.getNome());
+        assertEquals(usuario.getTelefone(), response.getTelefone());
     }
 
     @Test
-    @DisplayName("Nao deve editar quando telefone for invalido")
-    void naoDeveEditarPerfilComTelefoneErrado() {
-
-        mockAuth();
+    @DisplayName("Nao deve editar perfil com o email errado")
+    void naoDeveEditarPerfilComEmailErrado(){
 
         EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(ID, true))
-                .thenReturn(Optional.of(usuario()));
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario()));
+        doThrow(ResponseStatusException.class).when(validaEmailUsuarioService).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
 
-        doThrow(ResponseStatusException.class)
-                .when(validaTelefoneUsuarioService)
-                .validaTelefoneUnicoParaEdicao(request.getTelefone(), ID);
+        assertThrows(ResponseStatusException.class, () -> tested.editarPerfilUsuario(request));
 
-        assertThrows(ResponseStatusException.class,
-                () -> tested.editarPerfilUsuario(request));
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService, never()).validaTelefoneUnicoParaEdicao(any(String.class), any(Long.class));
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
+    }
 
-        verify(usuarioRepository, never()).save(any());
+    @Test
+    @DisplayName("Nao deve editar perfil com o telefone errado")
+    void naoDeveEditarPerfilComTelefoneErrado(){
+
+        EditarPerfilUsuarioRequest request = editarPerfilUsuarioRequest();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario()));
+        doThrow(ResponseStatusException.class).when(validaTelefoneUsuarioService).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+
+        assertThrows(ResponseStatusException.class, () -> tested.editarPerfilUsuario(request));
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaEmailUsuarioService).validaEmailUnicoParaEdicao(request.getEmail(), usuarioSecurity.getId());
+        verify(validaTelefoneUsuarioService).validaTelefoneUnicoParaEdicao(request.getTelefone(), usuarioSecurity.getId());
+        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }
