@@ -2,12 +2,10 @@ package br.edu.ifsul.sapucaia.projeto.service.usuario;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.ExcluirContaUsuarioRequest;
 import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
-import br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaCorretaService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +21,6 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
 class ExcluirContaUsuarioServiceTest {
