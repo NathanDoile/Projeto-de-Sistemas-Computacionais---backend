@@ -31,11 +31,7 @@ public class ExcluirContaUsuarioService {
                 request.getSenha()
         );
 
-        Usuario usuario = usuarioRepository
-                .findByIdUsuarioAndIsAtivo(usuarioLogado.getId(), true)
-                .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Usuário não encontrado")
-                );
+        Usuario usuario = usuarioRepository.findById(usuarioLogado.getId()).get();
 
         usuario.setAtivo(false);
 
