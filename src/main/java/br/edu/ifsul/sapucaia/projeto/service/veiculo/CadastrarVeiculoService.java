@@ -32,8 +32,6 @@ public class CadastrarVeiculoService {
 
     private final ValidaTipoVeiculoValidator validaTipoVeiculoValidator;
 
-    private final ValidaAnoVeiculoValidator validaAnoVeiculoValidator;
-
     private final ValidaUsuarioService validaUsuarioService;
 
     private final UsuarioRepository usuarioRepository;
@@ -51,7 +49,6 @@ public class CadastrarVeiculoService {
         validaVeiculoService.jaExistePlaca(cadastrarVeiculoRequest.getPlaca());
         validarPlacaValidator.formatoValido(cadastrarVeiculoRequest.getPlaca());
         validaTipoVeiculoValidator.tipoAceito(cadastrarVeiculoRequest.getTipo());
-        validaAnoVeiculoValidator.anoMenorQueAtual(cadastrarVeiculoRequest.getAno());
         validaUsuarioService.porId(cadastrarVeiculoRequest.getIdUsuario());
 
         Usuario usuario = usuarioRepository.findById(cadastrarVeiculoRequest.getIdUsuario()).get();

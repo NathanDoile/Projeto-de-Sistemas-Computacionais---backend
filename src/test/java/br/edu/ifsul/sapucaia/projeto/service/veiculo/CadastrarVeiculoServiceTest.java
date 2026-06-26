@@ -50,9 +50,6 @@ class CadastrarVeiculoServiceTest {
     private ValidaTipoVeiculoValidator validaTipoVeiculoValidator;
 
     @Mock
-    private ValidaAnoVeiculoValidator validaAnoVeiculoValidator;
-
-    @Mock
     private ValidaUsuarioService validaUsuarioService;
 
     @Mock
@@ -104,7 +101,6 @@ class CadastrarVeiculoServiceTest {
         verify(validaVeiculoService).jaExistePlaca(request.getPlaca());
         verify(validarPlacaValidator).formatoValido(request.getPlaca());
         verify(validaTipoVeiculoValidator).tipoAceito(request.getTipo());
-        verify(validaAnoVeiculoValidator).anoMenorQueAtual(request.getAno());
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
@@ -141,7 +137,6 @@ class CadastrarVeiculoServiceTest {
         verify(validaVeiculoService).jaExistePlaca(request.getPlaca());
         verify(validarPlacaValidator).formatoValido(request.getPlaca());
         verify(validaTipoVeiculoValidator).tipoAceito(request.getTipo());
-        verify(validaAnoVeiculoValidator).anoMenorQueAtual(request.getAno());
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
