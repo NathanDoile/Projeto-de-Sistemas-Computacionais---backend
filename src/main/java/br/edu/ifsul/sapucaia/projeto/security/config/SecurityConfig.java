@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -40,7 +41,7 @@ public class SecurityConfig {
                         //.requestMatchers(POST, "/login").permitAll()
                         .requestMatchers(POST, "/security/enviar-codigo").permitAll()
                         .requestMatchers(POST, "/security/validar-codigo").permitAll()
-                        .requestMatchers(POST, "/security/redefinir-senha").permitAll()
+                        .requestMatchers(PUT, "/security/redefinir-senha").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic
