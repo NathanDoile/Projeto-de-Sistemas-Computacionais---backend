@@ -12,13 +12,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 @RequiredArgsConstructor
 public class RedefinirSenhaService {
 
     private final UsuarioRepository usuarioRepository;
+
     private final ValidaCodigoValidator validaCodigoValidator;
+
     private final ValidaNovaSenhaUsuarioService validaNovaSenhaUsuarioService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void redefinirSenha(RedefinirSenhaRequest request) {
@@ -28,7 +34,7 @@ public class RedefinirSenhaService {
         validaCodigoValidator.validarCodigo(usuario, request.getCodigo());
         validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
 
-        usuario.setSenha(request.getSenha());
+        usuario.setSenha(passwordEncoder.encode(request.getSenha()));
         usuario.setCodigoRedefinirSenha(null);
         usuario.setTentativasRedefinirSenha(-1);
         

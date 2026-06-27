@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -21,6 +22,9 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.security.factory.SenhaFactory.redefinirSenhaRequest;
 import static br.edu.ifsul.sapucaia.projeto.security.factory.SenhaFactory.usuarioComCodigo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +42,9 @@ class RedefinirSenhaServiceTest {
     @Mock
     private ValidaNovaSenhaUsuarioService validaNovaSenhaUsuarioService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @Captor
     private ArgumentCaptor<Usuario> usuarioCaptor;
 
@@ -48,6 +55,7 @@ class RedefinirSenhaServiceTest {
         Usuario usuario = usuarioComCodigo(request.getCodigo(), 0);
 
         when(usuarioRepository.findByEmailAndIsAtivo(request.getEmail(), true)).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.encode(request.getSenha())).thenReturn(request.getSenha());
 
         tested.redefinirSenha(request);
 
@@ -63,7 +71,7 @@ class RedefinirSenhaServiceTest {
     }
 
     @Test
-    @DisplayName("Deve dispara rNOT_FOUND quando o e-mail não for encontrado")
+    @DisplayName("Deve disparar NOT_FOUND quando o e-mail não for encontrado")
     void deveDispararNotFoundQuandoEmailNaoExistir() {
         RedefinirSenhaRequest request = redefinirSenhaRequest();
 

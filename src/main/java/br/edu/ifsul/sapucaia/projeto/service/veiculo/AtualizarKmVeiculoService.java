@@ -1,11 +1,14 @@
 package br.edu.ifsul.sapucaia.projeto.service.veiculo;
 
 import br.edu.ifsul.sapucaia.projeto.controller.request.veiculo.AtualizarKmVeiculoRequest;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ManutencaoIAResponse;
+import br.edu.ifsul.sapucaia.projeto.controller.response.ia.ProximaRevisaoIAResponse;
 import br.edu.ifsul.sapucaia.projeto.domain.Veiculo;
 import br.edu.ifsul.sapucaia.projeto.helper.DateNow;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
+import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaKmAtualizadoVeiculoValidator;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,6 +25,8 @@ public class AtualizarKmVeiculoService {
 
     private final ValidaKmAtualizadoVeiculoValidator validaKmAtualizadoVeiculoValidator;
 
+    private final IAService iaService;
+
     @Transactional
     public void atualizar(@Valid AtualizarKmVeiculoRequest atualizarKmVeiculoRequest) {
 
@@ -33,7 +38,32 @@ public class AtualizarKmVeiculoService {
 
         veiculo.setKmAtual(atualizarKmVeiculoRequest.getKmAtualizado());
         veiculo.setDataUltimaAtualizacaoKm(DateNow.now());
-        veiculo.setProximaManutencaoData(DateNow.now().plusMonths(veiculo.getIntervaloEntreManutencoesMeses()));
+
+        if(veiculo.getIntervaloEntreManutencoesKm() == 0) {
+            ManutencaoIAResponse manutencaoIAResponse;
+            try {
+                manutencaoIAResponse = iaService.chamadaChat(veiculo.getMarca() + " " +
+                        veiculo.getModelo() + " " +
+                        veiculo.getAno() + " " +
+                        veiculo.getKmAtual() + " km");
+
+                veiculo.setProximaManutencaoKm(veiculo.getKmAtual() + manutencaoIAResponse.proximaRevisao().distanciaRestanteKm());
+                veiculo.setProximaManutencaoData(veiculo.getDataUltimaAtualizacaoKm().plusMonths(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses()));
+            } catch (Exception e) {
+                manutencaoIAResponse = new ManutencaoIAResponse(
+                        null,
+                        new ProximaRevisaoIAResponse(0, 0, 0)
+                );
+                veiculo.setProximaManutencaoKm(0);
+                veiculo.setProximaManutencaoData(null);
+            }
+
+            veiculo.setIntervaloEntreManutencoesKm(manutencaoIAResponse.proximaRevisao().intervaloManutencoesKm());
+            veiculo.setIntervaloEntreManutencoesMeses(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses());
+        }
+        else{
+            veiculo.setProximaManutencaoData(DateNow.now().plusMonths(veiculo.getIntervaloEntreManutencoesMeses()));
+        }
 
         veiculoRepository.save(veiculo);
     }

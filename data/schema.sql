@@ -47,7 +47,7 @@ CREATE TABLE veiculo(
     intervalo_entre_manutencoes_km INTEGER NOT NULL,
     intervalo_entre_manutencoes_meses INTEGER NOT NULL,
     proxima_manutencao_Km INTEGER NOT NULL,
-    proxima_manutencao_data DATE NOT NULL,
+    proxima_manutencao_data DATE,
     is_ativo BOOLEAN NOT NULL,
     PRIMARY KEY(id_veiculo),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario)

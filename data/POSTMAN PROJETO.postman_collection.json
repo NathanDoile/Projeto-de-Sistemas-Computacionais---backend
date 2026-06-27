@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "77bf0d63-6853-4497-8a44-cf9fe00961dd",
+    "_postman_id": "1b92156b-6e9a-4e59-9cd9-4755bba9d836",
     "name": "POSTMAN PROJETO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "53222404",
-    "_collection_link": "https://go.postman.co/collection/53222404-77bf0d63-6853-4497-8a44-cf9fe00961dd?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/53222404-1b92156b-6e9a-4e59-9cd9-4755bba9d836?source=collection_link"
   },
   "item": [
     {
@@ -388,7 +388,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"idUsuario\":1,\r\n    \"kmAtualizado\": 45300\r\n}",
+          "raw": "{\r\n    \"kmAtualizado\": 45300\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -764,7 +764,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/usuario/:{id}/excluir-conta",
+          "raw": "http://localhost:8080/usuario/excluir-conta",
           "protocol": "http",
           "host": [
             "localhost"
@@ -772,14 +772,7 @@
           "port": "8080",
           "path": [
             "usuario",
-            ":{id}",
             "excluir-conta"
-          ],
-          "variable": [
-            {
-              "key": "{id}",
-              "value": "1"
-            }
           ]
         }
       },

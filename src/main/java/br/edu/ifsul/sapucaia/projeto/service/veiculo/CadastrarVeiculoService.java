@@ -69,6 +69,7 @@ public class CadastrarVeiculoService {
                     cadastrarVeiculoRequest.getKmAtual() + " km");
 
             veiculo.setProximaManutencaoKm(veiculo.getKmAtual() + manutencaoIAResponse.proximaRevisao().distanciaRestanteKm());
+            veiculo.setProximaManutencaoData(veiculo.getDataUltimaAtualizacaoKm().plusMonths(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses()));
         }
         catch(Exception e){
             manutencaoIAResponse = new ManutencaoIAResponse(
@@ -76,11 +77,11 @@ public class CadastrarVeiculoService {
                     new ProximaRevisaoIAResponse(0,0, 0)
             );
             veiculo.setProximaManutencaoKm(0);
+            veiculo.setProximaManutencaoData(null);
         }
 
         veiculo.setIntervaloEntreManutencoesKm(manutencaoIAResponse.proximaRevisao().intervaloManutencoesKm());
         veiculo.setIntervaloEntreManutencoesMeses(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses());
-        veiculo.setProximaManutencaoData(veiculo.getDataUltimaAtualizacaoKm().plusMonths(manutencaoIAResponse.proximaRevisao().intervaloManutencoesMeses()));
 
         veiculoRepository.save(veiculo);
 

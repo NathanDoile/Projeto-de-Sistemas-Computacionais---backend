@@ -69,8 +69,7 @@
 
 - **Exclui a conta de um usuário**
   - Precisa estar logado para utilizar esse path
-  - Parâmetros de URL: `id`, é o identificador do usuário
-  - `DELETE /{id}/excluir-conta`
+  - `DELETE /excluir-conta`
 
     ```json
     {
@@ -247,7 +246,6 @@
       
       ```json
             {
-                    "idUsuario":1,
                     "kmAtualizado":45300
             }
       ```   
