@@ -13,7 +13,6 @@ import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaAnoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import org.junit.jupiter.api.DisplayName;
