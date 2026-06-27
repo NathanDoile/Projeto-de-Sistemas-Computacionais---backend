@@ -124,8 +124,6 @@ class AtualizarKmVeiculoServiceTest {
         int kmAtualizado = (int) request.getKmAtualizado();
         int kmAtual = (int) veiculo.getKmAtual();
 
-        ManutencaoIAResponse iaresponse = IAFactory.response();
-
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
         when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
         when(iaService.chamadaChat(anyString())).thenThrow(new RuntimeException("IA indisponível"));
