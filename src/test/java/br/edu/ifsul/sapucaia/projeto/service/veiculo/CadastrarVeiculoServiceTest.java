@@ -13,7 +13,6 @@ import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaAnoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -28,8 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -152,7 +150,7 @@ class CadastrarVeiculoServiceTest {
         assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesKm());
         assertEquals(0, veiculoResponse.getIntervaloEntreManutencoesMeses());
         assertEquals(0, veiculoResponse.getProximaManutencaoKm());
-        assertEquals(veiculoResponse.getProximaManutencaoData(), veiculoResponse.getDataUltimaAtualizacaoKm().plusMonths(0));
+        assertNull(veiculoResponse.getProximaManutencaoData());
         assertEquals(veiculoResponse, usuarioResponse.getVeiculo());
         assertTrue(usuarioResponse.isPossuiVeiculo());
     }

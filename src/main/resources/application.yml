@@ -22,7 +22,7 @@ spring:
 gemini:
   baseurl: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=%s
   api:
-    key: secrets.CHAVE_API_GEMINI
+    key: AIzaSyBKOPr6qgDkydr4YHhflLE63QCNaX2nucs
 
 logging:
   pattern:
