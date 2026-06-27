@@ -23,7 +23,7 @@ public class RedefinirSenhaService {
     private final ValidaCodigoValidator validaCodigoValidator;
 
     private final ValidaNovaSenhaUsuarioService validaNovaSenhaUsuarioService;
-
+    
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -32,7 +32,7 @@ public class RedefinirSenhaService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "E-mail não encontrado."));
 
         validaCodigoValidator.validarCodigo(usuario, request.getCodigo());
-        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
+        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario, request.getSenha());
 
         usuario.setSenha(passwordEncoder.encode(request.getSenha()));
         usuario.setCodigoRedefinirSenha(null);
@@ -40,5 +40,4 @@ public class RedefinirSenhaService {
         
         usuarioRepository.save(usuario);
     }
-    
 }

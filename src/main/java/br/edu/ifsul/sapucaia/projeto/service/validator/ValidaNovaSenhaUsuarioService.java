@@ -1,7 +1,8 @@
 package br.edu.ifsul.sapucaia.projeto.service.validator;
 
-import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
+import br.edu.ifsul.sapucaia.projeto.domain.Usuario;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,10 +12,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RequiredArgsConstructor
 public class ValidaNovaSenhaUsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public void validaIgualdadeEntreSenhas(Long id, String novaSenha){
-        if(usuarioRepository.existsByIdUsuarioAndSenhaAndIsAtivo(id, novaSenha, true)){
+    public void validaIgualdadeEntreSenhas(Usuario usuario, String novaSenha) {
+        if (passwordEncoder.matches(novaSenha, usuario.getSenha())) {
             throw new ResponseStatusException(BAD_REQUEST, "A nova senha precisa ser diferente da atual.");
         }
     }

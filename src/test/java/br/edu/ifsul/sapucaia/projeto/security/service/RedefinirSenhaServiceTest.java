@@ -23,7 +23,6 @@ import static br.edu.ifsul.sapucaia.projeto.security.factory.SenhaFactory.redefi
 import static br.edu.ifsul.sapucaia.projeto.security.factory.SenhaFactory.usuarioComCodigo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -61,7 +60,7 @@ class RedefinirSenhaServiceTest {
 
         verify(usuarioRepository).findByEmailAndIsAtivo(request.getEmail(), true);
         verify(validaCodigoValidator).validarCodigo(usuario, request.getCodigo());
-        verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
+        verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario, request.getSenha());
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario salvo = usuarioCaptor.getValue();
@@ -85,7 +84,7 @@ class RedefinirSenhaServiceTest {
 
         verify(usuarioRepository).findByEmailAndIsAtivo(request.getEmail(), true);
         verify(validaCodigoValidator, never()).validarCodigo(any(Usuario.class), anyString());
-        verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(anyLong(), anyString());
+        verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(any(Usuario.class), anyString());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -102,7 +101,7 @@ class RedefinirSenhaServiceTest {
 
         verify(usuarioRepository).findByEmailAndIsAtivo(request.getEmail(), true);
         verify(validaCodigoValidator).validarCodigo(usuario, request.getCodigo());
-        verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(anyLong(), anyString());
+        verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(any(Usuario.class), anyString());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -114,13 +113,13 @@ class RedefinirSenhaServiceTest {
 
         when(usuarioRepository.findByEmailAndIsAtivo(request.getEmail(), true)).thenReturn(Optional.of(usuario));
         doThrow(ResponseStatusException.class).when(validaNovaSenhaUsuarioService)
-                .validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
+                .validaIgualdadeEntreSenhas(usuario, request.getSenha());
 
         assertThrows(ResponseStatusException.class, () -> tested.redefinirSenha(request));
 
         verify(usuarioRepository).findByEmailAndIsAtivo(request.getEmail(), true);
         verify(validaCodigoValidator).validarCodigo(usuario, request.getCodigo());
-        verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario.getIdUsuario(), request.getSenha());
+        verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario, request.getSenha());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }

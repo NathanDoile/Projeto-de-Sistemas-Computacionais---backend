@@ -14,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 @RequiredArgsConstructor
 public class AlterarSenhaUsuarioService {
@@ -25,6 +27,8 @@ public class AlterarSenhaUsuarioService {
 
     private final ValidaNovaSenhaUsuarioService validaNovaSenhaUsuarioService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public void alterarSenhaUsuario(AlterarSenhaUsuarioRequest alterarSenhaUsuarioRequest){
 
@@ -32,11 +36,11 @@ public class AlterarSenhaUsuarioService {
 
         validaSenhaAtualUsuarioService.validaSenhaAtualUsuario(alterarSenhaUsuarioRequest.getSenhaAtual(), usuarioLogado.getId());
 
-        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuarioLogado.getId(), alterarSenhaUsuarioRequest.getNovaSenha());
-
         Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioLogado.getId(), true).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
 
-        usuario.setSenha(alterarSenhaUsuarioRequest.getNovaSenha());
+        validaNovaSenhaUsuarioService.validaIgualdadeEntreSenhas(usuario, alterarSenhaUsuarioRequest.getNovaSenha());
+
+        usuario.setSenha(passwordEncoder.encode(alterarSenhaUsuarioRequest.getNovaSenha()));
 
         usuarioRepository.save(usuario);
         
