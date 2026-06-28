@@ -45,24 +45,21 @@ class ExcluirContaUsuarioServiceTest {
     void deveExcluirUsuarioCorretamente(){
 
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
-
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
-
         Usuario usuario = usuario();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(usuarioRepository.findById(usuarioSecurity.getId())).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(Optional.of(usuario));
 
         tested.excluirConta(request);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
-        verify(usuarioRepository).findById(usuarioSecurity.getId());
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
 
-        assertEquals(request.getSenha(), response.getSenha());
         assertEquals(usuarioSecurity.getId(), response.getIdUsuario());
         assertFalse(response.isAtivo());
     }
@@ -73,7 +70,6 @@ class ExcluirContaUsuarioServiceTest {
 
         ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
         request.setSenha("Senhaerrada");
-
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
@@ -83,7 +79,25 @@ class ExcluirContaUsuarioServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
-        verify(usuarioRepository, never()).findById(any(Long.class));
+        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
+    }
+
+    @Test
+    @DisplayName("Não deve excluir o usuario quando não for encontrado")
+    void naoDeveExcluirUsuarioQuandoNaoForEncontrado(){
+
+        ExcluirContaUsuarioRequest request = excluirContaUsuarioRequest();
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+        when(usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(request));
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
+        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }
