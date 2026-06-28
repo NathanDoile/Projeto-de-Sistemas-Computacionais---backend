@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .requestMatchers("/**/publico").permitAll()
                         .requestMatchers(POST, "/usuario").permitAll()
                         .requestMatchers(POST, "/veiculo").permitAll()
-                        //.requestMatchers(POST, "/login").permitAll()
                         .requestMatchers(POST, "/security/enviar-codigo").permitAll()
                         .requestMatchers(POST, "/security/validar-codigo").permitAll()
                         .requestMatchers(PUT, "/security/redefinir-senha").permitAll()

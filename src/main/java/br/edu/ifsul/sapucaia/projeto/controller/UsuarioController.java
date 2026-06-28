@@ -3,6 +3,8 @@ package br.edu.ifsul.sapucaia.projeto.controller;
 import br.edu.ifsul.sapucaia.projeto.controller.request.usuario.*;
 import br.edu.ifsul.sapucaia.projeto.controller.response.usuario.CadastrarUsuarioResponse;
 import br.edu.ifsul.sapucaia.projeto.service.usuario.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +46,10 @@ public class UsuarioController {
     @DeleteMapping("/excluir-conta")
     @ResponseStatus(OK)
     public void excluirConta(
-            @Valid @RequestBody ExcluirContaUsuarioRequest request
+            @Valid @RequestBody ExcluirContaUsuarioRequest request,
+            HttpServletRequest requestHttp, HttpServletResponse response
     ) {
-        excluirContaUsuarioService.excluirConta(request);
+        excluirContaUsuarioService.excluirConta(request, requestHttp, response);
     }
 
     @PutMapping("/notificacoes")

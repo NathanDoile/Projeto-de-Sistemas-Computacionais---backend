@@ -6,8 +6,13 @@ import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaSenhaCorretaService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,7 +27,7 @@ public class ExcluirContaUsuarioService {
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
-    public void excluirConta(ExcluirContaUsuarioRequest request) {
+    public void excluirConta(ExcluirContaUsuarioRequest request, HttpServletRequest requestHttp, HttpServletResponse response) {
 
         UsuarioSecurity usuarioLogado = usuarioAutenticadoService.getUser();
 
@@ -37,5 +42,9 @@ public class ExcluirContaUsuarioService {
         usuario.setAtivo(false);
 
         usuarioRepository.save(usuario);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        new SecurityContextLogoutHandler().logout(requestHttp, response, auth);
     }
 }
