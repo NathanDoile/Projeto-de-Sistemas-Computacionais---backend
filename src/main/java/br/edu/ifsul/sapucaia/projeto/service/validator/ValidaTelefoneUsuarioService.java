@@ -15,7 +15,7 @@ public class ValidaTelefoneUsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     public void validaTelefoneUnico(String telefone){
-        if(usuarioRepository.existsByTelefone(telefone, true))
+        if(usuarioRepository.existsByTelefoneAndIsAtivo(telefone, true))
             throw new ResponseStatusException(CONFLICT, "Esse telefone já foi cadastrado.");
     }
 
