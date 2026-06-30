@@ -29,7 +29,7 @@ class ValidaTelefoneUsuarioServiceTest {
         String telefone = "51911111111";
         boolean isAtivo = true;
 
-        when(usuarioRepository.existsByTelefone(telefone, isAtivo)).thenReturn(false);
+        when(usuarioRepository.existsByTelefoneAndIsAtivo(telefone, isAtivo)).thenReturn(false);
 
         assertDoesNotThrow(() -> tested.validaTelefoneUnico(telefone));
     }
@@ -40,7 +40,7 @@ class ValidaTelefoneUsuarioServiceTest {
         String telefone = "51911111111";
         boolean isAtivo = true;
 
-        when(usuarioRepository.existsByTelefone(telefone, isAtivo)).thenReturn(true);
+        when(usuarioRepository.existsByTelefoneAndIsAtivo(telefone, isAtivo)).thenReturn(true);
 
         ResponseStatusException exception =  assertThrows(ResponseStatusException.class, () -> tested.validaTelefoneUnico(telefone));
 
