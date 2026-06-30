@@ -20,14 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.alterarSenhaUsuarioRequest;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
-import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
+import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

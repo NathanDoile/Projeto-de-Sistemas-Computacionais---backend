@@ -35,14 +35,7 @@ import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
 import static br.edu.ifsul.sapucaia.projeto.factory.VeiculoFactory.veiculo;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyMap;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GerarRelatorioFinanceiroPdfServiceTest {
