@@ -52,7 +52,7 @@ public class ExportarManutencoesService {
         validaTipoPeriodoValidator.porTipo(tipoPeriodo);
 
         Veiculo veiculo = veiculoRepository
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByUsuarioIdUsuario(usuarioSecurity.getId());
 
         PeriodoData periodoData = periodoDataHelper.calcularData(tipoPeriodo, dataReferencia);
 

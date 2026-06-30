@@ -36,9 +36,6 @@ class AlterarNotificacoesServiceTest {
     private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Mock
-    private ValidaUsuarioService validaUsuarioService;
-
-    @Mock
     private ValidaTipoNotificacaoValidator validaTipoNotificacaoValidator;
 
     @Captor
@@ -57,13 +54,13 @@ class AlterarNotificacoesServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
 
         tested.alterarNotificacoes(request);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
@@ -86,13 +83,13 @@ class AlterarNotificacoesServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
 
         tested.alterarNotificacoes(request);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
@@ -114,13 +111,13 @@ class AlterarNotificacoesServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
 
         tested.alterarNotificacoes(request);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
@@ -143,13 +140,13 @@ class AlterarNotificacoesServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
 
         tested.alterarNotificacoes(request);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
@@ -169,13 +166,13 @@ class AlterarNotificacoesServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.empty());
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> tested.alterarNotificacoes(request));
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -195,7 +192,7 @@ class AlterarNotificacoesServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoNotificacaoValidator).tipoValido(request.getNotificacao());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
+        verify(usuarioRepository, never()).findByIdUsuario(anyLong());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }

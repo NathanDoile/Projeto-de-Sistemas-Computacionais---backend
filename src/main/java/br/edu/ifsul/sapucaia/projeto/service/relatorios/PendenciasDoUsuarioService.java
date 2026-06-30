@@ -23,7 +23,7 @@ public class PendenciasDoUsuarioService {
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
         Veiculo veiculo = veiculoRepository
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByUsuarioIdUsuario(usuarioSecurity.getId());
 
         LocalDate dataAtual = DateNow.now();
 

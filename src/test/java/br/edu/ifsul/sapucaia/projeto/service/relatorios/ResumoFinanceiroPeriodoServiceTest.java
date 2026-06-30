@@ -87,7 +87,7 @@ class ResumoFinanceiroPeriodoServiceTest {
 
         when(periodoDataHelper.calcularData(tipo, dataBase)).thenReturn(periodoData);
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByIdVeiculoAndIsAtivo(veiculo.getIdVeiculo(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByIdVeiculo(veiculo.getIdVeiculo())).thenReturn(veiculo);
         when(receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(id, periodoData.dataInicio(), periodoData.dataFim()))
                 .thenReturn(receitas);
@@ -101,7 +101,7 @@ class ResumoFinanceiroPeriodoServiceTest {
         verify(usuarioAutenticadoService).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper).calcularData(tipo, dataBase);
-        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(usuarioSecurity.getIdVeiculo(), true);
+        verify(veiculoRepository).findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(receitaDiariaRepository)
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(id, periodoData.dataInicio(), periodoData.dataFim());
         verify(custoRepository)
@@ -129,7 +129,7 @@ class ResumoFinanceiroPeriodoServiceTest {
         verify(usuarioAutenticadoService, never()).getUser();
         verify(validaTipoPeriodoValidator).porTipo(tipo);
         verify(periodoDataHelper, never()).calcularData(any(String.class), any(String.class));
-        verify(veiculoRepository, never()).findByIdVeiculoAndIsAtivo(any(Long.class), any(Boolean.class));
+        verify(veiculoRepository, never()).findByIdVeiculo(any(Long.class));
         verify(receitaDiariaRepository, never())
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
         verify(custoRepository, never())

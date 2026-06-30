@@ -61,7 +61,7 @@ public class GerarRelatorioFinanceiroPdfService {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId());
 
         List<ReceitaDiaria> receitas = receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);

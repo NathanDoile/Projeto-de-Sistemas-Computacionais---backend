@@ -47,12 +47,12 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setProximaManutencaoData(LocalDate.now().minusDays(5));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(id)).thenReturn(veiculo);
 
         PendenciasDoUsuarioResponse response = tested.buscarPendencias();
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(id, true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(id);
 
         assertTrue(response.isKmDesatualizado());
         assertTrue(response.isManutencaoKmVencido());
@@ -74,12 +74,12 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setProximaManutencaoData(LocalDate.now().plusDays(7));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(id)).thenReturn(veiculo);
 
         PendenciasDoUsuarioResponse response = tested.buscarPendencias();
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(id, true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(id);
 
         assertFalse(response.isKmDesatualizado());
         assertFalse(response.isManutencaoKmVencido());
@@ -101,12 +101,12 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setProximaManutencaoData(LocalDate.now().plusDays(5));
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(id)).thenReturn(veiculo);
 
         PendenciasDoUsuarioResponse response = tested.buscarPendencias();
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(id, true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(id);
 
         assertTrue(response.isKmDesatualizado());
         assertFalse(response.isManutencaoKmVencido());
@@ -128,12 +128,12 @@ class PendenciasDoUsuarioServiceTest {
         veiculo.setProximaManutencaoData(null);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(id, true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(id)).thenReturn(veiculo);
 
         PendenciasDoUsuarioResponse response = tested.buscarPendencias();
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(id, true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(id);
 
         assertFalse(response.isKmDesatualizado());
         assertFalse(response.isManutencaoKmVencido());

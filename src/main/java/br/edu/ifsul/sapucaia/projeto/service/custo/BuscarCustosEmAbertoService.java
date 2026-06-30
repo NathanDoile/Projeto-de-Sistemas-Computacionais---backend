@@ -27,7 +27,7 @@ public class BuscarCustosEmAbertoService {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(usuarioSecurity.getId(), true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuarioSecurity.getId());
 
         Page<Custo> custos = custoRepository.findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable);
 

@@ -34,7 +34,7 @@ public class InformacoesDaSemanaService {
 
         UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(usuario.getId(), true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuario.getId());
 
         LocalDate hoje = DateNow.now();
         LocalDate inicioSemana = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));

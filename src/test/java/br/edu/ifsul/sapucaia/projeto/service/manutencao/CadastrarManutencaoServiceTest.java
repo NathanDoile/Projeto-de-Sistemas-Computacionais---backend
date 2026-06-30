@@ -98,7 +98,7 @@ class CadastrarManutencaoServiceTest {
 
         when(cadastrarCustoService.cadastrar(any())).thenReturn(responseCusto);
 
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(anyLong(), eq(true)))
+        when(veiculoRepository.findByUsuarioIdUsuario(anyLong()))
                 .thenReturn(veiculo);
 
         when(custoRepository.findByIdCustoAndIsAtivo(anyLong(), eq(true)))

@@ -70,8 +70,8 @@ class ExportarManutencoesServiceTest {
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(
-                usuarioSecurity.getId(), true))
+        when(veiculoRepository.findByUsuarioIdUsuario(
+                usuarioSecurity.getId()))
                 .thenReturn(veiculo);
 
         PeriodoData periodoData = new PeriodoData(

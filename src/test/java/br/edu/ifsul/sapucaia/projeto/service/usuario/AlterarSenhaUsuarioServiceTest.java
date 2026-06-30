@@ -64,7 +64,7 @@ class AlterarSenhaUsuarioServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
         when(passwordEncoder.encode(request.getNovaSenha())).thenReturn(request.getNovaSenha());
 
         tested.alterarSenhaUsuario(request);
@@ -72,7 +72,7 @@ class AlterarSenhaUsuarioServiceTest {
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenhaAtual(), id);
         verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario, request.getNovaSenha());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository).save(usuarioCaptor.capture());
 
         Usuario response = usuarioCaptor.getValue();
@@ -98,7 +98,7 @@ class AlterarSenhaUsuarioServiceTest {
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenhaAtual(), id);
         verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(any(Usuario.class), anyString());
-        verify(usuarioRepository, never()).findByIdUsuarioAndIsAtivo(anyLong(), anyBoolean());
+        verify(usuarioRepository, never()).findByIdUsuario(anyLong());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -112,7 +112,7 @@ class AlterarSenhaUsuarioServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.of(usuario));
         doThrow(ResponseStatusException.class).when(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario, request.getNovaSenha());
 
         assertThrows(ResponseStatusException.class, () -> tested.alterarSenhaUsuario(request));
@@ -120,7 +120,7 @@ class AlterarSenhaUsuarioServiceTest {
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenhaAtual(), id);
         verify(validaNovaSenhaUsuarioService).validaIgualdadeEntreSenhas(usuario, request.getNovaSenha());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -133,14 +133,14 @@ class AlterarSenhaUsuarioServiceTest {
         Long id = usuarioLogado.getId();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(id, true)).thenReturn(Optional.empty());
+        when(usuarioRepository.findByIdUsuario(id)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> tested.alterarSenhaUsuario(request));
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaAtualUsuarioService).validaSenhaAtualUsuario(request.getSenhaAtual(), id);
         verify(validaNovaSenhaUsuarioService, never()).validaIgualdadeEntreSenhas(any(Usuario.class), anyString());
-        verify(usuarioRepository).findByIdUsuarioAndIsAtivo(id, true);
+        verify(usuarioRepository).findByIdUsuario(id);
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 }

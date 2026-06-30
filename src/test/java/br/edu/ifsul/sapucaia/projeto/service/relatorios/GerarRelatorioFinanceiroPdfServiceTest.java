@@ -81,7 +81,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(usuarioSecurity.getIdVeiculo(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
@@ -89,7 +89,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(usuarioSecurity.getIdVeiculo(), dataInicio, dataFim);
 
@@ -114,7 +114,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.withDayOfMonth(dataReferencia.lengthOfMonth());
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
@@ -122,7 +122,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(usuarioSecurity.getIdVeiculo(), dataInicio, dataFim);
 
@@ -147,7 +147,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.withDayOfYear(dataReferencia.lengthOfYear());
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
@@ -155,7 +155,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
 
@@ -187,7 +187,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(List.of(custo1, custo2));
 
@@ -195,7 +195,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
 
@@ -220,7 +220,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of());
             when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(List.of());
 
@@ -228,7 +228,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
 
@@ -253,7 +253,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(List.of());
 
@@ -261,7 +261,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
 
@@ -286,7 +286,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of());
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
@@ -294,7 +294,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
 
@@ -316,7 +316,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
         verify(usuarioAutenticadoService, never()).getUser();
-        verify(veiculoRepository, never()).findByUsuarioIdUsuarioAndIsAtivo(any(Long.class), anyBoolean());
+        verify(veiculoRepository, never()).findByUsuarioIdUsuario(any(Long.class));
         verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
         verify(custoRepository, never()).findByVeiculoIdVeiculoAndDataPagamentoBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
     }
@@ -338,7 +338,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         LocalDate dataFim = dataReferencia.with(DayOfWeek.SUNDAY);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuarioSecurity.getId())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim)).thenReturn(List.of(receitaDiaria()));
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim)).thenReturn(veiculo.getCustos());
 
@@ -353,7 +353,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         }
         verify(usuarioAutenticadoService).getUser();
         verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
     }

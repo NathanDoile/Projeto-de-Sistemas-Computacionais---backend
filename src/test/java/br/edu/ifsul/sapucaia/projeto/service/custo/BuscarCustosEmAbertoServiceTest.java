@@ -59,14 +59,14 @@ class BuscarCustosEmAbertoServiceTest {
         Page<Custo> custos = new PageImpl<>(List.of(custo), pageable, 1);
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
-        when(veiculoRepository.findByIdVeiculoAndIsAtivo(usuarioSecurity.getIdVeiculo(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByIdVeiculo(usuarioSecurity.getIdVeiculo())).thenReturn(veiculo);
         when(custoRepository.findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable))
                 .thenReturn(custos);
 
         Page<BuscarCustosEmAbertoResponse> response = tested.buscar(pageable);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(veiculo.getIdVeiculo(), true);
+        verify(veiculoRepository).findByIdVeiculo(veiculo.getIdVeiculo());
         verify(custoRepository).findAllByVeiculoAndDataPagamentoIsNullAndIsAtivo(veiculo, true, pageable);
 
         assertEquals(custos.getTotalElements(), response.getTotalElements());

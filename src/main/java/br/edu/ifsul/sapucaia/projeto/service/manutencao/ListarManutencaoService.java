@@ -6,7 +6,6 @@ import br.edu.ifsul.sapucaia.projeto.mapper.ManutencaoMapper;
 import br.edu.ifsul.sapucaia.projeto.repository.ManutencaoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

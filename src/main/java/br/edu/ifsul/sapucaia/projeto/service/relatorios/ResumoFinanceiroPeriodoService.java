@@ -38,7 +38,7 @@ public class ResumoFinanceiroPeriodoService {
         LocalDate fim = periodoData.dataFim();
 
         UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
-        Veiculo veiculo = veiculoRepository.findByIdVeiculoAndIsAtivo(usuario.getIdVeiculo(), true);
+        Veiculo veiculo = veiculoRepository.findByIdVeiculo(usuario.getIdVeiculo());
 
         double ganhoBruto = receitaDiariaRepository
                 .findByUsuarioIdUsuarioAndDataReceitaBetween(usuario.getId(), inicio, fim)

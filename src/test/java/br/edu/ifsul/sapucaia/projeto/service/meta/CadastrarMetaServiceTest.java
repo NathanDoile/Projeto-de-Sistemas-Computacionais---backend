@@ -64,8 +64,8 @@ class CadastrarMetaServiceTest {
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
-        when(usuarioRepository.findByIdUsuarioAndIsAtivo(
-                usuarioSecurity.getId(), true))
+        when(usuarioRepository.findByIdUsuario(
+                usuarioSecurity.getId()))
                 .thenReturn(Optional.of(usuario()));
 
         tested.cadastrar(request);
@@ -74,7 +74,7 @@ class CadastrarMetaServiceTest {
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
 
         verify(usuarioRepository)
-                .findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByIdUsuario(usuarioSecurity.getId());
 
         verify(metaRepository).save(metaCaptor.capture());
 

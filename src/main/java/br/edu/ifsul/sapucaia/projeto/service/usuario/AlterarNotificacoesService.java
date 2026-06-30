@@ -31,7 +31,7 @@ public class AlterarNotificacoesService {
 
         validaTipoNotificacaoValidator.tipoValido(alterarNotificacoesRequest.getNotificacao());
 
-        Usuario usuario = usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioLogado.getId(), true)
+        Usuario usuario = usuarioRepository.findByIdUsuario(usuarioLogado.getId())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuário não encontrado."));
 
         if (TipoNotificacao.deTexto(alterarNotificacoesRequest.getNotificacao()) == MANUTENCAO) {

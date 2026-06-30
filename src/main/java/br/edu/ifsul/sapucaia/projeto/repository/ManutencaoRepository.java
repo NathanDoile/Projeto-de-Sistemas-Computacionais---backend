@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
 
-    Page<Manutencao> findAllByIsAtivo(boolean isAtivo, Pageable pageable);
-
     List<Manutencao> findAllByVeiculoIdVeiculoAndIsAtivoAndDataManutencaoBetween(Long idVeiculo, boolean b, LocalDate localDate, LocalDate localDate1);
 
     Page<Manutencao> findAllByVeiculoUsuarioIdUsuarioAndIsAtivo(
@@ -19,8 +17,6 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
             boolean isAtivo,
             Pageable pageable
     );
-
-    List<Manutencao> findAllByVeiculoIdVeiculoAndIsAtivo(Long idVeiculo, boolean b);
 
     List<Manutencao> findAllByVeiculoIdVeiculo(Long idVeiculo);
     

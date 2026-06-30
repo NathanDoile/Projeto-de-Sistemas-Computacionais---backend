@@ -62,12 +62,12 @@ class AtualizarKmVeiculoServiceTest {
         int kmAtual = (int) veiculo.getKmAtual();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuario.getId())).thenReturn(veiculo);
 
         tested.atualizar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuario.getId());
         verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(iaService, never()).chamadaChat(anyString());
         verify(veiculoRepository).save(veiculoCaptor.capture());
@@ -93,13 +93,13 @@ class AtualizarKmVeiculoServiceTest {
         ManutencaoIAResponse iaresponse = IAFactory.response();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuario.getId())).thenReturn(veiculo);
         when(iaService.chamadaChat(anyString())).thenReturn(iaresponse);
 
         tested.atualizar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuario.getId());
         verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(iaService).chamadaChat(anyString());
         verify(veiculoRepository).save(veiculoCaptor.capture());
@@ -125,13 +125,13 @@ class AtualizarKmVeiculoServiceTest {
         int kmAtual = (int) veiculo.getKmAtual();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuario.getId())).thenReturn(veiculo);
         when(iaService.chamadaChat(anyString())).thenThrow(new RuntimeException("IA indisponível"));
 
         tested.atualizar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuario.getId());
         verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(iaService).chamadaChat(anyString());
         verify(veiculoRepository).save(veiculoCaptor.capture());
@@ -157,7 +157,7 @@ class AtualizarKmVeiculoServiceTest {
         int kmAtual = (int) veiculo.getKmAtual();
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
-        when(veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByUsuarioIdUsuario(usuario.getId())).thenReturn(veiculo);
         
         doThrow(ResponseStatusException.class)
                 .when(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
@@ -165,7 +165,7 @@ class AtualizarKmVeiculoServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.atualizar(request));
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
+        verify(veiculoRepository).findByUsuarioIdUsuario(usuario.getId());
         verify(validaKmAtualizadoVeiculoValidator).maiorQueAtual(kmAtualizado, kmAtual);
         verify(iaService, never()).chamadaChat(anyString());
         verify(veiculoRepository, never()).save(any(Veiculo.class));

@@ -63,7 +63,7 @@ class InformacoesDaSemanaServiceTest {
         List<Custo> custos = of(custo());
 
         when(usuarioAutenticadoService.getUser()).thenReturn(usuario);
-        when(veiculoRepository.findByIdVeiculoAndIsAtivo(usuario.getIdVeiculo(), true)).thenReturn(veiculo);
+        when(veiculoRepository.findByIdVeiculo(usuario.getIdVeiculo())).thenReturn(veiculo);
         when(receitaDiariaRepository.findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(receitas);
         when(custoRepository.findByVeiculoIdVeiculoAndDataPagamentoBetween(eq(usuario.getIdVeiculo()),
@@ -73,7 +73,7 @@ class InformacoesDaSemanaServiceTest {
         InformacoesDaSemanaResponse response = tested.buscarInformacoesDaSemana();
 
         verify(usuarioAutenticadoService).getUser();
-        verify(veiculoRepository).findByIdVeiculoAndIsAtivo(veiculo.getIdVeiculo(), true);
+        verify(veiculoRepository).findByIdVeiculo(veiculo.getIdVeiculo());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(eq(id), any(LocalDate.class), any(LocalDate.class));
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(eq(usuario.getIdVeiculo()), any(LocalDate.class), any(LocalDate.class));
 

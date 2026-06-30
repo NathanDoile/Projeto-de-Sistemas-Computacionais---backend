@@ -32,7 +32,7 @@ public class AtualizarKmVeiculoService {
 
         UsuarioSecurity usuario = usuarioAutenticadoService.getUser();
 
-        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuarioAndIsAtivo(usuario.getId(), true);
+        Veiculo veiculo = veiculoRepository.findByUsuarioIdUsuario(usuario.getId());
 
         validaKmAtualizadoVeiculoValidator.maiorQueAtual(atualizarKmVeiculoRequest.getKmAtualizado(), veiculo.getKmAtual());
 

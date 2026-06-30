@@ -53,7 +53,7 @@ public class CadastrarManutencaoService {
         Manutencao manutencao = ManutencaoMapper.toEntity(request);
 
         Veiculo veiculo = veiculoRepository
-                .findByUsuarioIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true);
+                .findByUsuarioIdUsuario(usuarioSecurity.getId());
 
         Custo custo = custoRepository
                 .findByIdCustoAndIsAtivo(custoResponse.getIdCusto(), true)
