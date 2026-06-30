@@ -14,6 +14,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -48,10 +49,16 @@ class ExcluirContaUsuarioServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
         Usuario usuario = usuario();
 
+        MockHttpServletRequest requestHttp = new MockHttpServletRequest();
+
+        requestHttp.setParameter("usuarioId", "123");
+        requestHttp.addHeader("Authorization", "Bearer token-valido");
+        requestHttp.setRequestURI("/api/v1/recurso");
+
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(Optional.of(usuario));
 
-        tested.excluirConta(request);
+        tested.excluirConta(request, requestHttp, null);
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
@@ -75,7 +82,7 @@ class ExcluirContaUsuarioServiceTest {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         doThrow(ResponseStatusException.class).when(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
 
-        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(request));
+        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(request, null, null));
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
@@ -93,7 +100,7 @@ class ExcluirContaUsuarioServiceTest {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
         when(usuarioRepository.findByIdUsuarioAndIsAtivo(usuarioSecurity.getId(), true)).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(request));
+        assertThrows(ResponseStatusException.class, () -> tested.excluirConta(request, null, null));
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaSenhaCorretaService).porIDESenha(usuarioSecurity.getId(), request.getSenha());
