@@ -12,8 +12,8 @@ public class ValidaAnoVeiculoValidator {
 
     public void anoMenorQueAtual(int ano) {
 
-        if(ano > DateNow.now().getYear()){
-            throw new ResponseStatusException(BAD_REQUEST, "Ano do veículo deve não pode ser maior que o atual.");
+        if(ano > (DateNow.now().getYear()+1)){
+            throw new ResponseStatusException(BAD_REQUEST, "Ano do veículo não pode ser maior que " + (DateNow.now().getYear()+1));
         }
     }
 }

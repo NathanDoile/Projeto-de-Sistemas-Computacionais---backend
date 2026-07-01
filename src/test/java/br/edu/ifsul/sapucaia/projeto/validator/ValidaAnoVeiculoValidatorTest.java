@@ -21,7 +21,7 @@ class ValidaAnoVeiculoValidatorTest {
     @DisplayName("Não deve dar erro se ano do veículo for válido")
     void naoDeveDarErroSeAnoVeiculoValido(){
 
-        int ano = DateNow.now().getYear();
+        int ano = DateNow.now().getYear()+1;
 
         assertDoesNotThrow(() -> tested.anoMenorQueAtual(ano));
     }
@@ -30,13 +30,13 @@ class ValidaAnoVeiculoValidatorTest {
     @DisplayName("Deve dar erro se ano do veículo for inválido")
     void deveDarErroSeAnoVeiculoInvalido(){
 
-        int ano = DateNow.now().getYear() + 1;
+        int ano = DateNow.now().getYear() + 5;
 
         ResponseStatusException exception =
                 assertThrows(ResponseStatusException.class,
                         () -> tested.anoMenorQueAtual(ano));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("Ano do veículo deve não pode ser maior que o atual.", exception.getReason());
+        assertEquals(("Ano do veículo não pode ser maior que " + (DateNow.now().getYear() + 1)), exception.getReason());
     }
 }

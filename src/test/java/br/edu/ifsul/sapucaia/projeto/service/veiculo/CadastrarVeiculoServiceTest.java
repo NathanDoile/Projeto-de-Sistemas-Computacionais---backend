@@ -13,6 +13,7 @@ import br.edu.ifsul.sapucaia.projeto.service.ia.IAService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioComVeiculoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaUsuarioService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaAnoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoVeiculoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidarPlacaValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,9 @@ class CadastrarVeiculoServiceTest {
 
     @Mock
     private ValidaTipoVeiculoValidator validaTipoVeiculoValidator;
+
+    @Mock
+    private ValidaAnoVeiculoValidator validaAnoVeiculoValidator;
 
     @Mock
     private ValidaUsuarioService validaUsuarioService;
@@ -99,6 +103,7 @@ class CadastrarVeiculoServiceTest {
         verify(validaVeiculoService).jaExistePlaca(request.getPlaca());
         verify(validarPlacaValidator).formatoValido(request.getPlaca());
         verify(validaTipoVeiculoValidator).tipoAceito(request.getTipo());
+        verify(validaAnoVeiculoValidator).anoMenorQueAtual(request.getAno());
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
@@ -135,6 +140,7 @@ class CadastrarVeiculoServiceTest {
         verify(validaVeiculoService).jaExistePlaca(request.getPlaca());
         verify(validarPlacaValidator).formatoValido(request.getPlaca());
         verify(validaTipoVeiculoValidator).tipoAceito(request.getTipo());
+        verify(validaAnoVeiculoValidator).anoMenorQueAtual(request.getAno());
         verify(validaUsuarioService).porId(request.getIdUsuario());
         verify(usuarioRepository).findById(usuario.getIdUsuario());
         verify(validaUsuarioComVeiculoService).porUsuario(usuario);
