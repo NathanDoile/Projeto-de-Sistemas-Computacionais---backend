@@ -10,7 +10,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +30,7 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.ReceitaDiariaFactory.cadastrarReceitaDiariaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
+import static br.edu.ifsul.sapucaia.projeto.helper.DateNow.now;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +55,7 @@ class CadastrarReceitaDiariaServiceTest {
     private ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
 
     @Mock
-    private ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
+    private ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
 
     @Mock
     private MetaRepository metaRepository;
@@ -74,7 +75,7 @@ class CadastrarReceitaDiariaServiceTest {
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
         if(request.getDataReceita().getDayOfWeek().equals(MONDAY)){
-            request.setDataReceita(DateNow.now().plusDays(1));
+            request.setDataReceita(now().plusDays(1));
         }
 
         Usuario usuario = usuario();
@@ -86,9 +87,9 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
-        if(DateNow.now().getDayOfWeek().equals(MONDAY)){
+        if(now().getDayOfWeek().equals(MONDAY)){
             verify(metaRepository, times(2)).save(metaCaptor.capture());
         }
         else{
@@ -119,7 +120,7 @@ class CadastrarReceitaDiariaServiceTest {
     void deveCadastrarReceitaDiariaCorretamenteSeReceitaForInicioSemana(){
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-        request.setDataReceita(DateNow.now().with(previousOrSame(MONDAY)));
+        request.setDataReceita(now().with(previousOrSame(MONDAY)));
 
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
@@ -132,10 +133,13 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
-        if(request.getDataReceita().equals(DateNow.now())){
+        if(request.getDataReceita().equals(now())){
             verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
+        else if(!request.getDataReceita().getMonth().equals(now().getMonth())){
+            verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{
             verify(metaRepository, times(2)).save(metaCaptor.capture());
@@ -165,7 +169,7 @@ class CadastrarReceitaDiariaServiceTest {
     void deveCadastrarReceitaDiariaCorretamenteSeReceitaForForaSemana(){
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-        request.setDataReceita(DateNow.now().minusWeeks(1));
+        request.setDataReceita(now().minusWeeks(1));
 
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
@@ -178,9 +182,9 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
-        if(DateNow.now().getMonth().equals(request.getDataReceita().getMonth()) && DateNow.now().getYear() == request.getDataReceita().getYear()){
+        if(now().getMonth().equals(request.getDataReceita().getMonth()) && now().getYear() == request.getDataReceita().getYear()){
             verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{
@@ -211,7 +215,7 @@ class CadastrarReceitaDiariaServiceTest {
     void naoDeveCadastrarReceitaDiariaCorretamenteSeReceitaForForaMes(){
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-        request.setDataReceita(DateNow.now().minusMonths(2));
+        request.setDataReceita(now().minusMonths(2));
 
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
@@ -224,7 +228,7 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
@@ -252,7 +256,7 @@ class CadastrarReceitaDiariaServiceTest {
     void naoDeveCadastrarReceitaDiariaCorretamenteSeReceitaForForaAno(){
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
-        request.setDataReceita(DateNow.now().minusYears(1));
+        request.setDataReceita(now().minusYears(1));
 
         UsuarioSecurity usuarioSecurity = usuarioSecurity();
 
@@ -265,7 +269,7 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
         verify(metaRepository, never()).save(metaCaptor.capture());
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
@@ -306,7 +310,7 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository).findById(usuarioSecurity.getId());
         verify(metaRepository, never()).save(any(Meta.class));
         verify(receitaDiariaRepository).save(receitaDiariaCaptor.capture());
@@ -334,7 +338,7 @@ class CadastrarReceitaDiariaServiceTest {
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator, never()).naoMaiorQueHoje(any(LocalDate.class));
+        verify(validaDataMaiorQueHojeValidator, never()).naoMaiorQueHoje(any(LocalDate.class));
         verify(usuarioRepository, never()).findById(any(Long.class));
         verify(metaRepository, never()).save(any(Meta.class));
         verify(receitaDiariaRepository, never()).save(any(ReceitaDiaria.class));
@@ -346,15 +350,15 @@ class CadastrarReceitaDiariaServiceTest {
 
         CadastrarReceitaDiariaRequest request = cadastrarReceitaDiariaRequest();
 
-        request.setDataReceita(DateNow.now().plusDays(1));
+        request.setDataReceita(now().plusDays(1));
 
-        doThrow(ResponseStatusException.class).when(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        doThrow(ResponseStatusException.class).when(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
 
         assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
 
         verify(usuarioAutenticadoService).getUser();
         verify(validaValorReceitaDiariaValidator).isPositivo(request.getValor());
-        verify(validaDataReceitaDiariaValidator).naoMaiorQueHoje(request.getDataReceita());
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(request.getDataReceita());
         verify(usuarioRepository, never()).findById(any(Long.class));
         verify(metaRepository, never()).save(any(Meta.class));
         verify(receitaDiariaRepository, never()).save(any(ReceitaDiaria.class));

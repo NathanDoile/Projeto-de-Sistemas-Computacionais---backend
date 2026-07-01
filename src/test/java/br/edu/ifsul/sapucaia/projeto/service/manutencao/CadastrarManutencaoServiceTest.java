@@ -15,7 +15,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class CadastrarManutencaoServiceTest {
     private ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
 
     @Mock
-    private ValidaDataManutencaoValidator validadataManutencaoValidator;
+    private ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
 
     @Mock
     private VeiculoRepository veiculoRepository;
@@ -132,8 +132,8 @@ class CadastrarManutencaoServiceTest {
         CadastrarManutencaoRequest request = ManutencaoFactory.cadastrarManutencaoRequest();
 
         doThrow(ResponseStatusException.class)
-                .when(validadataManutencaoValidator)
-                .dataMenorQueHoje(request.getDataManutencao());
+                .when(validaDataMaiorQueHojeValidator)
+                .naoMaiorQueHoje(request.getDataManutencao());
 
         assertThrows(ResponseStatusException.class, () -> tested.cadastrar(request));
 

@@ -14,7 +14,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.custo.CadastrarCustoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataManutencaoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoManutencaoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class CadastrarManutencaoService {
 
     private final ValidaTipoManutencaoValidator validaTipoManutencaoValidator;
-    private final ValidaDataManutencaoValidator validadataManutencaoValidator;
+    private final ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
     private final VeiculoRepository veiculoRepository;
     private final CustoRepository custoRepository;
     private final ManutencaoRepository manutencaoRepository;
@@ -36,7 +36,7 @@ public class CadastrarManutencaoService {
     public void cadastrar(CadastrarManutencaoRequest request) {
 
         validaTipoManutencaoValidator.tipoValido(request.getTipo());
-        validadataManutencaoValidator.dataMenorQueHoje(request.getDataManutencao());
+        validaDataMaiorQueHojeValidator.naoMaiorQueHoje(request.getDataManutencao());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
