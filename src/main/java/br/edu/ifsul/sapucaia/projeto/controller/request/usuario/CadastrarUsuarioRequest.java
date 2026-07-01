@@ -4,21 +4,24 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_EMAIL;
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class CadastrarUsuarioRequest {
 
-    @NotBlank(message = "é obrigatório")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String nome;
 
-    @NotBlank(message = "Campo E-mail é obrigatório")
-    @Email(message = "não é um endereço válido.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
+    @Email(message = CAMPO_EMAIL)
     private String email;
 
-    @NotBlank(message = "Campo senha é obrigatório")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String senha;
 
-    @NotBlank(message = "Campo telefone é obrigatório")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String telefone;
 }

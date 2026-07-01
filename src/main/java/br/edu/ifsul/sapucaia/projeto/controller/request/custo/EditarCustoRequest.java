@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,21 +15,21 @@ import java.time.LocalDate;
 @Setter
 public class EditarCustoRequest {
 
-    @NotNull(message = "O ID do custo é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private Long idCusto;
 
-    @NotBlank(message = "O tipo do custo é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String tipo;
 
-    @NotNull(message = "O valor do custo é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private double valor;
 
-    @NotNull(message = "A data de vencimento é obrigatória.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private LocalDate dataVencimento;
 
-    @NotNull(message = "A data de pagamento é obrigatória.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private LocalDate dataPagamento;
 
-    @NotBlank(message = "A descrição é obrigatória.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String descricao;
 }

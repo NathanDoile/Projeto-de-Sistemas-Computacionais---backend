@@ -11,7 +11,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataReceitaDiariaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class CadastrarReceitaDiariaService {
     private final UsuarioRepository usuarioRepository;
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
-    private final ValidaDataReceitaDiariaValidator validaDataReceitaDiariaValidator;
+    private final ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
     private final MetaRepository metaRepository;
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
@@ -44,7 +44,7 @@ public class CadastrarReceitaDiariaService {
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
         validaValorReceitaDiariaValidator.isPositivo(request.getValor());
-        validaDataReceitaDiariaValidator.naoMaiorQueHoje(request.getDataReceita());
+        validaDataMaiorQueHojeValidator.naoMaiorQueHoje(request.getDataReceita());
 
         ReceitaDiaria receitaDiaria = toEntity(request);
 

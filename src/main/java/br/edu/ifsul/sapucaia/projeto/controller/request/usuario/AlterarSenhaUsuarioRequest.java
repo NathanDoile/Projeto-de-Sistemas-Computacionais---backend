@@ -3,14 +3,16 @@ package br.edu.ifsul.sapucaia.projeto.controller.request.usuario;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class AlterarSenhaUsuarioRequest {
 
-    @NotBlank(message = "Campo senha antiga é obrigatório")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String senhaAtual;
 
-    @NotBlank(message = "Campo nova senha é obrigatório")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String novaSenha;
 }

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.*;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,28 +14,28 @@ import lombok.*;
 @Setter
 public class CadastrarVeiculoRequest {
 
-    @NotBlank(message = "O modelo é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String modelo;
 
-    @NotBlank(message = "A marca é obrigatória.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String marca;
 
-    @NotBlank(message = "A placa é obrigatória.")
-    @Size(min = 7, max = 7, message = "A placa deve ter 7 caracteres, sem hífen.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
+    @Size(min = CAMPO_TAMANHO_MAXIMO_MINIMO_PLACA, max = CAMPO_TAMANHO_MAXIMO_MINIMO_PLACA, message = CAMPO_PLACA)
     private String placa;
 
-    @NotBlank(message = "O tipo é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String tipo;
 
-    @NotNull(message = "O ano é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private int ano;
 
-    @NotBlank(message = "A cor é obrigatória.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String cor;
 
-    @NotNull(message = "A quilometragem atual é obrigatória.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private int kmAtual;
 
-    @NotNull(message = "O ID do usuário é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private Long idUsuario;
 }
