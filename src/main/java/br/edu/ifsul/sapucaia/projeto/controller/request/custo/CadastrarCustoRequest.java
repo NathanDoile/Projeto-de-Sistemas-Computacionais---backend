@@ -7,6 +7,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_POSITIVO;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,18 +17,18 @@ import java.time.LocalDate;
 @Setter
 public class CadastrarCustoRequest {
 
-    @NotBlank(message = "O tipo é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String tipo;
 
-    @NotNull(message = "O valor é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
 
-    @Positive(message = "O valor deve ser maior que zero.")
+    @Positive(message = CAMPO_POSITIVO)
     private double valor;
 
     private LocalDate dataVencimento;
 
     private LocalDate dataPagamento;
 
-    @NotBlank(message = "A descrição é obrigatória.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String descricao;
 }

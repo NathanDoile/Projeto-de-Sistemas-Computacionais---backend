@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,15 +13,15 @@ import lombok.*;
 @Setter
 public class CadastrarMetaRequest {
 
-    @NotBlank(message = "O título é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String titulo;
 
-    @NotBlank(message = "O formato é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String formato;
 
-    @NotBlank(message = "O tipo é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String tipo;
 
-    @NotNull(message = "O valor é obrigatório.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private Double valor;
 }

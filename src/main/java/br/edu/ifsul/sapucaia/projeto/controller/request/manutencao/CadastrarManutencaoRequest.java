@@ -10,22 +10,25 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_POSITIVO;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class CadastrarManutencaoRequest {
 
-    @NotBlank(message = "O tipo da manutenção é obrigatório.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String tipo;
 
-    @NotNull(message = "A data da manutenção é obrigatória.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
     private LocalDate dataManutencao;
 
-    @NotBlank(message = "A descrição é obrigatória.")
+    @NotBlank(message = CAMPO_OBRIGATORIO)
     private String descricao;
 
-    @NotNull(message = "O valor é obrigatório.")
-    @Positive(message = "O valor deve ser maior que zero.")
+    @NotNull(message = CAMPO_OBRIGATORIO)
+    @Positive(message = CAMPO_POSITIVO)
     private double valor;
 }

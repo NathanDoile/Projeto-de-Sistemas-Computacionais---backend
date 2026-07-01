@@ -5,14 +5,16 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+import static br.edu.ifsul.sapucaia.projeto.controller.request.ErroRequest.CAMPO_OBRIGATORIO;
+
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class CadastrarReceitaDiariaRequest {
 
-    @NotNull (message = "A data da receita é obrigatória.")
+    @NotNull (message = CAMPO_OBRIGATORIO)
     private LocalDate dataReceita;
 
-    @NotNull (message = "O valor da receita é obrigatória.")
+    @NotNull (message = CAMPO_OBRIGATORIO)
     private Double valor;
 }
