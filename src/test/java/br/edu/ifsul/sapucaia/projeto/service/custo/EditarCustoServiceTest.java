@@ -11,7 +11,7 @@ import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaCustoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,12 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EditarCustoServiceTest {
@@ -59,7 +64,7 @@ class EditarCustoServiceTest {
     private CustoRepository custoRepository;
 
     @Mock
-    private ValidaValorCustoValidator validaValorCustoValidator;
+    private ValidaValorPositivoValidator validaValorPositivoValidator;
 
     @Mock
     private ValidaTipoCustoValidator validaTipoCustoValidator;
@@ -95,7 +100,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -138,7 +143,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -202,7 +207,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -261,7 +266,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -333,7 +338,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -385,7 +390,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -442,7 +447,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -501,7 +506,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -563,7 +568,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -615,7 +620,7 @@ class EditarCustoServiceTest {
         tested.editar(request);
 
         verify(validaCustoService).porId(id);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository).findByIdCustoAndIsAtivo(id, true);
         verify(usuarioAutenticadoService).getUser();
@@ -695,7 +700,7 @@ class EditarCustoServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.editar(request));
 
         verify(validaCustoService).porId(idCusto);
-        verify(validaValorCustoValidator, never()).isPositivo(anyDouble());
+        verify(validaValorPositivoValidator, never()).isPositivo(anyDouble());
         verify(validaTipoCustoValidator, never()).tipoValido(anyString());
         verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).save(any(Custo.class));
@@ -708,12 +713,12 @@ class EditarCustoServiceTest {
         EditarCustoRequest request = editarCustoRequest();
         Long idCusto = request.getIdCusto();
 
-        doThrow(ResponseStatusException.class).when(validaValorCustoValidator).isPositivo(request.getValor());
+        doThrow(ResponseStatusException.class).when(validaValorPositivoValidator).isPositivo(request.getValor());
 
         assertThrows(ResponseStatusException.class, () -> tested.editar(request));
 
         verify(validaCustoService).porId(idCusto);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator, never()).tipoValido(anyString());
         verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).save(any(Custo.class));
@@ -731,7 +736,7 @@ class EditarCustoServiceTest {
         assertThrows(ResponseStatusException.class, () -> tested.editar(request));
 
         verify(validaCustoService).porId(idCusto);
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
         verify(custoRepository, never()).findByIdCustoAndIsAtivo(anyLong(), anyBoolean());
         verify(custoRepository, never()).save(any(Custo.class));

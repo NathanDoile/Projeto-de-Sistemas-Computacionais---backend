@@ -12,8 +12,9 @@ import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDatasCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,7 @@ class CadastrarCustoServiceTest {
     private CustoRepository custoRepository;
 
     @Mock
-    private ValidaValorCustoValidator validaValorCustoValidator;
+    private ValidaValorPositivoValidator validaValorPositivoValidator;
 
     @Mock
     private ValidaTipoCustoValidator validaTipoCustoValidator;
@@ -68,6 +69,9 @@ class CadastrarCustoServiceTest {
 
     @Mock
     private UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Mock
+    private ValidaDatasCustoValidator validaDatasCustoValidator;
 
     @Captor
     private ArgumentCaptor<Custo> custoCaptor;
@@ -93,8 +97,9 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(custoRepository).save(custoCaptor.capture());
@@ -132,8 +137,9 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getDayOfWeek().equals(MONDAY)){
@@ -188,12 +194,16 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getDayOfWeek().equals(MONDAY)){
             verify(metaRepository, times(3)).save(metaCaptor.capture());
+        }
+        else if(!request.getDataPagamento().getMonth().equals(DateNow.now().getMonth())){
+            verify(metaRepository, times(1)).save(metaCaptor.capture());
         }
         else{
             verify(metaRepository, times(2)).save(metaCaptor.capture());
@@ -240,8 +250,9 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         if(DateNow.now().getMonth().equals(request.getDataPagamento().getMonth()) && DateNow.now().getYear() == request.getDataPagamento().getYear()){
@@ -292,8 +303,9 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(metaRepository, never()).save(metaCaptor.capture());
@@ -339,8 +351,9 @@ class CadastrarCustoServiceTest {
         BuscarCustosEmAbertoResponse response = tested.cadastrar(request);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository)
                 .findByIdVeiculo(usuarioSecurity.getIdVeiculo());
         verify(metaRepository, never()).save(metaCaptor.capture());
@@ -381,14 +394,14 @@ class CadastrarCustoServiceTest {
         when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
 
         doThrow(ResponseStatusException.class)
-                .when(validaValorCustoValidator)
+                .when(validaValorPositivoValidator)
                 .isPositivo(request.getValor());
 
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator, never()).tipoValido(any(String.class));
         verify(veiculoRepository, never())
                 .findByIdVeiculo(any(Long.class));
@@ -420,8 +433,36 @@ class CadastrarCustoServiceTest {
                 () -> tested.cadastrar(request));
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaValorCustoValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(veiculoRepository, never())
+                .findByIdVeiculo(any(Long.class));
+        verify(custoRepository, never()).save(any(Custo.class));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar custo com datas null")
+    void naoDeveCadastrarCustoComDatasNull(){
+
+        CadastrarCustoRequest request = cadastrarCustoRequest();
+        request.setDataPagamento(null);
+        request.setDataVencimento(null);
+
+        UsuarioSecurity usuarioSecurity = usuarioSecurity();
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioSecurity);
+
+        doThrow(ResponseStatusException.class)
+                .when(validaDatasCustoValidator)
+                .ambasNull(request.getDataVencimento(), request.getDataPagamento());
+
+        assertThrows(ResponseStatusException.class,
+                () -> tested.cadastrar(request));
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
+        verify(validaTipoCustoValidator).tipoValido(request.getTipo());
+        verify(validaDatasCustoValidator).ambasNull(request.getDataVencimento(), request.getDataPagamento());
         verify(veiculoRepository, never())
                 .findByIdVeiculo(any(Long.class));
         verify(custoRepository, never()).save(any(Custo.class));

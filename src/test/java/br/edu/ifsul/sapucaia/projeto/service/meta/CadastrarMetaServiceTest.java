@@ -7,7 +7,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +23,7 @@ import java.util.Optional;
 import static br.edu.ifsul.sapucaia.projeto.factory.MetaFactory.cadastrarMetaRequest;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuario;
 import static br.edu.ifsul.sapucaia.projeto.factory.UsuarioFactory.usuarioSecurity;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -43,7 +41,7 @@ class CadastrarMetaServiceTest {
     private MetaRepository metaRepository;
 
     @Mock
-    private ValidaValorMetaValidator validaValorMetaValidator;
+    private ValidaValorPositivoValidator validaValorPositivoValidator;
 
     @Mock
     private ValidaFormatoMetaValidator validaFormatoMetaValidator;
@@ -70,7 +68,7 @@ class CadastrarMetaServiceTest {
 
         tested.cadastrar(request);
 
-        verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
 
         verify(usuarioRepository)
@@ -94,13 +92,13 @@ class CadastrarMetaServiceTest {
         request.setValor(0.0);
 
         doThrow(ResponseStatusException.class)
-                .when(validaValorMetaValidator)
+                .when(validaValorPositivoValidator)
                 .isPositivo(request.getValor());
 
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
-        verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator, never()).formatoValido(anyString());
         verify(usuarioAutenticadoService, never()).getUser();
         verify(metaRepository, never()).save(any());
@@ -120,7 +118,7 @@ class CadastrarMetaServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> tested.cadastrar(request));
 
-        verify(validaValorMetaValidator).isPositivo(request.getValor());
+        verify(validaValorPositivoValidator).isPositivo(request.getValor());
         verify(validaFormatoMetaValidator).formatoValido(request.getFormato());
         verify(usuarioAutenticadoService, never()).getUser();
         verify(metaRepository, never()).save(any());

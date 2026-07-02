@@ -28,7 +28,7 @@ class ValidaDataMaiorQueHojeValidatorTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> tested.naoMaiorQueHoje(request));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("A data deve não deve ser maior que hoje.", exception.getReason());
+        assertEquals("A data não deve ser maior que hoje.", exception.getReason());
     }
 
     @Test

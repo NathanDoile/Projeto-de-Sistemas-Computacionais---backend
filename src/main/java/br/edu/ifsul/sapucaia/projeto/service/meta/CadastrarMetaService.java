@@ -8,7 +8,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaFormatoMetaValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorMetaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +21,14 @@ public class CadastrarMetaService {
 
     private final UsuarioRepository usuarioRepository;
     private final MetaRepository metaRepository;
-    private final ValidaValorMetaValidator validaValorMetaValidator;
+    private final ValidaValorPositivoValidator validaValorPositivoValidator;
     private final ValidaFormatoMetaValidator validaFormatoMetaValidator;
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Transactional
     public void cadastrar(CadastrarMetaRequest request) {
 
-        validaValorMetaValidator.isPositivo(request.getValor());
+        validaValorPositivoValidator.isPositivo(request.getValor());
         validaFormatoMetaValidator.formatoValido(request.getFormato());
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();

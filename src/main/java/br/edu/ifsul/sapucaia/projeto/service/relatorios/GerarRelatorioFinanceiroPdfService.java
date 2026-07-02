@@ -11,7 +11,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataRelatorioFinanceiroPdfValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -31,7 +31,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RequiredArgsConstructor
 public class GerarRelatorioFinanceiroPdfService {
 
-    private final ValidaDataRelatorioFinanceiroPdfValidator validaDataRelatorioFinanceiroPdfValidator;
+    private final ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
     private final ReceitaDiariaRepository receitaDiariaRepository;
     private final CustoRepository custoRepository;
     private final VeiculoRepository veiculoRepository;
@@ -41,7 +41,7 @@ public class GerarRelatorioFinanceiroPdfService {
 
     public byte[] gerarRelatorioFinanceiro(LocalDate dataReferencia, PeriodoRelatorioFinanceiro periodo){
 
-        validaDataRelatorioFinanceiroPdfValidator.naoMaiorQueHoje(dataReferencia);
+        validaDataMaiorQueHojeValidator.naoMaiorQueHoje(dataReferencia);
 
         LocalDate dataInicio;
         LocalDate dataFim;

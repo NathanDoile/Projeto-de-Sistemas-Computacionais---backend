@@ -9,7 +9,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.ReceitaDiariaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataRelatorioFinanceiroPdfValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -46,7 +46,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
     private UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Mock
-    private ValidaDataRelatorioFinanceiroPdfValidator validaDataRelatorioFinanceiroPdfValidator;
+    private ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
 
     @Mock
     private ReceitaDiariaRepository receitaDiariaRepository;
@@ -81,7 +81,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(usuarioSecurity.getIdVeiculo(), dataInicio, dataFim);
@@ -114,7 +114,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(usuarioSecurity.getIdVeiculo(), dataInicio, dataFim);
@@ -147,7 +147,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
@@ -187,7 +187,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
@@ -220,7 +220,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
@@ -253,7 +253,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
@@ -286,7 +286,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
         byte[] response = tested.gerarRelatorioFinanceiro(dataReferencia, periodo);
 
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);
@@ -303,11 +303,11 @@ class GerarRelatorioFinanceiroPdfServiceTest {
 
         LocalDate dataReferencia = DateNow.now().plusDays(1);
 
-        doThrow(ResponseStatusException.class).when(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        doThrow(ResponseStatusException.class).when(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
 
         assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(dataReferencia, periodo));
 
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(usuarioAutenticadoService, never()).getUser();
         verify(veiculoRepository, never()).findByUsuarioIdUsuario(any(Long.class));
         verify(receitaDiariaRepository, never()).findByUsuarioIdUsuarioAndDataReceitaBetween(any(Long.class), any(LocalDate.class), any(LocalDate.class));
@@ -345,7 +345,7 @@ class GerarRelatorioFinanceiroPdfServiceTest {
             assertThrows(ResponseStatusException.class, () -> tested.gerarRelatorioFinanceiro(dataReferencia, periodo));
         }
         verify(usuarioAutenticadoService).getUser();
-        verify(validaDataRelatorioFinanceiroPdfValidator).naoMaiorQueHoje(dataReferencia);
+        verify(validaDataMaiorQueHojeValidator).naoMaiorQueHoje(dataReferencia);
         verify(veiculoRepository).findByUsuarioIdUsuario(usuarioSecurity.getId());
         verify(receitaDiariaRepository).findByUsuarioIdUsuarioAndDataReceitaBetween(usuarioSecurity.getId(), dataInicio, dataFim);
         verify(custoRepository).findByVeiculoIdVeiculoAndDataPagamentoBetween(veiculo.getIdVeiculo(), dataInicio, dataFim);

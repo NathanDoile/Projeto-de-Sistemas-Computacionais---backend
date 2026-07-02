@@ -12,7 +12,7 @@ import br.edu.ifsul.sapucaia.projeto.repository.UsuarioRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaDataMaiorQueHojeValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorReceitaDiariaValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class CadastrarReceitaDiariaService {
 
     private final UsuarioRepository usuarioRepository;
     private final ReceitaDiariaRepository receitaDiariaRepository;
-    private final ValidaValorReceitaDiariaValidator validaValorReceitaDiariaValidator;
+    private final ValidaValorPositivoValidator validaValorPositivoValidator;
     private final ValidaDataMaiorQueHojeValidator validaDataMaiorQueHojeValidator;
     private final MetaRepository metaRepository;
     private final UsuarioAutenticadoService usuarioAutenticadoService;
@@ -43,7 +43,7 @@ public class CadastrarReceitaDiariaService {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaValorReceitaDiariaValidator.isPositivo(request.getValor());
+        validaValorPositivoValidator.isPositivo(request.getValor());
         validaDataMaiorQueHojeValidator.naoMaiorQueHoje(request.getDataReceita());
 
         ReceitaDiaria receitaDiaria = toEntity(request);

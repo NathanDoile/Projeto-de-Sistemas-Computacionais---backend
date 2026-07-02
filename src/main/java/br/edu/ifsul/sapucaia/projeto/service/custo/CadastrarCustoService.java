@@ -12,9 +12,9 @@ import br.edu.ifsul.sapucaia.projeto.repository.MetaRepository;
 import br.edu.ifsul.sapucaia.projeto.repository.VeiculoRepository;
 import br.edu.ifsul.sapucaia.projeto.security.UsuarioSecurity;
 import br.edu.ifsul.sapucaia.projeto.security.service.UsuarioAutenticadoService;
-import br.edu.ifsul.sapucaia.projeto.service.validator.ValidaVeiculoService;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaDatasCustoValidator;
 import br.edu.ifsul.sapucaia.projeto.validator.ValidaTipoCustoValidator;
-import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorCustoValidator;
+import br.edu.ifsul.sapucaia.projeto.validator.ValidaValorPositivoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class CadastrarCustoService {
 
     private final CustoRepository custoRepository;
 
-    private final ValidaValorCustoValidator validaValorCustoValidator;
+    private final ValidaValorPositivoValidator validaValorPositivoValidator;
 
     private final ValidaTipoCustoValidator validaTipoCustoValidator;
 
@@ -46,13 +46,16 @@ public class CadastrarCustoService {
 
     private final UsuarioAutenticadoService usuarioAutenticadoService;
 
+    private final ValidaDatasCustoValidator validaDatasCustoValidator;
+
     @Transactional
     public BuscarCustosEmAbertoResponse cadastrar(CadastrarCustoRequest request) {
 
         UsuarioSecurity usuarioSecurity = usuarioAutenticadoService.getUser();
 
-        validaValorCustoValidator.isPositivo(request.getValor());
+        validaValorPositivoValidator.isPositivo(request.getValor());
         validaTipoCustoValidator.tipoValido(request.getTipo());
+        validaDatasCustoValidator.ambasNull(request.getDataVencimento(), request.getDataPagamento());
 
         Custo custo = toEntity(request);
       
