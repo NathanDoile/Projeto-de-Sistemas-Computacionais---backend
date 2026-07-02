@@ -139,4 +139,31 @@ class PendenciasDoUsuarioServiceTest {
         assertFalse(response.isManutencaoKmVencido());
         assertFalse(response.isManutencaoTempoVencido());
     }
+
+    @Test
+    @DisplayName("Deve retornar manutenção por Km vencido como falso - se próxima manutenção for igual a 0")
+    void deveRetornarManutencaoKmFalsaSeProximaManutencaoKmForZero() {
+
+        UsuarioSecurity usuarioLogado = usuarioSecurity();
+
+        Long id = usuarioLogado.getId();
+
+        Veiculo veiculo = veiculo();
+        veiculo.setDataUltimaAtualizacaoKm(LocalDate.now().minusDays(10));
+        veiculo.setKmAtual(8000);
+        veiculo.setProximaManutencaoKm(0);
+        veiculo.setProximaManutencaoData(LocalDate.now().minusDays(5));
+
+        when(usuarioAutenticadoService.getUser()).thenReturn(usuarioLogado);
+        when(veiculoRepository.findByUsuarioIdUsuario(id)).thenReturn(veiculo);
+
+        PendenciasDoUsuarioResponse response = tested.buscarPendencias();
+
+        verify(usuarioAutenticadoService).getUser();
+        verify(veiculoRepository).findByUsuarioIdUsuario(id);
+
+        assertTrue(response.isKmDesatualizado());
+        assertFalse(response.isManutencaoKmVencido());
+        assertTrue(response.isManutencaoTempoVencido());
+    }
 }

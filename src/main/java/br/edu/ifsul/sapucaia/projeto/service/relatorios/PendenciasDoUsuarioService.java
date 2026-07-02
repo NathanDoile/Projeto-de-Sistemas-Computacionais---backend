@@ -30,8 +30,8 @@ public class PendenciasDoUsuarioService {
         boolean kmDesatualizado = veiculo.getDataUltimaAtualizacaoKm() == null
                 || dataAtual.isAfter(veiculo.getDataUltimaAtualizacaoKm().plusDays(7));
 
-        boolean manutencaoKmVencido =
-                veiculo.getKmAtual() >= veiculo.getProximaManutencaoKm();
+        boolean manutencaoKmVencido = veiculo.getProximaManutencaoKm() != 0
+                && veiculo.getKmAtual() >= veiculo.getProximaManutencaoKm();
 
         boolean manutencaoTempoVencido =
                 veiculo.getProximaManutencaoData() != null
