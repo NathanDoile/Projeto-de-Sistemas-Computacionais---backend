@@ -310,22 +310,22 @@
 ### Integrantes
 - **Nome e Linkedin**
   - |Professor Remor| [Perfil](https://www.linkedin.com/in/rodrigoremor) |
-  
+  -
   - Front-End:
   - |Ariel| [Perfil](https://www.linkedin.com/in/campos-ariel/) |
   - |Laura| [Perfil](https://www.linkedin.com/in/laura-a-ferreira) |
-  - |Jackson| [Perfil]() |
-
+  - |Jackson| [Perfil](https://www.linkedin.com/in/jackson-gonçalves-nervis-1392b4421) |
+  -
   - Back-End:
   - |Nathan| [Perfil](https://www.linkedin.com/in/nathan-doile) |
   - |Felipe| [Perfil](https://www.linkedin.com/in/felipe-h-martins) |
   - |Ricardo| [Perfil](https://www.linkedin.com/in/ricardobit) |
   - |Leandro| [Perfil](https://www.linkedin.com/in/leandro-martens-7523b0332/) |
-  
+  -
   - Design:
   - |Ana| [Perfil](https://www.linkedin.com/in/anaclaudiamoura8) |
   - |Lucas| [Perfil](https://www.linkedin.com/in/lucasbertoluci/) |
-
+  -
   - Scrum-master:
   - |Arthur| [Perfil](https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
   - |Carol| [Perfil](https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
