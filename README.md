@@ -346,7 +346,6 @@
 
 ## Tecnologias Utilizadas
 - **| Tecnologia | Finalidade |**
- - |------------|------------| 
  - | Java 17 | Linguagem de programação |
  - | Spring Boot 4 | Desenvolvimento da API |
  - | Spring Web MVC | Criação dos endpoints REST |
