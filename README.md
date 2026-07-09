@@ -310,23 +310,23 @@
 ### Integrantes
 - **Nome e Linkedin**
   - |Professor Remor| [Perfil](https://www.linkedin.com/in/rodrigoremor) |
-  -
-  - Front-End:
+  
+  - **Front-End:**
   - |Ariel| [Perfil](https://www.linkedin.com/in/campos-ariel/) |
   - |Laura| [Perfil](https://www.linkedin.com/in/laura-a-ferreira) |
   - |Jackson| [Perfil](https://www.linkedin.com/in/jackson-gonçalves-nervis-1392b4421) |
-  -
-  - Back-End:
+  
+  - **Back-End:**
   - |Nathan| [Perfil](https://www.linkedin.com/in/nathan-doile) |
   - |Felipe| [Perfil](https://www.linkedin.com/in/felipe-h-martins) |
   - |Ricardo| [Perfil](https://www.linkedin.com/in/ricardobit) |
   - |Leandro| [Perfil](https://www.linkedin.com/in/leandro-martens-7523b0332/) |
-  -
-  - Design:
+  
+  - **Design:**
   - |Ana| [Perfil](https://www.linkedin.com/in/anaclaudiamoura8) |
   - |Lucas| [Perfil](https://www.linkedin.com/in/lucasbertoluci/) |
-  -
-  - Scrum-master:
+  
+  - **Scrum-master:**
   - |Arthur| [Perfil](https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
   - |Carol| [Perfil](https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
 
@@ -335,3 +335,11 @@
   - Este projeto consiste no desenvolvimento de um aplicativo de controle financeiro e gerenciamento para motoristas de aplicativo. 
   - Seu objetivo é auxiliar os usuários na organização de suas atividades, oferecendo ferramentas para acompanhar receitas, despesas e metas financeiras de forma prática e intuitiva.
   - O aplicativo permite cadastrar veículos, registrar manutenções, controlar receitas e custos, definir e acompanhar metas financeiras, além de gerar relatórios que ajudam o motorista a analisar seu desempenho e tomar decisões para melhorar sua rentabilidade.
+
+### Documentação do Projeto
+
+ - [Modelagem Conceitual](data/modelagem_projeto.png)
+ - [Coleção do Postman](data/POSTMAN%20PROJETO.postman_collection.json)
+ - [Schema do Banco de Dados](data/schema.sql)
+ - [Scripts de Inserts](data/insert.sql)
+ - [Consultas SQL (SELECT)](data/select.sql)
