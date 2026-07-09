@@ -307,3 +307,21 @@
 - **Verificar pendência do usuário com o sistema**
   - Precisa estar logado para utilizar esse path;
   - `GET /pendencias`
+### Integrantes
+- **Nome e Linkedin**
+  - |Professor Remor| [Perfil](https://www.linkedin.com/in/rodrigoremor) |
+  - Front-End:
+  - |Ariel| [Perfil](https://www.linkedin.com/in/campos-ariel/) |
+  - |Laura| [Perfil]() |
+  - |Jackson| [Perfil]() |
+  - Back-End:
+  - |Nathan| [Perfil]() |
+  - |Felipe| [Perfil](https://www.linkedin.com/in/felipe-h-martins) |
+  - |Ricardo| [Perfil](https://www.linkedin.com/in/ricardobit) |
+  - |Leandro| [Perfil](https://www.linkedin.com/in/leandro-martens-7523b0332/) |
+  - Design:
+  - |Ana| [Perfil](https://www.linkedin.com/in/anaclaudiamoura8) |
+  - |Lucas| [Perfil](https://www.linkedin.com/in/lucasbertoluci/) |
+  - Scrum-master:
+  - |Arthur| [Perfil](https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
+  - |Carol| [Perfil](https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
