@@ -325,3 +325,9 @@
   - Scrum-master:
   - |Arthur| [Perfil](https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
   - |Carol| [Perfil](https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
+
+### Descrição do Projeto
+- **O Projeto**
+  - Este projeto consiste no desenvolvimento de um aplicativo de controle financeiro e gerenciamento para motoristas de aplicativo. 
+  - Seu objetivo é auxiliar os usuários na organização de suas atividades, oferecendo ferramentas para acompanhar receitas, despesas e metas financeiras de forma prática e intuitiva.
+  - O aplicativo permite cadastrar veículos, registrar manutenções, controlar receitas e custos, definir e acompanhar metas financeiras, além de gerar relatórios que ajudam o motorista a analisar seu desempenho e tomar decisões para melhorar sua rentabilidade.
