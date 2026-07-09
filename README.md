@@ -343,3 +343,21 @@
  - [Schema do Banco de Dados](data/schema.sql)
  - [Scripts de Inserts](data/insert.sql)
  - [Consultas SQL (SELECT)](data/select.sql)
+
+## Tecnologias Utilizadas
+- **| Tecnologia | Finalidade |**
+ - |------------|------------| 
+ - | Java 17 | Linguagem de programação |
+ - | Spring Boot 4 | Desenvolvimento da API |
+ - | Spring Web MVC | Criação dos endpoints REST |
+ - | Spring Data JPA | Persistência de dados |
+ - | Spring Security | Autenticação e autorização |
+ - | Spring Validation | Validação de dados |
+ - | Maven | Gerenciamento de dependências |
+ - | MySQL | Banco de dados |
+ - | Lombok | Redução de código repetitivo |
+ - | JasperReports | Geração de relatórios |
+ - | Postman | Testes da API |
+ - | Git e GitHub | Controle de versão |
+ - | IntelliJ IDEA | Ambiente de desenvolvimento |
+ - | brModelo | Modelagem conceitual do banco de dados |
