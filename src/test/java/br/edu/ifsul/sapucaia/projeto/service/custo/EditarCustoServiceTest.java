@@ -157,6 +157,7 @@ class EditarCustoServiceTest {
         for(int i = 0; i < metasResponse.size(); i++){
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+            metasRaiz.get(0).setValorAtual(100);
 
             if(metasRaiz.get(i).getFormato().equals(DIARIA)
                     && request.getDataPagamento().equals(DateNow.now().plusDays(1))){
@@ -225,6 +226,7 @@ class EditarCustoServiceTest {
         for(int i = 0; i < metasResponse.size(); i++){
 
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+            metasRaiz.get(1).setValorAtual(100);
 
             if(metasRaiz.get(i).getFormato().equals(DIARIA)){
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
