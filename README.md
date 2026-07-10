@@ -1,7 +1,88 @@
-# *LISTAGEM DE FUNCIONALIDADES:*
 # Projeto de Desenvolvimento de Sistemas
 
-## Funcionalidades
+### Integrantes
+- **Nome e Linkedin**
+  - | Professor Remor | [Perfil] (https://www.linkedin.com/in/rodrigoremor) |
+  
+  - **Front-End:**
+  - | Ariel | [Perfil] (https://www.linkedin.com/in/campos-ariel/) |
+  - | Laura | [Perfil] (https://www.linkedin.com/in/laura-a-ferreira) |
+  - | Jackson | [Perfil] (https://www.linkedin.com/in/jackson-gonçalves-nervis-1392b4421) |
+  
+  - **Back-End:**
+  - | Nathan | [Perfil] (https://www.linkedin.com/in/nathan-doile) |
+  - | Felipe | [Perfil] (https://www.linkedin.com/in/felipe-h-martins) |
+  - | Ricardo | [Perfil] (https://www.linkedin.com/in/ricardobit) |
+  - | Leandro | [Perfil] (https://www.linkedin.com/in/leandro-martens-7523b0332/) |
+  
+  - **Design:**
+  - | Ana | [Perfil] (https://www.linkedin.com/in/anaclaudiamoura8) |
+  - | Lucas | [Perfil] (https://www.linkedin.com/in/lucasbertoluci/) |
+  
+  - **Scrum-master:**
+  - | Arthur | [Perfil] (https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
+  - | Carol | [Perfil] (https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
+
+### Descrição do Projeto
+- **O Projeto**
+  - Este projeto consiste no desenvolvimento de um aplicativo de controle financeiro e gerenciamento para motoristas de aplicativo. 
+  - Seu objetivo é auxiliar os usuários na organização de suas atividades, oferecendo ferramentas para acompanhar receitas, despesas e metas financeiras de forma prática e intuitiva.
+  - O aplicativo permite cadastrar veículos, registrar manutenções, controlar receitas e custos, definir e acompanhar metas financeiras, além de gerar relatórios que ajudam o motorista a analisar seu desempenho e tomar decisões para melhorar sua rentabilidade.
+
+### Documentação do Projeto
+
+ - [Modelagem Conceitual] (data/modelagem_projeto.png)
+ - [Coleção do Postman] (data/POSTMAN%20PROJETO.postman_collection.json)
+ - [Schema do Banco de Dados] (data/schema.sql)
+ - [Scripts de Inserts] (data/insert.sql)
+ - [Consultas SQL (SELECT)] (data/select.sql)
+
+### Tecnologias Utilizadas
+- **| Tecnologia | Finalidade |**
+ - | Java 17 | Linguagem de programação |
+ - | Spring Boot 4 | Desenvolvimento da API |
+ - | Spring Web MVC | Criação dos endpoints REST |
+ - | Spring Data JPA | Persistência de dados |
+ - | Spring Security | Autenticação e autorização |
+ - | Spring Validation | Validação de dados |
+ - | Maven | Gerenciamento de dependências |
+ - | MySQL | Banco de dados |
+ - | Lombok | Redução de código repetitivo |
+ - | JasperReports | Geração de relatórios |
+ - | Postman | Testes da API |
+ - | Git e GitHub | Controle de versão |
+ - | IntelliJ IDEA | Ambiente de desenvolvimento |
+ - | brModelo | Modelagem conceitual do banco de dados |
+
+### Estrutura do Projeto
+
+O backend é um projeto Spring Boot organizado como uma aplicação Maven com pacote base `br.edu.ifsul.sapucaia.projeto`. A estrutura principal segue uma arquitetura em camadas, separando responsabilidades entre controles, serviços, persistência, domínio, segurança, validação e utilitários.
+
+- `src/main/java/br/edu/ifsul/sapucaia/projeto`
+  - `controller/`: REST controllers que expõem as rotas da API para usuários, veículos, custos, manutenções, receitas diárias, metas, relatórios e integração com IA.
+  - `service/`: serviços de negócio, com subpacotes por domínio (`usuario`, `veiculo`, `custo`, `manutencao`, `receita_diaria`, `meta`, `relatorios`, `ia`, `validator`). Cada classe de serviço encapsula regras de negócio, orquestração e validações.
+  - `repository/`: interfaces Spring Data JPA para acesso ao banco de dados e operações CRUD das entidades do sistema.
+  - `domain/`: entidades JPA que representam as tabelas do banco de dados e os respectivos enums de tipos e formatos usados pelo sistema.
+  - `security/`: configurações de segurança, controllers e serviços para login, autenticação, redefinição de senha e envio de e-mails.
+  - `config/`: configuração global do Spring e tratamento de exceções via `ApiExceptionHandler`.
+  - `helper/`: classes utilitárias para manipulação de datas, períodos e outros componentes comuns.
+  - `mapper/`: mapeamento entre requests/responses e entidades de domínio.
+  - `validator/`: validadores customizados para regras específicas do domínio e da interface.
+  - `exception/`: definições de exceções aplicadas ao fluxo de negócio.
+  - `ProjetoApplication.java`: classe principal que inicializa a aplicação Spring Boot.
+
+- `src/main/resources/`
+  - `application.yml`: configurações da aplicação e do ambiente.
+  - `manutencoes.jrxml`: template JasperReports usado na geração de relatórios.
+  - `templates/`: arquivos de template adicionais usados pela aplicação.
+
+- `src/test/java/`: testes automatizados para serviços, validações, segurança e componentes da aplicação.
+
+- `pom.xml`: definição das dependências do Maven, incluindo Spring Boot, Spring Data JPA, Spring Security, validação, JasperReports, MySQL e H2 para testes.
+
+- `data/`: documentação de suporte com modelagem, scripts SQL de criação, inserção de dados e consultas, além da coleção Postman do projeto.
+
+### Endpoints
 
 ### Rota Principal:
 
@@ -307,56 +388,3 @@
 - **Verificar pendência do usuário com o sistema**
   - Precisa estar logado para utilizar esse path;
   - `GET /pendencias`
-### Integrantes
-- **Nome e Linkedin**
-  - |Professor Remor| [Perfil](https://www.linkedin.com/in/rodrigoremor) |
-  
-  - **Front-End:**
-  - |Ariel| [Perfil](https://www.linkedin.com/in/campos-ariel/) |
-  - |Laura| [Perfil](https://www.linkedin.com/in/laura-a-ferreira) |
-  - |Jackson| [Perfil](https://www.linkedin.com/in/jackson-gonçalves-nervis-1392b4421) |
-  
-  - **Back-End:**
-  - |Nathan| [Perfil](https://www.linkedin.com/in/nathan-doile) |
-  - |Felipe| [Perfil](https://www.linkedin.com/in/felipe-h-martins) |
-  - |Ricardo| [Perfil](https://www.linkedin.com/in/ricardobit) |
-  - |Leandro| [Perfil](https://www.linkedin.com/in/leandro-martens-7523b0332/) |
-  
-  - **Design:**
-  - |Ana| [Perfil](https://www.linkedin.com/in/anaclaudiamoura8) |
-  - |Lucas| [Perfil](https://www.linkedin.com/in/lucasbertoluci/) |
-  
-  - **Scrum-master:**
-  - |Arthur| [Perfil](https://www.linkedin.com/in/arthur-vieira-colaço-289a99202) |
-  - |Carol| [Perfil](https://www.linkedin.com/in/carolina-pinheiro-de-souza-1826b1258) |
-
-### Descrição do Projeto
-- **O Projeto**
-  - Este projeto consiste no desenvolvimento de um aplicativo de controle financeiro e gerenciamento para motoristas de aplicativo. 
-  - Seu objetivo é auxiliar os usuários na organização de suas atividades, oferecendo ferramentas para acompanhar receitas, despesas e metas financeiras de forma prática e intuitiva.
-  - O aplicativo permite cadastrar veículos, registrar manutenções, controlar receitas e custos, definir e acompanhar metas financeiras, além de gerar relatórios que ajudam o motorista a analisar seu desempenho e tomar decisões para melhorar sua rentabilidade.
-
-### Documentação do Projeto
-
- - [Modelagem Conceitual](data/modelagem_projeto.png)
- - [Coleção do Postman](data/POSTMAN%20PROJETO.postman_collection.json)
- - [Schema do Banco de Dados](data/schema.sql)
- - [Scripts de Inserts](data/insert.sql)
- - [Consultas SQL (SELECT)](data/select.sql)
-
-## Tecnologias Utilizadas
-- **| Tecnologia | Finalidade |**
- - | Java 17 | Linguagem de programação |
- - | Spring Boot 4 | Desenvolvimento da API |
- - | Spring Web MVC | Criação dos endpoints REST |
- - | Spring Data JPA | Persistência de dados |
- - | Spring Security | Autenticação e autorização |
- - | Spring Validation | Validação de dados |
- - | Maven | Gerenciamento de dependências |
- - | MySQL | Banco de dados |
- - | Lombok | Redução de código repetitivo |
- - | JasperReports | Geração de relatórios |
- - | Postman | Testes da API |
- - | Git e GitHub | Controle de versão |
- - | IntelliJ IDEA | Ambiente de desenvolvimento |
- - | brModelo | Modelagem conceitual do banco de dados |
