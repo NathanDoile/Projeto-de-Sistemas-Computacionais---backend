@@ -230,6 +230,10 @@ class EditarCustoServiceTest {
             else{
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
 
+                if(metasRaiz.get(i).getFormato().equals(MENSAL) && request.getDataPagamento().getMonth() != DateNow.now().getMonth()){
+                    valorEsperadoMeta += custo().getValor();
+                }
+
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
         }
@@ -526,6 +530,10 @@ class EditarCustoServiceTest {
                     || DateNow.now().getYear() != request.getDataPagamento().getYear())){
 
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                if(custo.getDataPagamento().minusWeeks(1).getMonth() != request.getDataPagamento().getMonth()){
+                    valorEsperadoMeta += custo().getValor();
+                }
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }

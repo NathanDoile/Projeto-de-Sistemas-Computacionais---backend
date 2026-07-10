@@ -36,9 +36,13 @@ class ValidaDatasCustoValidatorTest {
     @DisplayName("Não deve dar erro se uma das datas não for null")
     void naoDeveDarErroSeUmaDataNaoNull(){
 
-        LocalDate dataVencimento = null;
-        LocalDate dataPagamento = DateNow.now();
+        LocalDate dataVencimentoI = null;
+        LocalDate dataPagamentoI = DateNow.now();
 
-        assertDoesNotThrow(() -> tested.ambasNull(dataVencimento, dataPagamento));
+        LocalDate dataVencimentoII = DateNow.now();
+        LocalDate dataPagamentoII = null;
+
+        assertDoesNotThrow(() -> tested.ambasNull(dataVencimentoI, dataPagamentoI));
+        assertDoesNotThrow(() -> tested.ambasNull(dataVencimentoII, dataPagamentoII));
     }
 }
