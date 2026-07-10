@@ -167,6 +167,10 @@ class EditarCustoServiceTest {
             else{
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
 
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
+
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
         }
@@ -225,12 +229,16 @@ class EditarCustoServiceTest {
             if(metasRaiz.get(i).getFormato().equals(DIARIA)){
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
+
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else{
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
 
-                if(metasRaiz.get(i).getFormato() == MENSAL && request.getDataPagamento().getMonth().equals(DateNow.now().getMonth())){
+                if((metasRaiz.get(i).getFormato() == MENSAL && request.getDataPagamento().getMonth().equals(DateNow.now().getMonth())) || metasRaiz.get(i).getValorAtual() == 0){
                     valorEsperadoMeta += custo().getValor();
                 }
 
@@ -288,10 +296,18 @@ class EditarCustoServiceTest {
             if(metasRaiz.get(i).getFormato().equals(DIARIA)){
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
+
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
             else if(metasRaiz.get(i).getFormato().equals(SEMANAL)){
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
@@ -305,6 +321,10 @@ class EditarCustoServiceTest {
             }
             else{
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }
@@ -359,6 +379,10 @@ class EditarCustoServiceTest {
 
             double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
 
+            if(metasRaiz.get(i).getValorAtual() == 0){
+                valorEsperadoMeta += custo().getValor();
+            }
+
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
 
@@ -410,6 +434,10 @@ class EditarCustoServiceTest {
             List<Meta> metasRaiz = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
 
             double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor();
+
+            if(metasRaiz.get(i).getValorAtual() == 0){
+                valorEsperadoMeta += custo().getValor();
+            }
 
             assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
         }
@@ -473,6 +501,10 @@ class EditarCustoServiceTest {
             }
             else{
                 double valorEsperadoMeta = metasRaiz.get(i).getValorAtual() - custo().getValor() + request.getValor();
+
+                if(metasRaiz.get(i).getValorAtual() == 0){
+                    valorEsperadoMeta += custo().getValor();
+                }
 
                 assertEquals(valorEsperadoMeta, metasResponse.get(i).getValorAtual());
             }

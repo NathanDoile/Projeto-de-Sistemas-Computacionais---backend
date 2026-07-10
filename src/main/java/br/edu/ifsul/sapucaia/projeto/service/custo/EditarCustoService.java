@@ -88,9 +88,9 @@ public class EditarCustoService {
 
             EnumMap<FormatoMeta, Boolean> condicaoParaRemocao = new EnumMap<>(FormatoMeta.class);
 
-            condicaoParaRemocao.put(DIARIA, dataPagamento.equals(hoje));
-            condicaoParaRemocao.put(SEMANAL, dataPagamento.isAfter(inicioSemana) || dataPagamento.equals(inicioSemana));
-            condicaoParaRemocao.put(MENSAL, dataPagamento.getMonth().equals(hoje.getMonth()) && dataPagamento.getYear() == hoje.getYear());
+            condicaoParaRemocao.put(DIARIA, dataPagamento.equals(hoje) && meta.getValorAtual() > 0);
+            condicaoParaRemocao.put(SEMANAL, (dataPagamento.isAfter(inicioSemana) || dataPagamento.equals(inicioSemana)) && meta.getValorAtual() > 0);
+            condicaoParaRemocao.put(MENSAL, dataPagamento.getMonth().equals(hoje.getMonth()) && dataPagamento.getYear() == hoje.getYear() && meta.getValorAtual() > 0);
 
             double novoValorMeta = meta.getValorAtual();
 
