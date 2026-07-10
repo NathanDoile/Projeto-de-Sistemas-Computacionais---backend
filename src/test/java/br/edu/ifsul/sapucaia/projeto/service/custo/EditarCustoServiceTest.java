@@ -132,6 +132,7 @@ class EditarCustoServiceTest {
         custo.getVeiculo().setUsuario(usuario());
 
         List<Meta> metas = List.of(meta(DIARIA, CUSTO), meta(SEMANAL, CUSTO), meta(MENSAL, CUSTO));
+        metas.get(0).setValorAtual(100);
 
         custo.getVeiculo().getUsuario().setMetas(metas);
 
